@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="jquery-2.1.0.min.js"></script>	<!--jQuery-->
+	<script src="jquery.hotkeys.js"></script>		<!--keyboard events-->
+	<script src="key_status.js"></script>			<!--keyboard events-->
+	<script src="extra_math.js"></script>			<!--Equations-->
+	<script src="gamelog.js"></script>
+	<script src='basicfunctions.js'></script>
+	<script src='animation.js'></script>
+	<script src='loadImages.js'></script>
+	<script src='entitytypes.js'></script>
+	<script src='ai/ai.js'></script>
+	<script src='ai/neutral1.js'></script>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+	<title>Project Void</title>
+</head>
+
+<body bgcolor=#000000>
+<center><font color=white face="Verdana","Arial">
+
+<h3>Project Void</h3>
+
+<script>
+	"use strict";
+
+	// Variables
+	var fall_acc=0.3;			// Global fall acceleration
+	var colprecision=0.4; 		// Collision correction precision in pixels
+	var gamestarttime = new Date().getTime();
+	var stopgame = false;		// Game is stopped when set to true
+	
+	// Gametick function
+	function gametick(){
+		viewport.clear();
+		keyinput();
+		level.draw();
+		
+		var nents = entities.length;
+		for(var i=nents-1;i>-1;i--){
+			entities[i].do_ai();
+			entities[i].movement();
+			entities[i].draw();
+			
+			///// Gamelog /////
+			gamelog.textmark(i,entities[i].xview,entities[i].yview)
+			///////////////////
+		}
+		
+		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
+		
+		gamelog.draw();
+		viewport.frametimer();
+		viewport.followPlayer();
+		
+		///// Moet nog netter!!!! ehrmageehrd!!
+		if(entities.length<500){spawn('enemy1',player.x,0)}
+	}
+	
+	
+	// Keyboard input events
+	function keyinput(){
+		// left arrow
+		if(keydown.left && !player.lefttouch){
+			if(player.onground){
+				player.vx-=player.groundacc
+			}else{
+				player.vx-=player.airacc
+			}
+			
+		}
+		
+		// right arrow
+		if(keydown.right && !player.righttouch){
+			if(player.onground){
+				player.vx+=player.groundacc
+			}else{
+				player.vx+=player.airacc
+			}
+			
+		}
+		
+		// up arrow
+		if(keydown.up && player.onground){
+			player.vy=-player.jumpspeed
+			player.onground=false
+			
+		}
+	}
+	
+	
+	// Viewport object
+	var viewport = {
+		x:0,															// x position of viewport (lvl coords)
+		y:0,															// y position of viewport (lvl coords)
+		width:1024,
+		height:768,
+		dt:0.017,
+		dt_timestamp:gamestarttime,
+		goalFPS:60,
+		followspeed:0.1,											// Move this fraction towards player (each tick)
+		
+		clear:function(){
+			// clear canvas
+			ctx.clearRect(0,0,this.width,this.height);
+		},
+		
+		followPlayer:function(){								// Move viewport towards player
+			this.x+=(player.x-this.x)*this.followspeed;
+		},
+		
+		
+		// Coordinate conversion
+		
+		xlvl2view:function(x){									// Convert level x coord to viewport x coord
+			return x-this.x+this.width/2;
+		},
+		
+		ylvl2view:function(y){									// Convert level y coord to viewport y coord
+			return y-this.y;
+		},
+		
+		oblvl2view:function(ob){								// Convert level x&y object coords to viewport x&y coords
+			return [this.xlvl2view(ob.x),this.ylvl2view(ob.y)];
+		},
+		
+		frametimer:function(){
+			var newtimestamp = new Date().getTime();
+			this.dt = newtimestamp-this.dt_timestamp;
+			this.dt_timestamp = newtimestamp;
+		}
+	}
+	
+	
+	// Level object
+	var level = {
+		
+		// Level Coordinates <-> Tile Indices
+		x2j:function(x){
+			return parseInt(x/this.tilewidth)
+		},
+		
+		y2i:function(y){
+			return parseInt(y/this.tileheight)
+		},
+		
+		j2x:function(j){
+			return this.tilewidth*j
+		},
+		
+		i2y:function(i){
+			return this.tileheight*i
+		},
+		
+		xview2j:function(xview){
+			return parseInt((xview-viewport.width/2+viewport.x)/this.tilewidth)
+		},
+		
+		yview2i:function(yview){
+			return parseInt((yview+viewport.y)/this.tileheight)
+		},
+		
+		// Get Tile from coords
+		getTile:function(x,y){
+			
+			// Get Tile Indices
+			var j=this.x2j(x)
+			var i=this.y2i(y)
+			
+			// Check if player is outside level data
+			if(i<0 || j<0 || i>=level.data.length || j>=level.data[0].length){
+				return false
+			}else{
+				// return tiletype index
+				return level.data[i][j]
+			}
+		},
+		
+		// Draw Level
+		draw:function(){
+			
+			// Determine start and end tile for drawing
+			var jviewstart = this.xview2j(0)
+			if(jviewstart<0){jviewstart=0}
+			var jviewend = this.xview2j(viewport.width+this.tilewidth)
+			if(jviewend>this.data[0].length){jviewend=this.data[0].length}
+			
+			// Loop over tiles for drawing
+			for(var i=0;i<this.data.length;i++){
+				for(var j=jviewstart;j<jviewend;j++){
+					
+					// Gather tile info
+					var width=this.tilewidth
+					var height=this.tileheight
+					var tileindex=this.data[i][j]
+					var color=tileset[tileindex][2]
+					
+					// Calculate tile position
+					var x=this.j2x(j)
+					var y=this.i2y(i)
+					
+					// Draw Tile
+					ctx.beginPath()
+					ctx.fillStyle=color
+					ctx.rect(x-viewport.x+viewport.width/2,y-viewport.y,width+1,height)
+					ctx.fill()
+				}
+			}
+		},
+		
+		// Get property at coordinates
+		getprop:function(pos,p){
+			// Get tile indices
+			var j=level.x2j(pos[0])
+			var i=level.y2i(pos[1])
+			
+			// Check if coords are inside level data
+			if(i>=0 && j>=0 && i<level.data.length && j<level.data[0].length){
+				var tileindex=level.data[i][j]	// Fetch tiletype index
+				return tileset[tileindex][p]		// Return property
+			}
+		},
+		
+		// Collision check
+		colcheck:function(entity,pts){
+			
+			var collision=[];
+			
+			for(var n=0;n<pts.length;n++){		// Loop over collision points
+				var pos = [entity.x+pts[n][0],entity.y+pts[n][1]];
+				if(this.getprop(pos,1)!=0){					// Check solidness of tiletype
+					collision[n]=true;							// If solidness!=0, there is a collision
+				}else{
+					collision[n]=false;
+				}
+			}
+			
+			return collision;
+		},
+		
+		// Collision Detection with Level
+		colcorrect:function(entity){
+			
+			// get points of current and previous gametick
+			var p1=[entity.x-entity.vx,entity.y-entity.vy];
+			var p2=[entity.x,entity.y];
+			
+			gamelog.num[0]=0;
+			gamelog.numstr[0]='colits: '
+			
+			// converge to collision edge
+			for(var i=0;manhatten(p1,p2)>colprecision && i<10;i++){		// Converge until satisfactory. No more than 10 convergence iterations
+				var p3=midpoint(p1,p2);
+				entity.x=p3[0];
+				entity.y=p3[1];
+				var col=this.colcheck(entity,entity.colpts);
+				if(arrayOR(col)){
+					p2=p3;
+				}else{
+					p1=p3;
+				}
+				
+				gamelog.num[0]++;
+				
+			}
+			
+			return p1;
+		}
+	}
+	
+	
+	//------------------------------------------------------
+	
+	var width = 17;
+	var height = 60;
+	var player = {
+		type: 'player',
+		
+		// Initial Spatial Properties
+		x	:355, 						// x position of player (lvl coords) //// x,y should be retrieved from level
+		y	:120,							// y position of player (lvl coords)
+		vx	:4,
+		vy	:-4,
+		xview:0,
+		yview:0,
+		
+		color: 'yellow',
+		
+		// Physical Properties
+		fall_factor:1.4,
+		air_drag_factor:1.3,			// Air drag x-direction
+		ground_drag_factor:1.6,		//// MIGHT ADD MATERIAL SPECIFIC DRAG
+		
+		// Collision Properties
+		//  Important note: In order for
+		//  the collision detection/correction to work
+		//  correctly, the side points (top, bottom,
+		//  left & right) should be next to, but not
+		//  on the collision points. This has to do with
+		//  The way position is corrected after collision.
+
+		// Collision points: will be used for collision detection/correction
+		colpts:[[0,0],[0,height],[width,0],[width,height],[0,width],[width,width]],
+		// Bottom points: for ground checking
+		bottompts:[[0,height+1],[width,height+1]],
+		// Left points: for left wall checking
+		leftpts:[[-1,0],[-1,width],[-1,height]],
+		// Right points: for right wall checking
+		rightpts:[[width+1,0],[width+1,width],[width+1,height]],
+		toppts:[[0,-1],[width,-1]], // Top points: for ceiling checking
+		
+		// 20% more awesome
+		groundacc:2,
+		airacc:1.0,						// Acceleration in air in x-direction
+		jumpspeed:12,
+		
+		
+		// State Variables
+		onground:false,
+		
+		// Draw Player
+		draw:function(){
+			if (this.onground==false){
+				if (this.vx> 0.01){
+					this.dir = 'right';
+					this.sprite.changeAnim(4);
+				}
+				if (this.vx<-0.01){
+					this.dir = 'left';
+					this.sprite.changeAnim(5);
+			}}
+			else {
+				if (this.vx> 0.01){
+					this.dir = 'right';
+					this.sprite.changeAnim(2);
+				}
+				if (this.vx<-0.01){
+					this.dir = 'left';
+					this.sprite.changeAnim(3);
+				}
+				if (Math.abs(this.vx)<0.01){
+					if (this.dir=='right'){this.sprite.changeAnim(0);}
+					if (this.dir=='left'){this.sprite.changeAnim(1);}
+				}
+			}
+			if(Math.abs(this.vx)>0.5){
+				this.sprite.update();
+			}
+			this.sprite.render(this.xview,this.yview);
+		},
+		
+		// such movement, many physics
+		movement:function(){
+			basicmovement(this);
+		},
+		
+		do_ai:function(){}
+	}
+	
+	
+	//-------------------------------------------------------
+	
+	var spd = 7;
+	var options = {images:[
+			images.test1_standing_right,
+			images.test1_standing_left,
+			images.test1_running_right,
+			images.test1_running_left,
+			images.test1_jumping_right,
+			images.test1_jumping_left
+		], speed: [spd,spd,spd,spd,spd], stdSpriteIndex:0
+	};
+	player = animation(player,options);
+	var entities = [player];
+	
+	
+	// Define Simulation Loop
+	var gameloop = setInterval(function() {
+		gametick();
+	}, 1000/viewport.goalFPS);
+	
+	// Define Canvas
+	document.write("<canvas id='spacetime' width=",viewport.width," height=",viewport.height," style='border:1px solid #aaaaaa;'></canvas>");
+	var ctx = $("#spacetime").get(0).getContext("2d");
+	
+	// Create Game Log object
+	var gamelog=createGameLog(ctx);
+	gamelog.toggle(); // Turn off gamelog
+	
+</script>
+
+<!-- MOET NOG DYNAMISCH WORDEN GELADEN! -->
+<script src='tiles/simpletiles.js'></script>
+<script src='lvl/randlvltest.js'></script>
+
+<span id=extraspace></span>
+
+</font></center>
+</body>
+
+</html>
+
+
+
+
+
