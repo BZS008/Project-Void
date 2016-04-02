@@ -1,4 +1,4 @@
-Attack System notes:
+# Attack System notes:
 I will add an attack system with multiple types of attacks. Attacks will have certain properties that define what kind of attack it will be. The damage dealt is instant
 
 I will describe the properies in either of the following formats:
