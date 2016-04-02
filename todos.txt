@@ -1,6 +1,5 @@
 - Entity System
-  - Dying
-(HP 'n such)
+  - Dying (HP 'n such)
   - AI
 - WIP
 
