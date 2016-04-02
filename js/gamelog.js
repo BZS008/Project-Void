@@ -210,7 +210,7 @@ function createGameLog(ctx){
 				this.fps_timestamp = newtimestamp;
 				ctx.font='11pt Lucida Console';
 				ctx.fillStyle='#0ff';
-				ctx.fillText(fps.toPrecision(3)+' FPS',10,20); //////////////// FPS is wrong???
+				ctx.fillText(fps.toPrecision(2)+' FPS',30,20); //////////////// FPS is wrong??? Nope, wrong x-pos.
 				
 				// Draw graph rectangle
 				ctx.beginPath()
