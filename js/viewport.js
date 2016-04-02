@@ -1,4 +1,7 @@
 // Viewport object
+
+"use strict";
+
 var viewport = {
 	x:0,							                        // x position of viewport (lvl coords)
 	y:0,										            // y position of viewport (lvl coords)
