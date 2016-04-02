@@ -1,26 +1,28 @@
 # To do's
 
-- Entity System
-  - Dying (HP 'n such)
-  - AI
-- WIP
+## Programming Tasks
 
-- Attack/Ability System
-  - Key Binding System
-  - Ability Selection System
-  - Several attacks
+- [ ] Entity System
+ - [ ] Dying (HP 'n such)
+ - [ ] AI *WIP*
 
-- Physics Engine
-  - Force Fields
-  - water physics (still water & particle water exchange)
+- [ ] Attack/Ability System
+ - [ ] Key Binding System
+ - [ ] Ability Selection System
+ - [ ] Several attacks
+ - [ ] Attack object structure *WIP*
 
-- Visual Fancyness
-  - Parallax
-  - Particle System
-  - Normalmap lighting
-  - Glare
-  - God Rays
+- [ ] Physics Engine
+ - [ ] Force Fields
+ - [ ] water physics (still water & particle water exchange)
 
-- Sound
+- [ ] Visual Fancyness
+ - [ ] Parallax
+ - [ ] Particle System
+ - [ ] Normalmap lighting
+ - [ ] Glare
+ - [ ] God Rays
 
-- Decent documentation
+- [ ] Sound
+
+- [ ] Decent documentation
