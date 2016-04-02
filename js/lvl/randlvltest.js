@@ -13,7 +13,7 @@ level.width = nxtiles*level.tilewidth;
 level.height = nytiles*level.tileheight;
 
 // Tileset
-level.tileset="tiles/simpletiles.js";
+level.tileset="js/tiles/simpletiles.js";
 
 // Generate random coefficients and frequencies
 var freq1 = (0.5+Math.random())/40;
