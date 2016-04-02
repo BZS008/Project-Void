@@ -3,7 +3,7 @@
 //-------------------------//
 //
 // An object to store and show info on canvas realtime.
-// Creator: Daniël Cox
+// Creator: Daniï¿½l Cox
 //-------------------------
 // Input: canvas context
 //
