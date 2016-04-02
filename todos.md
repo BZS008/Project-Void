@@ -26,3 +26,5 @@
 - [ ] Sound
 
 - [ ] Decent documentation
+
+- [ ] Histogram, for funzies
