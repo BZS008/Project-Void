@@ -19,8 +19,8 @@ var attacks = {
 			for(var eid=0; eid<nents; eid++){ 	// Loop over all entities
 				var ent = entities[eid];		// Retrieve entity
 				if(ent.x>x1 && ent.x<x2){
-					var damage = attack.basedamage * /////
-					entities[eid].hp - /////
+					var damage = attack.basedamage * (1-(ent.x-entity.x)/hwidth)/////
+					entities[eid].hp -= damage; /////
 				}
 			}
 		}else{
