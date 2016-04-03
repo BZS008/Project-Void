@@ -16,21 +16,28 @@
 // - circ (default 4x undefined)
 //    Booleans. Reset after drawing the gamelog.
 //    Red/green/grey. Use blink(n) to quickly set to true.
+//	  Usage: gamelog.circ[#] = boolean
 // - sqr (default 4x undefined)
 //    Booleans. Won't be reset. Red/green/grey.
+//	  Usage: gamelog.sqr[#] = boolean
 // - num
 //    Number. Yellow.
+//	  Usage: gamelog.num[#] = number
 //    Hint: use gamelog.num[i]++ for quick increment.
 // - numstr
 //    Strings. Yellow.
 //    Will be put in front of corresponding numbers. Left out if undefined.
+//	  Usage: gamelog.numstr[#] = string
 // - text
 //    Strings. White text.
+//	  Usage: gamelog.text[#] = string
 // - markers
 //    Integer array of length 2. Use to mark a location in the canvas.
+//	  Usage: gamelog.mark[#] = [x,y]
 // - markercolors
 //    Strings. Use to change context fillStyle color of marker.
-//    Undefined and false give red. True give green. String is used as fillStyle.
+//    Undefined and false give red. True gives green. String is used as fillStyle.
+//	  Usage: gamelog.markcolor[#] = undefined|boolean|string
 // - graph
 //    Number array.
 //    All graphs will be plotted in the graph rectangle.
@@ -107,12 +114,12 @@ function createGameLog(ctx){
 			if(arguments.length<5){			// If no min and max values are given, set to default
 				var vmin=-10; var vmax=10;
 			}
-			if(this.graph[g]===undefined){							// If graph doesn't exist yet, create it
+			if(this.graph[g]===undefined){								// If graph doesn't exist yet, create it
 				this.graph[g]=[];
 			}
 			var y=(vmax-v)*this.graphheight/(vmax-vmin)+this.graphy;	// Calculate 
 			this.graph[g].push(y);										// Add new value
-			if(this.graph[g].length>this.graphsamples){			// If number of graph samples is reached
+			if(this.graph[g].length>this.graphsamples){					// If number of graph samples is reached
 				this.graph[g].shift();									// Cut off first value of array
 			}
 		},
@@ -127,7 +134,7 @@ function createGameLog(ctx){
 			ctx.fill()
 			ctx.stroke()
 			
-			if(prop!==undefined){										// Draw numbers on defined circle vars
+			if(prop!==undefined){								// Draw numbers on defined circle vars
 				ctx.font='9pt Lucida Console'
 				ctx.fillStyle='white'
 				ctx.textAlign='center'
@@ -145,7 +152,7 @@ function createGameLog(ctx){
 			ctx.fill()
 			ctx.stroke()
 			
-			if(prop!==undefined){										// Draw numbers on defined circle vars
+			if(prop!==undefined){								// Draw numbers on defined circle vars
 				ctx.font='9pt Lucida Console'
 				ctx.fillStyle='white'
 				ctx.textAlign='center'
@@ -159,15 +166,15 @@ function createGameLog(ctx){
 			ctx.beginPath()
 			ctx.strokeStyle=style
 			var graphlength = graph.length
-			for(var i=0;i<graphlength;i++){							// Loop over graph samples
-				var x=1+this.graphx+i*dx;									// Calculate x value
-				var y=graph[i];											// Get y value
-				if(y<this.graphy+2){										// Saturation at top
+			for(var i=0;i<graphlength;i++){						// Loop over graph samples
+				var x=1+this.graphx+i*dx;						// Calculate x value
+				var y=graph[i];									// Get y value
+				if(y<this.graphy+2){							// Saturation at top
 					y=this.graphy+2;
 				}else if(y>this.graphy+this.graphheight-2){		// Saturation at bottom
 					y=this.graphy+this.graphheight-2;
 				}
-				ctx.lineTo(x,y)											// Draw line segment
+				ctx.lineTo(x,y)									// Draw line segment
 			}
 			ctx.stroke()
 		},
@@ -175,25 +182,25 @@ function createGameLog(ctx){
 		
 		// Draw all elements of the gamelog
 		draw:function(){
-			if(this.show){													// Draw gamelog if show==true
+			if(this.show){											// Draw gamelog if show==true
 			
 				// Draw markers
-				for(var i=0;i<this.mark.length;i++){				// Loop over markers
-					if(this.mark[i]!==undefined){						// If the marker is defined
-						ctx.beginPath()
-						ctx.lineWidth=1.6
-						ctx.arc(this.mark[i][0],this.mark[i][1],5,0,Math.PI*2)	// Draw circle as mark around the coords
+				for(var i=0;i<this.mark.length;i++){	        	// Loop over markers
+					if(this.mark[i]!==undefined){		        	// If the marker is defined
+						ctx.beginPath();
+						ctx.lineWidth=1.6;
+						ctx.arc(this.mark[i][0],this.mark[i][1],5,0,Math.PI*2);	// Draw circle as mark around the coords
 						
-						if(typeof(this.markcolor[i])==="string"){						// The markcolor is a string
-							ctx.strokeStyle = this.markcolor[i]							// The markcolor is used as strokeStyle
+						if(typeof(this.markcolor[i])==="string"){	// The markcolor is a string
+							ctx.strokeStyle = this.markcolor[i];	// The markcolor is used as strokeStyle
 						}else{
 							if(this.markcolor[i]===undefined || this.markcolor[i]===false){
-								ctx.strokeStyle='red'
-							}else if(this.markcolor[i]===true){							// The markcolor===true
-								ctx.strokeStyle='green'
+								ctx.strokeStyle='red';
+							}else if(this.markcolor[i]===true){		// The markcolor===true
+								ctx.strokeStyle='green';
 							}
 						}
-						ctx.stroke()
+						ctx.stroke();
 					}
 				}
 				
@@ -206,7 +213,7 @@ function createGameLog(ctx){
 				// Draw FPS
 				var newtimestamp = new Date().getTime();
 				var fps = 1000/(newtimestamp-this.fps_timestamp);
-				this.fps = fps;																	// Update FPS variable
+				this.fps = fps;										// Update FPS variable
 				this.fps_timestamp = newtimestamp;
 				ctx.font='11pt Lucida Console';
 				ctx.fillStyle='#0ff';

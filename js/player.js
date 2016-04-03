@@ -5,8 +5,8 @@ var player = {
 	type: 'player',
 	
 	// Initial Spatial Properties
-	x	:355, 						// x position of player (lvl coords) //// x,y should be retrieved from level
-	y	:120,							// y position of player (lvl coords)
+	x	:355, 		            // x position of player (lvl coords) ...x,y should be retrieved from level
+	y	:120,		            // y position of player (lvl coords)
 	vx	:4,
 	vy	:-4,
 	xview:0,
@@ -14,9 +14,14 @@ var player = {
 	
 	color: 'yellow',
 	
+	// Life/Attack variables
+	hp: 100,
+	cooldown: 0, 				// Timer of cooldown. (When reached zero, player can do another attack)
+	
+	
 	// Physical Properties
 	fall_factor:1.4,
-	air_drag_factor:1.3,			// Air drag x-direction
+	air_drag_factor:1.3,		// Air drag x-direction
 	ground_drag_factor:1.6,		//// MIGHT ADD MATERIAL SPECIFIC DRAG
 	
 	// Collision Properties
@@ -36,6 +41,8 @@ var player = {
 	// Right points: for right wall checking
 	rightpts:[[width+1,0],[width+1,width],[width+1,height]],
 	toppts:[[0,-1],[width,-1]], // Top points: for ceiling checking
+	
+	//// x-center of entities should corrospond to x-coordinate, aka without offset
 	
 	// 20% more awesome
 	groundacc:2,
@@ -82,7 +89,11 @@ var player = {
 		basicmovement(this);
 	},
 	
-	do_ai:function(){}
+	do_ai:function(){
+		if(this.cooldown>0){
+			this.cooldown--;	// Count down the cooldown timer for attacks
+		}
+	}
 }
 
 

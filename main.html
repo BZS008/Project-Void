@@ -11,8 +11,12 @@
 	<script src='js/animation.js'></script>
 	<script src='loadImages.js'></script>
 	<script src='js/entitytypes.js'></script>
+	
 	<script src='js/ai/ai.js'></script>
 	<script src='js/ai/neutral1.js'></script>
+	
+	<script src='js/attack/attack.js'></script>
+	<script src='js/attack/LinArDam.js'></script>
 	
 	<script src='js/initializations.js'></script>
 	<script src='js/viewport.js'></script>
@@ -40,6 +44,12 @@
 		var nents = entities.length;
 		for(var i=nents-1;i>-1;i--){
 			entities[i].do_ai();
+			
+			//// If hp goes to zero, entity disappears
+			if(entities[i].hp<=0){
+				entities.splice(i,1);
+			} ///// dying should be done someplace else, + we need dying animation
+			
 			entities[i].movement();
 			entities[i].draw();
 			
@@ -55,7 +65,7 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length<500){spawn('enemy1',player.x,0)}
+		if(entities.length<500){var eid=spawn('enemy1',player.x,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1}
 	}
 	
 	

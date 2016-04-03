@@ -18,14 +18,17 @@ entitytypes.enemy1 = function(x,y,id){
 	this.ai_init = 'neutral1';
 	this.id = id;
 	// Initial Spatial Properties
-	this.x = x;									// x position of entity (lvl coords)
-	this.y = y;									// y position of entity (lvl coords)
+	this.x = x;					// x position of entity (lvl coords)
+	this.y = y;					// y position of entity (lvl coords)
 	this.vx = 0;
 	this.vy = 0;
 	this.lastvx = 0;
 	this.lastvy = 0;
 	this.xview = 0;
 	this.yview = 0;
+	
+	this.hp = 30;
+	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	
 	// List of all dango's - choose a random one
 	var dangos = [[images.dango_blue_walkleft,images.dango_blue_walkright],[images.dango_yellow_walkleft,images.dango_yellow_walkright],[images.dango_red_walkleft,images.dango_red_walkright],[images.dango_orange_walkleft,images.dango_orange_walkright],[images.dango_lilac_walkleft,images.dango_lilac_walkright],[images.dango_green_walkleft,images.dango_green_walkright]];
@@ -91,7 +94,12 @@ entitytypes.enemy1 = function(x,y,id){
 		basicmovement(this);
 	};
 	
+	// Call AI module and do a few other things
 	this.do_ai = function(){
 		ai.act(this);
+		
+		if(this.cooldown>0){
+			this.cooldown--;	// Count down the cooldown timer for attacks
+		}
 	}
 }
