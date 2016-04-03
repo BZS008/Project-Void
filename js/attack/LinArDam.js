@@ -8,7 +8,7 @@ attacks.LinArDam = {
 	falloff: linear,
 	damage: 80,
 	type: direct,
-	effects: [],
-	cooldown: 300
+	effects: ['fire'],
+	cooldown: 30
 };
 
