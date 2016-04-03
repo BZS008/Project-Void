@@ -4,11 +4,11 @@
 
 attacks.LinArDam = {
 	fof: 'area',
-	hwidth: 60,
+	hwidth: 100,
 	hheight: 30,
-	falloff: linear,
+	falloff: 'linear',
 	basedamage: 80,
-	type: direct,
+	type: 'direct',
 	effects: ['fire'],
 	cooldown: 30
 };

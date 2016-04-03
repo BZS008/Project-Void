@@ -13,13 +13,13 @@ var attacks = {
 		
 		if(attack.fof=='area'){
 			var x1 = entity.x - attack.hwidth;
-			var x2 = enitty.x + attack.hwidth;
+			var x2 = entity.x + attack.hwidth;
 			
 			var nents = entities.length;        // Get number of entities
 			for(var eid=0; eid<nents; eid++){ 	// Loop over all entities
 				var ent = entities[eid];		// Retrieve entity
-				if(ent.x>x1 && ent.x<x2){
-					var damage = attack.basedamage * (1-(ent.x-entity.x)/hwidth)/////
+				if(ent.x>x1 && ent.x<x2 && ent.y>y1 && ent.y<y2 && ent!==entity){
+					var damage = attack.basedamage * (1-(ent.x-entity.x)/attack.hwidth)/////
 					entities[eid].hp -= damage; /////
 				}
 			}

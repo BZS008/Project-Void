@@ -28,7 +28,7 @@ function keyinput(){
 	
 	// space (attack)
 	if(keydown.space && player.cooldown==0){
-		attacks.act(player);
+		attacks.act(player,'LinArDam');
 	}
 }
 
