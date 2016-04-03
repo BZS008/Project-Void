@@ -4,11 +4,13 @@
 
 attacks.LinArDam = {
 	fof: 'area',
-	size: 120,
+	hwidth: 60,
+	hheight: 30,
 	falloff: linear,
-	damage: 80,
+	basedamage: 80,
 	type: direct,
 	effects: ['fire'],
 	cooldown: 30
 };
 
+//// Possible feature: custom attack properties per entity, making modifiers like potions easier...
