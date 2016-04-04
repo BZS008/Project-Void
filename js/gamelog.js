@@ -41,6 +41,10 @@
 // - graph
 //    Number array.
 //    All graphs will be plotted in the graph rectangle.
+// - hist
+//    Object array.
+//    Each object contains info for plotting a histogram. These won't be reset at the end of the tick.
+//    Usage: gamelog.hist.push({oblist:object array, prop:string, min:number, max:number})
 //
 // Functions:
 // - blink(n)
@@ -81,6 +85,7 @@ function createGameLog(ctx){
 		markcolor:[],
 		graph:[],
 		graphstr:[],
+		hist:[],
 		
 		// Quick true assignment for ticks
 		blink:function(n){this.circ[n]=true},
@@ -204,10 +209,12 @@ function createGameLog(ctx){
 					}
 				}
 				
+				var nhist = this.hist.length; // Get number of histograms
+				
 				// Draw dark rectangle
 				ctx.beginPath();
 				ctx.fillStyle='rgba(0,0,0,0.6)';
-				ctx.rect(0,0,this.logwidth,this.graphheight+95+(this.num.length+this.text.length)*20);
+				ctx.rect(0,0,this.logwidth,((this.graphheight+10)*nhist)+this.graphheight+95+(this.num.length+this.text.length)*20);
 				ctx.fill();
 				
 				// Draw FPS
@@ -269,18 +276,28 @@ function createGameLog(ctx){
 					}
 				}
 				
+				// Draw histogram rectangle
+				for(var h=0;h<nhist;h++){
+					ctx.beginPath();
+					ctx.strokeStyle='#555';
+					ctx.fillStyle='#000';
+					ctx.rect(this.graphx,this.graphheight+this.graphy+10,this.graphwidth,this.graphheight);
+					ctx.fill();
+					ctx.stroke();
+				}
+				
 				// Draw booleans
-				ctx.strokeStyle='black'
-				ctx.lineWidth=2
+				ctx.strokeStyle='black';
+				ctx.lineWidth=2;
 				
 				// Boolean Circles (on frame resetting)
 				for(var i=0;i<this.circ.length;i++){
-					this.drawCircle(15+i*20,this.graphheight+50,this.circ[i],i)
+					this.drawCircle(15+i*20,((this.graphheight+10)*nhist)+this.graphheight+50,this.circ[i],i);
 				}
 				
 				// Boolean Squares (not on frame resetting)
 				for(var i=0;i<this.sqr.length;i++){
-					this.drawSquare(5+i*20,this.graphheight+65,this.sqr[i],i)
+					this.drawSquare(5+i*20,((this.graphheight+10)*nhist)+this.graphheight+65,this.sqr[i],i);
 				}
 				
 				// Draw num
@@ -307,7 +324,7 @@ function createGameLog(ctx){
 					}else{
 						var snumstr = this.numstr[i]
 					}
-					ctx.fillText(snumstr+snum,10,this.graphheight+105+i*18)
+					ctx.fillText(snumstr+snum,10,((this.graphheight+10)*nhist)+this.graphheight+105+i*18)
 				}
 				
 				// Draw text
@@ -315,7 +332,7 @@ function createGameLog(ctx){
 					ctx.textAlign='left'
 					if(this.text[i]==undefined){ctx.fillStyle='grey'}
 					else{ctx.fillStyle='white'}
-					ctx.fillText(this.text[i],10,this.graphheight+110+(this.num.length+i)*18)
+					ctx.fillText(this.text[i],10,((this.graphheight+10)*nhist)+this.graphheight+110+(this.num.length+i)*18)
 				}
 				
 				// Reset circ

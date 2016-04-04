@@ -80,7 +80,15 @@
 	
 	// Create Game Log object
 	var gamelog=createGameLog(ctx);
-	gamelog.toggle(); // Turn off gamelog
+	//// gamelog.toggle(); // Turn off gamelog
+	
+	//// Show histogram of entity x coordinates
+	gamelog.hist.push({
+		oblist: entities,
+		prop: 'x',
+		min: 0,
+		max: level.width
+	});
 	
 </script>
 
