@@ -69,11 +69,12 @@
 				oblist: entities,
 				prop: 'y',
 				min: 0,
-				max: 'auto'
+				max: level.height
 			};
 		}
 		
 		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
+		gamelog.updateGraph(1,entities.length,'number of entities',0,500)
 		
 		gamelog.draw();
 		viewport.frametimer();
