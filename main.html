@@ -56,6 +56,21 @@
 			///// Gamelog /////
 			gamelog.textmark(i,entities[i].xview,entities[i].yview)
 			///////////////////
+			
+			//// Show histogram of entity x coordinates
+			gamelog.hist[0]={
+				oblist: entities,
+				prop: 'x',
+				min: 0,
+				max: level.width
+			};
+			
+			gamelog.hist[1]={
+				oblist: entities,
+				prop: 'y',
+				min: 0,
+				max: 'auto'
+			};
 		}
 		
 		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
@@ -81,14 +96,6 @@
 	// Create Game Log object
 	var gamelog=createGameLog(ctx);
 	//// gamelog.toggle(); // Turn off gamelog
-	
-	//// Show histogram of entity x coordinates
-	gamelog.hist.push({
-		oblist: entities,
-		prop: 'x',
-		min: 0,
-		max: level.width
-	});
 	
 </script>
 

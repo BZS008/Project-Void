@@ -43,8 +43,9 @@
 //    All graphs will be plotted in the graph rectangle.
 // - hist
 //    Object array.
-//    Each object contains info for plotting a histogram. These won't be reset at the end of the tick.
+//    Each object contains info for plotting a histogram.
 //    Usage: gamelog.hist.push({oblist:object array, prop:string, min:number, max:number})
+//    max can also take the string 'auto', to automatically choose the maximum of the given set.
 //
 // Functions:
 // - blink(n)
@@ -73,8 +74,10 @@ function createGameLog(ctx){
 		graphxarray:[],
 		graphsamples:120,
 		graphcolors:['#f11','#0ff','#0f0','#ff0','#f0f','#f80','#fff','#888','#00f'],
-		graphwidth:280,
-		graphheight:120,
+		graphwidth:280,	            // Width of graph/histogram
+		graphheight:120,	        // Height of graph/histogram
+		
+		nhistbins:25,				// Number of histogram bins
 		
 		// circ, sqr, num, mark and graph
 		circ:[undefined,undefined,undefined,undefined],
@@ -113,16 +116,17 @@ function createGameLog(ctx){
 		
 		// Add new value to graph
 		updateGraph:function(g,v,gstr,vmin,vmax){
-			if(arguments.length>2){			// If no graph string is set, don't use
+			if(arguments.length>2){			                            // If no graph string is set, don't use
 				this.graphstr[g]=gstr;
 			}
-			if(arguments.length<5){			// If no min and max values are given, set to default
+			if(arguments.length<5){			                            // If no min and max values are given, set to default
 				var vmin=-10; var vmax=10;
 			}
 			if(this.graph[g]===undefined){								// If graph doesn't exist yet, create it
 				this.graph[g]=[];
 			}
-			var y=(vmax-v)*this.graphheight/(vmax-vmin)+this.graphy;	// Calculate 
+			
+			var y=(vmax-v)*this.graphheight/(vmax-vmin)+this.graphy;	// Calculate
 			this.graph[g].push(y);										// Add new value
 			if(this.graph[g].length>this.graphsamples){					// If number of graph samples is reached
 				this.graph[g].shift();									// Cut off first value of array
@@ -281,9 +285,62 @@ function createGameLog(ctx){
 					ctx.beginPath();
 					ctx.strokeStyle='#555';
 					ctx.fillStyle='#000';
-					ctx.rect(this.graphx,this.graphheight+this.graphy+10,this.graphwidth,this.graphheight);
+					var histy = (1+h)*(this.graphheight+10)+this.graphy;
+					ctx.rect(this.graphx,histy,this.graphwidth,this.graphheight);
 					ctx.fill();
 					ctx.stroke();
+					
+					// Gather values
+					var H = this.hist[h];					// Get current histogram object
+					var nobs = H.oblist.length;	   	        // Number of objects
+					var bins = [];	                        // Initialize bins
+					for(var b=0;b<this.nhistbins;b++){		// Loop over bins
+						bins[b] = 0;						// And fill it with zeros
+					}
+					
+					// Determine maximum
+					if(H.max==='auto'){
+						max = H.oblist[0][H.prop];	        // max starts at first item value
+						for(var i=1;i<nobs;i++){            // Loop over oblist
+							if(max<H.oblist[i][H.prop]){	// Determine maximum
+								max = H.oblist[i][H.prop];
+							}
+						}
+					}else{
+						max = H.max;		                // Set maximum
+					}
+					
+					var scope = max - H.min;	            // Calculate scope
+					
+					// Fill bins
+					for(var i=0;i<nobs;i++){                // Loop over oblist
+						var b = Math.floor(this.nhistbins * H.oblist[i][H.prop]/scope);
+						if(b<this.nhistbins && b>=0){	    // Exclude stuff outside scope
+							bins[b]++;                      // Add to bin
+						}
+					}
+					
+					// Determine maximum of bin
+					var bmax = 0;
+					for(var b=0;b<this.nhistbins;b++){	// Loop over bins
+						if(bmax<bins[b]){	// Find maximum
+							bmax = bins[b];
+						}
+					}
+					
+					// Draw histogram bars
+					for(var b=0;b<this.nhistbins;b++){
+						ctx.beginPath();
+						var style = this.graphcolors[this.graph.length+h%this.graphcolors.length];
+						ctx.fillStyle=style;
+						//ctx.rect(this.graphx+b/this.nhistbins, histy, this.graphwidth/this.nhistbins, bins[b]/bmax*this.graphheight);
+						var bx = this.graphx+b/this.nhistbins*this.graphwidth;
+						var by = histy+this.graphheight*(1-bins[b]/bmax);
+						var bw = this.graphwidth/this.nhistbins-1;
+						var bh = this.graphheight*bins[b]/bmax;
+						ctx.rect(bx,by,bw,bh);
+						ctx.fill();
+					}
 				}
 				
 				// Draw booleans
