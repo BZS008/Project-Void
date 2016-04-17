@@ -75,7 +75,8 @@
 		}
 		
 		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
-		gamelog.updateGraph(1,entities.length,'number of entities',0,500)
+		gamelog.updateGraph(1,entities.length,'number of entities',0,500);
+		gamelog.num[1] = player.cooldown;
 		
 		gamelog.draw();
 		viewport.frametimer();

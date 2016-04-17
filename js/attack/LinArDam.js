@@ -10,7 +10,7 @@ attacks.LinArDam = {
 	basedamage: 80,
 	type: 'direct',
 	effects: ['fire'],
-	cooldown: 30
+	cooldown: 45
 };
 
 //// Possible feature: custom attack properties per entity, making modifiers like potions easier...
