@@ -56,16 +56,32 @@
 			///// Gamelog /////
 			gamelog.textmark(i,entities[i].xview,entities[i].yview)
 			///////////////////
+			
+			//// Show histogram of entity x coordinates
+			gamelog.hist[0]={
+				oblist: entities,
+				prop: 'x',
+				min: 0,
+				max: level.width
+			};
+			
+			gamelog.hist[1]={
+				oblist: entities,
+				prop: 'y',
+				min: 0,
+				max: level.height
+			};
 		}
 		
 		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
+		gamelog.updateGraph(1,entities.length,'number of entities',0,500)
 		
 		gamelog.draw();
 		viewport.frametimer();
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length<500){var eid=spawn('enemy1',player.x,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1}
+		if(entities.length<400){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
 	}
 	
 	
@@ -80,7 +96,7 @@
 	
 	// Create Game Log object
 	var gamelog=createGameLog(ctx);
-	gamelog.toggle(); // Turn off gamelog
+	//// gamelog.toggle(); // Turn off gamelog
 	
 </script>
 
