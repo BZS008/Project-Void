@@ -3,9 +3,9 @@ function keyinput(){
 	// left arrow
 	if(keydown.left && !player.lefttouch){
 		if(player.onground){
-			player.vx-=player.groundacc
+			player.vx-=player.groundacc;
 		}else{
-			player.vx-=player.airacc
+			player.vx-=player.airacc;
 		}
 		
 	}
@@ -13,18 +13,22 @@ function keyinput(){
 	// right arrow
 	if(keydown.right && !player.righttouch){
 		if(player.onground){
-			player.vx+=player.groundacc
+			player.vx+=player.groundacc;
 		}else{
-			player.vx+=player.airacc
+			player.vx+=player.airacc;
 		}
 		
 	}
 	
 	// up arrow
 	if(keydown.up && player.onground){
-		player.vy=-player.jumpspeed
-		player.onground=false
-		
+		player.vy=-player.jumpspeed;
+		player.onground=false;
+	}
+	
+	// space (attack)
+	if(keydown.space && player.cooldown==0){
+		attacks.act(player,'LinArDam');
 	}
 }
 
