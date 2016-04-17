@@ -41,3 +41,6 @@ var attacks = {
 		}
 	}
 };
+
+// Matlab code for this graph:
+// x=-1:0.01:1;ylin=1-abs(x);ycon=ones(1,length(x));ygauss=exp(log(0.01)*x.^2);close all; hold on; plot(x,ylin,'LineWidth',2); plot(x,ycon,'LineWidth',2); plot(x,ygauss,'LineWidth',2); hold off;xlabel('x / half width');ylabel('damage / basedamage');title('Falloff types')
