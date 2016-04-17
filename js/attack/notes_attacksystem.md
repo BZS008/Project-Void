@@ -10,8 +10,8 @@ Size in pixels of the area in which damage is inflicted upon enemies.
 3. `Falloff: (none|linear|gauss)`
 Type of falloff, aka the reduction in damage as a function of distance. Linear will go to 0 at the FoF edge. With gauss, the value at the FoF edge will be 1% of peak damage.
 ![Falloff Graphs](falloff.png)
-Matlab code for this graph:
-`x=-1:0.01:1;ylin=1-abs(x);ycon=ones(1,length(x));ygauss=exp(log(0.01)*x.^2);close all; hold on; plot(x,ylin,'LineWidth',2); plot(x,ycon,'LineWidth',2); plot(x,ygauss,'LineWidth',2); hold off;xlabel('x / half width');ylabel('damage / basedamage');title('Falloff types')`
+<> Matlab code for this graph:
+<> x=-1:0.01:1;ylin=1-abs(x);ycon=ones(1,length(x));ygauss=exp(log(0.01)*x.^2);close all; hold on; plot(x,ylin,'LineWidth',2); plot(x,ycon,'LineWidth',2); plot(x,ygauss,'LineWidth',2); hold off;xlabel('x / half width');ylabel('damage / basedamage');title('Falloff types')
 
 4. `Damage: number`
 Amount of damage at peak.
