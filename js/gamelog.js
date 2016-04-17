@@ -341,6 +341,17 @@ function createGameLog(ctx){
 						ctx.rect(bx,by,bw,bh);
 						ctx.fill();
 					}
+					
+					// Draw histogram text (and text rectangle)
+					ctx.textAlign='left';
+					ctx.font='11pt Lucida Console';
+					var strwidth=ctx.measureText(H.prop).width;
+					ctx.beginPath()
+					ctx.fillStyle='rgba(0,0,0,0.7)'
+					ctx.rect(this.graphx+1,histy+1,strwidth+10,20)
+					ctx.fill()
+					ctx.fillStyle='#fff';
+					ctx.fillText(H.prop,this.graphx+5,histy+15);
 				}
 				
 				// Draw booleans
@@ -377,11 +388,11 @@ function createGameLog(ctx){
 					
 					// Get string corresponding with num
 					if(this.numstr[i]==undefined){
-						var snumstr = ""
+						var snumstr = "";
 					}else{
-						var snumstr = this.numstr[i]
+						var snumstr = this.numstr[i];
 					}
-					ctx.fillText(snumstr+snum,10,((this.graphheight+10)*nhist)+this.graphheight+105+i*18)
+					ctx.fillText(snumstr+snum,10,((this.graphheight+10)*nhist)+this.graphheight+105+i*18);
 				}
 				
 				// Draw text
