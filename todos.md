@@ -27,4 +27,6 @@
 
 - [ ] Decent documentation
 
-- [ ] Histogram, for funzies
+- [x] Histogram, for funzies
+
+- [ ] Gamepad support
