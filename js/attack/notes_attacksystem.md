@@ -8,7 +8,7 @@ Specifies on what area the attack is projected. 'forward' will be an area direct
 Size in pixels of the area in which damage is inflicted upon enemies.
 
 3. `Falloff: (none|linear|gauss)`
-Type of falloff, aka the reduction in damage as a function of distance. Linear will go to 0 at the FoF edge. With gauss, the value at the FoF edge will be 1% of peak damage.
+Type of falloff, aka the reduction in damage as a function of distance. Linear will go to 0 at the FoF edge. With gauss, the value at the FoF edge will be 1% of peak damage. Equation for `gauss`: exp(-4.605x²) for x=1 as FoF edge.
 ![Falloff Graphs](falloff.png)
 
 4. `Damage: number`
