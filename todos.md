@@ -5,6 +5,9 @@
 - [ ] Entity System
  - [ ] Dying (HP 'n such)
  - [ ] AI *WIP*
+ 
+- [ ] Tileset as array of objects
+- [ ] Individual tile properties, such as water level, on fire, etc..
 
 - [ ] Attack/Ability System
  - [ ] Key Binding System
