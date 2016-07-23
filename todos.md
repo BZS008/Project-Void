@@ -6,8 +6,9 @@
  - [ ] Dying (HP 'n such)
  - [ ] AI *WIP*
  
-- [x] Tileset as array of objects
-- [ ] Individual tile properties, such as water level, on fire, etc..
+- [x] Working tile system (sort of 2D voxel engine)
+ - [x] Tileset as array of objects
+ - [ ] Individual tile properties, such as water level, on fire, etc..
 
 - [ ] Attack/Ability System
  - [ ] Key Binding System
