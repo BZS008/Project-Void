@@ -1,4 +1,6 @@
 // Level object
+"use strict";
+
 var level = {
 	
 	// Get Tile from coords
@@ -41,10 +43,10 @@ var level = {
 				var y = i2yl(i)
 				
 				// Draw Tile
-				ctx.beginPath()
-				ctx.fillStyle=color
-				ctx.rect(x-viewport.x+viewport.width/2,y-viewport.y,width+1,height)
-				ctx.fill()
+				ctx.beginPath();
+				ctx.fillStyle=color;
+				ctx.rect(x-viewport.x+viewport.width/2,y-viewport.y,width+1,height);
+				ctx.fill();
 			}
 		}
 	},
@@ -69,8 +71,8 @@ var level = {
 		
 		for(var n=0;n<pts.length;n++){		// Loop over collision points
 			var pos = [entity.x+pts[n][0],entity.y+pts[n][1]];
-			if(this.getprop(pos,1)!=0){					// Check solidness of tiletype
-				collision[n]=true;							// If solidness!=0, there is a collision
+			if(this.getprop(pos,'solid')!=0){		// Check solidness of tiletype
+				collision[n]=true;					// If solidness!=0, there is a collision
 			}else{
 				collision[n]=false;
 			}

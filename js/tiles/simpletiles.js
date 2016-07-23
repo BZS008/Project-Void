@@ -1,12 +1,13 @@
 // Tileset
+//
 // name: string
 // solid: 0 no collision, 1 solid, 2 water
 // color: string
 
 var tileset=[
-["air",	0,	"#6666FF"],		//0
-["rock",	1,	"#444444"], 	//1
-["earth",1,	"#5a4426"],		//2
-["sand",	1,	"#cc9944"]]		//3
-
-// USE OBJECTS WITH PROPERTIES INSTEAD!!
+	{name:'air',solid:0,color:'#6666FF'},
+	{name:'rock',solid:1,color:'#444444'},
+	{name:'earth',solid:1,color:'#5a4426'},
+	{name:'sand',solid:1,color:'#cc9944'},
+	{name:'water',solid:2,color:'#2222FF'}
+]
