@@ -6,7 +6,7 @@
  - [ ] Dying (HP 'n such)
  - [ ] AI *WIP*
  
-- [ ] Tileset as array of objects
+- [x] Tileset as array of objects
 - [ ] Individual tile properties, such as water level, on fire, etc..
 
 - [ ] Attack/Ability System
