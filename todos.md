@@ -8,7 +8,7 @@
  
 - [x] Working tile system (sort of 2D voxel engine)
  - [x] Tileset as array of objects
- - [ ] Individual tile properties, such as water level, on fire, etc..
+ - [x] Individual tile properties var, such as water level, on fire, etc..
 
 - [ ] Attack/Ability System
  - [ ] Key Binding System
@@ -18,7 +18,13 @@
 
 - [ ] Physics Engine
  - [ ] Force Fields
- - [ ] water physics (still water & particle water exchange)
+ - [ ] water physics
+  - [ ] water tile rendering
+  - [ ] water droplet rendering
+  - [ ] water tile streaming
+  - [ ] water tile waves
+  - [ ] water tile-droplet conversion
+  - [ ] water droplet physics
 
 - [ ] Visual Fancyness
  - [ ] Parallax
