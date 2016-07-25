@@ -18,13 +18,13 @@
 
 - [ ] Physics Engine
  - [ ] Force Fields
- - [ ] water physics
-   - [ ] water tile rendering
-   - [ ] water droplet rendering
-   - [ ] water tile streaming
-   - [ ] water tile waves
-   - [ ] water tile-droplet conversion
-   - [ ] water droplet physics
+ - [ ] water physics:
+  - [ ] water tile rendering
+  - [ ] water droplet rendering
+  - [ ] water tile streaming
+  - [ ] water tile waves
+  - [ ] water tile-droplet conversion
+  - [ ] water droplet physics
 
 - [ ] Visual Fancyness
  - [ ] Parallax
