@@ -51,8 +51,8 @@ var level = {
 		}
 	},
 	
-	// Get property at coordinates
-	getprop:function(pos,p){
+	// Get global property at coordinates
+	getglobprop:function(pos,p){
 		// Get tile indices
 		var j = xl2j(pos[0]);
 		var i = yl2i(pos[1]);
@@ -71,7 +71,7 @@ var level = {
 		
 		for(var n=0;n<pts.length;n++){		// Loop over collision points
 			var pos = [entity.x+pts[n][0],entity.y+pts[n][1]];
-			if(this.getprop(pos,'solid')!=0){		// Check solidness of tiletype
+			if(this.getglobprop(pos,'solid')!=0){	// Check solidness of tiletype
 				collision[n]=true;					// If solidness!=0, there is a collision
 			}else{
 				collision[n]=false;
@@ -108,5 +108,16 @@ var level = {
 		}
 		
 		return p1;
+	},
+	
+	// Tile Props initialisation function
+	init_tileprops:function(){
+		// Get level data size (number of tiles in each direction)
+		var nvert = this.data.length;
+		var nhori = this.data[0].length;
+		
+		// Create empty 2D array of same dimensions as level.data and add to level
+		var tileprops = new Array(nvert).fill(new Array(nhori));
+		this.tileprops = tileprops;
 	}
 }

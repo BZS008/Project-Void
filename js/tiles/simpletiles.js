@@ -5,9 +5,9 @@
 // color: string
 
 var tileset=[
-	{name:'air',solid:0,color:'#6666FF'},
-	{name:'rock',solid:1,color:'#444444'},
-	{name:'earth',solid:1,color:'#5a4426'},
-	{name:'sand',solid:1,color:'#cc9944'},
-	{name:'water',solid:2,color:'#2222FF'}
+	{name:'air',solid:0,color:'#6677FF'},	// 0
+	{name:'rock',solid:1,color:'#444444'},	// 1
+	{name:'earth',solid:1,color:'#554022'},	// 2
+	{name:'sand',solid:1,color:'#DDAA44'},	// 3
+	{name:'water',solid:2,color:'#2222FF'}	// 4
 ]

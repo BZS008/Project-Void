@@ -29,6 +29,8 @@ var amp4 = 0.10*heightmultiplier*Math.random();
 var amp5 = 0.09*heightmultiplier*Math.random();
 
 var rockearthratio = Math.random();
+var othergroundtile = 2;
+if(Math.random()<0.3){othergroundtile = 3;}
 
 // Generate Level Data
 level.data=[];
@@ -41,15 +43,21 @@ for(var i=0;i<nytiles;i++){
 		var airlandvalue = 0.7*i/nytiles + amp1*Math.sin(freq1*j) + amp2*Math.cos(freq2*j) + amp3*Math.sin(freq3*j) + amp4*Math.cos(freq4*j) + amp5*Math.sin(freq5*j);
 	
 		if(airlandvalue<0.5){
-			level.data[i][j] = 0;
+			// Insert air or the occasional water tile
+			var tiletype = 0;
+			if(Math.random()<0.02){tiletype=4;}
+			level.data[i][j] = tiletype;
 		}else{
+			// Insert rock or earth/sand tile
 			var tiletype = 1;
-			if(Math.random()>rockearthratio){tiletype=2;}
+			if(Math.random()>rockearthratio){tiletype=othergroundtile;}
 			level.data[i][j] = tiletype;
 		}
 	}
 }
 
+// Initialise local tile properties
+level.init_tileprops();
 
 // Spawn enemies
 for(var i=0;i<nenm;i++){
