@@ -17,14 +17,14 @@
  - [ ] Attack object structure *WIP*
 
 - [ ] Physics Engine
- - [ ] Force Fields
- - [ ] water physics:
-  - [ ] water tile rendering
-  - [ ] water droplet rendering
-  - [ ] water tile streaming
-  - [ ] water tile waves
-  - [ ] water tile-droplet conversion
-  - [ ] water droplet physics
+    - [ ] Force Fields
+    - [ ] water physics:
+        - [ ] water tile rendering
+        - [ ] water droplet rendering
+        - [ ] water tile streaming
+        - [ ] water tile waves
+        - [ ] water tile-droplet conversion
+        - [ ] water droplet physics
 
 - [ ] Visual Fancyness
  - [ ] Parallax
