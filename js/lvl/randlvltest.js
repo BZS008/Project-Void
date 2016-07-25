@@ -59,9 +59,4 @@ for(var i=0;i<nytiles;i++){
 // Initialise local tile properties
 level.init_tileprops();
 
-// Spawn enemies
-for(var i=0;i<nenm;i++){
-	var ent = spawn('enemy1',Math.random()*nxtiles*level.tilewidth,0);
-	entities[ent].color = randomcolor();
-}
 

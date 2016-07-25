@@ -9,5 +9,5 @@ var tileset=[
 	{name:'rock',solid:1,color:'#444444'},	// 1
 	{name:'earth',solid:1,color:'#554022'},	// 2
 	{name:'sand',solid:1,color:'#DDAA44'},	// 3
-	{name:'water',solid:2,color:'#2222FF'}	// 4
+	{name:'water',solid:2,color:'#2222FF',isliquid:true}	// 4
 ]

@@ -71,7 +71,7 @@ var level = {
 		
 		for(var n=0;n<pts.length;n++){		// Loop over collision points
 			var pos = [entity.x+pts[n][0],entity.y+pts[n][1]];
-			if(this.getglobprop(pos,'solid')!=0){	// Check solidness of tiletype
+			if(this.getglobprop(pos,'solid')==1){	// Check solidness of tiletype
 				collision[n]=true;					// If solidness!=0, there is a collision
 			}else{
 				collision[n]=false;
