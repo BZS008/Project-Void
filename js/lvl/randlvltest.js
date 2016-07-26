@@ -33,7 +33,7 @@ var othergroundtile = 2;
 if(Math.random()<0.3){othergroundtile = 3;}
 
 // Generate Level Data
-level.data=[];
+level.data = new Array(nytiles).fill(new Array(nxtiles));
 
 for(var i=0;i<nytiles;i++){
 	level.data[i] = [];

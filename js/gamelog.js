@@ -107,12 +107,21 @@ function createGameLog(ctx){
 			}
 		},
 		
-		textmark:function(s,x,y){
+		textmark:function(s,x,y,shadow){
 			if(this.show){
 				ctx.font='10pt Lucida Console';
 				ctx.fillStyle='white';
 				ctx.textAlign='center';
+				
+				// Add shadow if requested
+				if(arguments.length==4 && shadow===true){
+					ctx.shadowBlur=5;
+					ctx.shadowOffsetX=2;
+					ctx.shadowOffsetY=2;
+					ctx.shadowColor="black";
+				}
 				ctx.fillText(s.toString(),x,y)
+				ctx.shadowColor="transparent";
 			}
 		},
 		

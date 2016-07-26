@@ -74,9 +74,19 @@
 			};
 		}
 		
+		////// All sorts of gamelog stuff
 		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
-		gamelog.updateGraph(1,entities.length,'number of entities',0,500);
+		gamelog.updateGraph(1,entities.length,'number of entities',0,300);
 		gamelog.num[1] = player.cooldown;
+		
+		var mx = viewport.mousex;
+		var my = viewport.mousey;
+		var tid = level.data[level.yview2i(my)][level.xview2j(mx)];
+		if(tid!==undefined){
+			gamelog.textmark(tid + ': ' + tileset[tid].name,mx,my+40,true);
+			gamelog.textmark(tileset[tid].color,mx,my+60,true);
+		}
+		//////
 		
 		gamelog.draw();
 		viewport.frametimer();
@@ -93,8 +103,11 @@
 	
 	// Define Canvas
 	document.write("<canvas id='spacetime' width=",viewport.width," height=",viewport.height," style='border:1px solid #aaaaaa;'></canvas>");
-	var ctx = $("#spacetime").get(0).getContext("2d");
-	
+	var ctx = $("#spacetime").get(0).getContext("2d");	// Create context variable
+	$("#spacetime").mousemove('mousemove',function(event){
+		viewport.updatemousecoords($("#spacetime")[0],event)
+	});
+
 	// Create Game Log object
 	var gamelog=createGameLog(ctx);
 	//// gamelog.toggle(); // Turn off gamelog
