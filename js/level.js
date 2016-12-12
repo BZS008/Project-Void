@@ -31,22 +31,8 @@ var level = {
 		// Loop over tiles for drawing
 		for(var i=0;i<this.data.length;i++){
 			for(var j=jviewstart;j<jviewend;j++){
-				
-				// Gather tile info
-				var width = this.tilewidth;
-				var height = this.tileheight;
-				var tileindex = this.data[i][j];
-				var color = tileset[tileindex][2];
-				
-				// Calculate tile position
-				var x = j2xl(j)
-				var y = i2yl(i)
-				
-				// Draw Tile
-				ctx.beginPath();
-				ctx.fillStyle=color;
-				ctx.rect(x-viewport.x+viewport.width/2,y-viewport.y,width+1,height);
-				ctx.fill();
+				var tid = level.data[i][j]; // Get tile id
+				tileset[tid].draw(i,j); // Pass tile indices through to draw function for this tile
 			}
 		}
 	},

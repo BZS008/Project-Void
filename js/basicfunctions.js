@@ -61,7 +61,26 @@ function basicrectdraw(ent){
 	ctx.fill();
 }
 
+// Draws a tile as a colored rectangle
+function basictiledraw(i,j){
+	// Gather tile info
+	var width = level.tilewidth;
+	var height = level.tileheight;
+	var tid = level.data[i][j];			// Get tile id
+	var color = tileset[tid].color;
+	
+	// Calculate tile position
+	var x = level.j2x(j);
+	var y = level.i2y(i);
+	
+	// Draw Tile
+	ctx.beginPath();
+	ctx.fillStyle=color;
+	ctx.rect(x-viewport.x+viewport.width/2,y-viewport.y,width+1,height);
+	ctx.fill();
+}
 
+// Returns a random color (as canvas rgb() string)
 function randomcolor(){
 	var r = Math.round(50+150*Math.random());
 	var g = Math.round(50+150*Math.random());
