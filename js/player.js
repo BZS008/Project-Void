@@ -1,6 +1,6 @@
 // Define player object
-var width = 17;
-var height = 60;
+var width = 47;   // width of the bounding box
+var height = 60;  // height of the bounding box
 var player = {
 	type: 'player',
 	

@@ -87,12 +87,12 @@ function animation( obj, option ) {
   obj.sprite.changeAnim = function ( spriteIndex ){
     if ( spriteIndex < obj.sprite.images.length &&
 		spriteIndex!=obj.sprite.index )
-	{
+    {
       obj.sprite.index = spriteIndex;
       obj.sprite.images[spriteIndex].frameNumber = 0;  // counter frame nr during animation
       obj.sprite.images[spriteIndex].counter = 0;      // counts game ticks per anim frame
-   }
-   else if ( spriteIndex >= obj.sprite.images.length ){
+    }
+    else if ( spriteIndex >= obj.sprite.images.length ){
       console.log('Input "spriteIndex" exceeds obj.images.length-1.')
       return 1;
     }
