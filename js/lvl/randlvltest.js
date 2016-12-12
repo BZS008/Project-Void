@@ -45,8 +45,9 @@ for(var i=0;i<nytiles;i++){
 		if(airlandvalue<0.5){
 			// Insert air or the occasional water tile
 			var tiletype = 0;
-			if(Math.random()<0.02){tiletype=4;}
+			if(Math.random()<0.13){tiletype=4;} // Water tile
 			level.data[i][j] = tiletype;
+			
 		}else{
 			// Insert rock or earth/sand tile
 			var tiletype = 1;
@@ -58,5 +59,19 @@ for(var i=0;i<nytiles;i++){
 
 // Initialise local tile properties
 level.init_tileprops();
+
+// Scan level for water tiles
+for(var i=0;i<nytiles;i++){
+	for(var j=0;j<nxtiles;j++){
+		if(level.data[i][j]==4){
+			// If a water tile is found, set the water properties
+			// var waterheight = ;
+			level.tileprops[i][j] = {height:Math.random()};
+		}
+	}
+}
+
+
+
 
 
