@@ -56,8 +56,9 @@
 //    Draws the gamelog for you
 // - updateGraph(graphnumber, value [, min, max ])
 //    Add new value to graph.
-// - textmark(s,x,y)
+// - textmark(s,x,y,shadow)
 //    Draws text at specified location. s is object with .toString() method.
+//    Shadow is a boolean.
 //-------------------------
 
 
