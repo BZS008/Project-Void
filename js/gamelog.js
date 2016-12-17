@@ -67,6 +67,8 @@ function createGameLog(ctx){
 		precision:4,
 		fps_timestamp:0,
 		fps:0,
+		fpslist:new Array(100).fill(0),					// List of past calculated FPS
+		meanfps:0,
 		logwidth:300,
 		
 		graphx:10,
@@ -221,14 +223,22 @@ function createGameLog(ctx){
 				ctx.rect(0,0,this.logwidth,((this.graphheight+10)*nhist)+this.graphheight+95+(this.num.length+this.text.length)*20);
 				ctx.fill();
 				
-				// Draw FPS
+				// Calculate FPS
 				var newtimestamp = new Date().getTime();
 				var fps = 1000/(newtimestamp-this.fps_timestamp);
-				this.fps = fps;										// Update FPS variable
+				this.fps = fps;
+				this.fpslist.shift();										// Chop off first element
+				this.fpslist.push(fps);
 				this.fps_timestamp = newtimestamp;
+				
+				// Calculate mean FPS and standard deviation
+				this.meanfps = mean(this.fpslist);
+				this.stdfps = std(this.fpslist);
+				
+				// Draw FPS
 				ctx.font='11pt Lucida Console';
 				ctx.fillStyle='#0ff';
-				ctx.fillText(fps.toPrecision(2)+' FPS',30,20); //////////////// FPS is wrong??? Nope, wrong x-pos.
+				ctx.fillText(this.meanfps.toPrecision(3)+' FPS   \u03C3: '+this.stdfps.toPrecision(2)+' FPS',110,20);
 				
 				// Draw graph rectangle
 				ctx.beginPath()

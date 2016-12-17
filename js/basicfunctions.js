@@ -70,3 +70,35 @@ function randomcolor(){
 }
 
 
+// Compute the sum of a number array
+function sum(a){
+	var na = a.length;
+	var total = 0;
+	for(var i=0; i<na; i++){
+		total += a[i];
+	}
+	return total;
+}
+
+// Compute the mean value of a number array
+function mean(a){
+	return sum(a)/a.length;
+}
+
+// Compute the standard deviation of a number array
+function std(a){
+	var na = a.length;
+	var avg = mean(a);
+	var vartotal = 0;
+	for(var i=0; i<na; i++){
+		var diff = a[i] - avg;
+		vartotal += diff*diff;
+	}
+	return Math.sqrt(vartotal/na);
+}
+
+
+
+
+
+
