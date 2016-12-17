@@ -22,20 +22,6 @@ var viewport = {
 	},
 	
 	
-	// Coordinate conversion
-	
-	xlvl2view:function(x){									// Convert level x coord to viewport x coord
-		return x-this.x+this.width/2;
-	},
-	
-	ylvl2view:function(y){									// Convert level y coord to viewport y coord
-		return y-this.y;
-	},
-	
-	oblvl2view:function(ob){								// Convert level x&y object coords to viewport x&y coords
-		return [this.xlvl2view(ob.x),this.ylvl2view(ob.y)];
-	},
-	
 	frametimer:function(){
 		var newtimestamp = new Date().getTime();
 		this.dt = newtimestamp-this.dt_timestamp;
