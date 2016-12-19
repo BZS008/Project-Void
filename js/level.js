@@ -1,31 +1,6 @@
 // Level object
 var level = {
 	
-	// Level Coordinates <-> Tile Indices
-	x2j:function(x){
-		return parseInt(x/this.tilewidth)
-	},
-	
-	y2i:function(y){
-		return parseInt(y/this.tileheight)
-	},
-	
-	j2x:function(j){
-		return this.tilewidth*j
-	},
-	
-	i2y:function(i){
-		return this.tileheight*i
-	},
-	
-	xview2j:function(xview){
-		return parseInt((xview-viewport.width/2+viewport.x)/this.tilewidth)
-	},
-	
-	yview2i:function(yview){
-		return parseInt((yview+viewport.y)/this.tileheight)
-	},
-	
 	// Get Tile from coords
 	getTile:function(x,y){
 		
@@ -46,9 +21,9 @@ var level = {
 	draw:function(){
 		
 		// Determine start and end tile for drawing
-		var jviewstart = this.xview2j(0)
+		var jviewstart = xv2j(0)
 		if(jviewstart<0){jviewstart=0}
-		var jviewend = this.xview2j(viewport.width+this.tilewidth)
+		var jviewend = xv2j(viewport.width+this.tilewidth)
 		if(jviewend>this.data[0].length){jviewend=this.data[0].length}
 		
 		// Loop over tiles for drawing
@@ -56,14 +31,14 @@ var level = {
 			for(var j=jviewstart;j<jviewend;j++){
 				
 				// Gather tile info
-				var width=this.tilewidth
-				var height=this.tileheight
-				var tileindex=this.data[i][j]
-				var color=tileset[tileindex][2]
+				var width = this.tilewidth;
+				var height = this.tileheight;
+				var tileindex = this.data[i][j];
+				var color = tileset[tileindex][2];
 				
 				// Calculate tile position
-				var x=this.j2x(j)
-				var y=this.i2y(i)
+				var x = j2xl(j)
+				var y = i2yl(i)
 				
 				// Draw Tile
 				ctx.beginPath()
@@ -77,13 +52,13 @@ var level = {
 	// Get property at coordinates
 	getprop:function(pos,p){
 		// Get tile indices
-		var j=level.x2j(pos[0])
-		var i=level.y2i(pos[1])
+		var j = xl2j(pos[0]);
+		var i = yl2i(pos[1]);
 		
 		// Check if coords are inside level data
 		if(i>=0 && j>=0 && i<level.data.length && j<level.data[0].length){
-			var tileindex=level.data[i][j]	// Fetch tiletype index
-			return tileset[tileindex][p]		// Return property
+			var tileindex = level.data[i][j];	// Fetch tiletype index
+			return tileset[tileindex][p];		// Return property
 		}
 	},
 	

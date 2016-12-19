@@ -48,17 +48,17 @@ function basicmovement(entity){
 		entity.vy+=fall_acc*entity.fall_factor;
 	}
 	
-	entity.xview = viewport.xlvl2view(entity.x);
-	entity.yview = viewport.ylvl2view(entity.y);
+	entity.xview = xl2xv(entity.x);
+	entity.yview = yl2xv(entity.y);
 	
 }
 
 
-function basicrectdraw(entity){
+function basicrectdraw(ent){
 	ctx.beginPath();
-		ctx.fillStyle=entity.color;
-		ctx.rect(entity.xview,entity.yview,entity.width,entity.height);
-		ctx.fill();
+	ctx.fillStyle = ent.color;
+	ctx.rect(entity.xview, entity.yview, entity.width, entity.height);
+	ctx.fill();
 }
 
 
