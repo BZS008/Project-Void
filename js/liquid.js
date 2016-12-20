@@ -6,16 +6,20 @@ liquid = {
 		var width = level.tilewidth;
 		var height = level.tileheight;
 		var tid = level.data[i][j];			// Get tile id
+		var aircolor = tileset[0].color;
 		var liqcolor = tileset[tid].color;
+		var liqheight = level.tileprops[i][j].height;
 		
-		// Calculate tile position
-		var x = level.j2x(j);
-		var y = level.i2y(i);
+		// Draw air part
+		ctx.beginPath();
+		ctx.fillStyle = aircolor;
+		ctx.rect(j2xv(j), i2yv(i), width+1, height*(1-liqheight));
+		ctx.fill();
 		
-		// Draw Tile
+		// Draw water part
 		ctx.beginPath();
 		ctx.fillStyle = liqcolor;
-		ctx.rect(x-viewport.x+viewport.width/2,y-viewport.y,width+1,height);
+		ctx.rect(j2xv(j), i2yv(i+(1-liqheight)), width+1, height*level.tileprops[i][j].height);
 		ctx.fill();
 	}
 }

@@ -70,8 +70,8 @@ function basictiledraw(i,j){
 	var color = tileset[tid].color;
 	
 	// Calculate tile position
-	var x = level.j2x(j);
-	var y = level.i2y(i);
+	var x = j2xl(j);
+	var y = i2yl(i);
 	
 	// Draw Tile
 	ctx.beginPath();

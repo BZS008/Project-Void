@@ -82,8 +82,8 @@
 		
 		var mx = viewport.mousex;
 		var my = viewport.mousey;
-		var mi = level.yview2i(my);
-		var mj = level.xview2j(mx);
+		var mi = yv2i(my);
+		var mj = xv2j(mx);
 		var tid = level.data[mi][mj];
 		if(tid!==undefined){
 			gamelog.textmark(tid + ': ' + tileset[tid].name,mx,my+40,true);
