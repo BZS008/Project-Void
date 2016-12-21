@@ -66,7 +66,7 @@ for(var i=0;i<nytiles;i++){
 		if(level.data[i][j]==4){
 			// If a water tile is found, set the water properties
 			// var waterheight = ;
-			level.tileprops[i][j] = {height:Math.random()};
+			level.tileprops[i][j].height = Math.random();
 		}
 	}
 }

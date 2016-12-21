@@ -86,12 +86,13 @@
 		var mj = xv2j(mx);
 		var tid = level.data[mi][mj];
 		if(tid!==undefined){
-			gamelog.textmark(tid + ': ' + tileset[tid].name,mx,my+40,true);
-			gamelog.textmark(tileset[tid].color,mx,my+60,true);
+			gamelog.textmark('i:'+mi+', j:'+mj, mx, my+40, true);
+			gamelog.textmark(tid + ': ' + tileset[tid].name, mx, my+60, true);
+			gamelog.textmark(tileset[tid].color, mx, my+80, true);
 			
 			// Show water properties
 			if(tid==4){
-				gamelog.textmark("height: " + level.tileprops[mi][mj].height.toPrecision(3),mx,my+80,true);
+				gamelog.textmark("height: " + level.tileprops[mi][mj].height.toPrecision(3),mx,my+100,true);
 			}
 		}
 		//////

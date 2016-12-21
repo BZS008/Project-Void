@@ -19,7 +19,7 @@ liquid = {
 		// Draw water part
 		ctx.beginPath();
 		ctx.fillStyle = liqcolor;
-		ctx.rect(j2xv(j), i2yv(i+(1-liqheight)), width+1, height*level.tileprops[i][j].height);
+		ctx.rect(j2xv(j), i2yv(i+(1-liqheight)), width+1, height*liqheight);
 		ctx.fill();
 	}
 }

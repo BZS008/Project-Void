@@ -103,7 +103,6 @@ var level = {
 		var nhori = this.data[0].length;
 		
 		// Create empty 2D array of same dimensions as level.data and add to level
-		var tileprops = new Array(nvert).fill(new Array(nhori));
-		this.tileprops = tileprops;
+		this.tileprops = arrob2D(nvert, nhori);
 	}
 }

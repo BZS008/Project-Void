@@ -116,7 +116,29 @@ function std(a){
 	return Math.sqrt(vartotal/na);
 }
 
+// Create 2D empty object array of size ni x nj
+function arrob2D(ni, nj){
+	var a = [];
+	for(var i=0;i<ni;i++){
+		a[i] = [];
+		for(var j=0;j<nj;j++){
+			a[i][j] = {};
+		}
+	}
+	return a;
+}
 
+// Create 2D number array of size ni x nj
+function arrnum2D(ni, nj, num){
+	var a = [];
+	for(var i=0;i<ni;i++){
+		a[i] = [];
+		for(var j=0;j<nj;j++){
+			a[i][j] = num;
+		}
+	}
+	return a;
+}
 
 
 
