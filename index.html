@@ -42,6 +42,7 @@
 		viewport.clear();
 		keyinput();
 		level.draw();
+		liquid.flow();
 		
 		var nents = entities.length;
 		for(var i=nents-1;i>-1;i--){
@@ -102,13 +103,15 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length<100){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
+		if(entities.length<5){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
 	}
 	
 	// Define Simulation Loop
 	var gameloop = setInterval(function() {
 		gametick();
 	}, 1000/viewport.goalFPS);
+	
+	// setTimeout(function(){ clearInterval(gameloop); }, 300);
 	
 	// Define Canvas
 	document.write("<canvas id='spacetime' width=",viewport.width," height=",viewport.height," style='border:1px solid #aaaaaa;'></canvas>");
