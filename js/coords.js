@@ -39,7 +39,7 @@ function xl2xv(xl){										// Convert level x coord to viewport x coord
 	return xl - viewport.x + viewport.width/2;
 }
 
-function yl2xv(yl){										// Convert level y coord to viewport y coord
+function yl2yv(yl){										// Convert level y coord to viewport y coord
 	return yl - viewport.y;
 }
 

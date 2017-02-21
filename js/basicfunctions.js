@@ -49,7 +49,7 @@ function basicmovement(entity){
 	}
 	
 	entity.xview = xl2xv(entity.x);
-	entity.yview = yl2xv(entity.y);
+	entity.yview = yl2yv(entity.y);
 	
 }
 
