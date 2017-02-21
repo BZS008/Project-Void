@@ -1,6 +1,36 @@
 // Liquid object
 // contains general variables and functions for liquid physics
 var liquid = {
+	drops:[],									// Array for holding droplets
+	
+	// Function for adding droplets
+	addDroplet:function(vtx,vty,vtvx,vtvy,vol,type){
+		
+		liquid.drops.push({
+			vtx:vtx,							// x coord vertices
+			vty:vty,							// y coord vertices
+			vtvx:vtvx,							// x velocity vertices
+			vtvy:vtvy,							// y velocity vertices
+			vol:vol,							// Volume of droplet
+			type:type							// Type of liquid
+		});
+	},
+	
+	// Function for drawing droplets
+	drawDroplet:function(i){
+		var d = liquid.drops[i];
+		var nvt = d.vtx.length;
+		ctx.beginPath();						// Start drawing droplet
+		ctx.moveTo(xl2xv(d.vtx[0]), yl2yv(d.vty[0]));
+		
+		for(var vt=1; vt<nvt; vt++){			// Loop over droplet vertices
+			ctx.lineTo(xl2xv(d.vtx[vt]), yl2yv(d.vty[vt]));
+		}
+		ctx.closePath();
+		ctx.fillStyle = 'blue';					///// Get correct color using type!
+		ctx.fill();
+	},
+	
 	// Draws a liquid tile for the input tile indices
 	drawtile:function(i,j){
 		// Gather tile info
@@ -26,6 +56,24 @@ var liquid = {
 	
 	// Perform liquid physics
 	flow:function(){
+		// Liquid Droplet Physics
+		var nd = liquid.drops.length;
+		for(var i=0; i<nd; i++){						// Loop over droplets
+			var d = liquid.drops[i];
+			
+			var nvt = d.vtx.length;
+			for(var vt=0; vt<nvt; vt++){				// Loop over droplet vertices
+				d.vtx[vt] += d.vtvx[vt];
+				d.vty[vt] += d.vtvy[vt];
+				
+				// Forces
+				// Gravity
+				d.vtvy[vt] += fall_acc;
+				gamelog.num[4] = d.vty[vt];
+			}			
+		}
+		
+		// Liquid Tile Physics
 		var nvert = level.data.length;					// Get vertical number of tiles
 		var nhori = level.data[0].length;				// Get horizontal number of tiles
 		
@@ -90,7 +138,6 @@ var liquid = {
 				}
 			}
 		}
-		
 	}
 }
 

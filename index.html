@@ -44,6 +44,14 @@
 		level.draw();
 		liquid.flow();
 		
+		///// Draw droplets
+		var ndrops = liquid.drops.length;
+		for(var i=0; i<ndrops; i++){
+			liquid.drawDroplet(i);
+			var x = xl2xv(liquid.drops[i].vtx[0]);
+			var y = yl2yv(liquid.drops[i].vty[0]);
+		}
+		
 		var nents = entities.length;
 		for(var i=nents-1;i>-1;i--){
 			entities[i].do_ai();
@@ -79,6 +87,10 @@
 		////// All sorts of gamelog stuff
 		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
 		gamelog.updateGraph(1,entities.length,'number of entities',0,300);
+		if(liquid.drops.length){
+			gamelog.updateGraph(2,liquid.drops[0].vtvy[0],'vy droplet',-10,10);
+			gamelog.num[3] = liquid.drops[0].vtvy[0];
+		}
 		gamelog.num[1] = player.cooldown;
 		
 		var mx = viewport.mousex;
@@ -96,6 +108,9 @@
 				gamelog.textmark("height: " + level.tileprops[mi][mj].height.toPrecision(3),mx,my+100,true);
 			}
 		}
+		
+		gamelog.num[2] = liquid.drops.length;
+		gamelog.numstr[2] = 'droplets: ';
 		//////
 		
 		gamelog.draw();
