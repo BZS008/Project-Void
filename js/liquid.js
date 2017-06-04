@@ -61,16 +61,31 @@ var liquid = {
 		for(var i=0; i<nd; i++){						// Loop over droplets
 			var d = liquid.drops[i];
 			
-			var nvt = d.vtx.length;
+			var nvt = d.vtx.length;						// Number of vertices
 			for(var vt=0; vt<nvt; vt++){				// Loop over droplet vertices
+				
+				// Integrate vertex velocity
 				d.vtx[vt] += d.vtvx[vt];
 				d.vty[vt] += d.vtvy[vt];
 				
 				// Forces
 				// Gravity
-				d.vtvy[vt] += fall_acc;
-				gamelog.num[4] = d.vty[vt];
-			}			
+				// d.vtvy[vt] += fall_acc;
+				
+				// Surface Tension
+				var nextvt = (vt+1)%nvt;				// Next vertex
+				var Dx = d.vtx[vt] - d.vtx[nextvt];		// Delta x
+				var Dy = d.vty[vt] - d.vty[nextvt];		// Delta y
+				// var Dr = Math.sqrt(Dx*Dx + Dy*Dy);	// Distance squared - don't need this if rest length is zero
+				
+				var km = 0.001;							// Spring Constant over Mass ///// Get using liquid type!
+				
+				// Integrate Acceleration
+				d.vtvx[vt]     -= km*Dx;
+				d.vtvx[nextvt] += km*Dx;
+				d.vtvy[vt]     -= km*Dy;
+				d.vtvy[nextvt] += km*Dy;
+			}
 		}
 		
 		// Liquid Tile Physics
@@ -140,7 +155,3 @@ var liquid = {
 		}
 	}
 }
-
-
-
-
