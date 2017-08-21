@@ -45,7 +45,7 @@ for(var i=0;i<nytiles;i++){
 		if(airlandvalue<0.5){
 			// Insert air or the occasional water tile
 			var tiletype = 0;
-			if(Math.random()<0.4){tiletype=4;} // Water tile
+			// if(Math.random()<0.4){tiletype=4;} // Water tile, enable to add random water tiles
 			level.data[i][j] = tiletype;
 			
 		}else{
@@ -71,8 +71,3 @@ for(var i=0;i<nytiles;i++){
 		}
 	}
 }
-
-
-
-
-
