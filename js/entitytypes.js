@@ -105,7 +105,6 @@ entitytypes.enemy1 = function(x,y,id){
 			var totalframes = this.sprite.images[this.sprite.index].frames;
 			if(frameNumber == totalframes-1){
 				entities.splice(i,1);		// Remove entity if dying animation finishes
-				console.log('A dango dieded')
 			}
 		}
 	};

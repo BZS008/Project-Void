@@ -5,7 +5,7 @@
 var attacks = {
 	// Function that executes attack for given entity
 	act:function(entity,attackname){
-		if(entity.cooldown==0){
+		if(entity.cooldown == 0){					// Wait for attack cooldown timer
 			var attack = this[attackname];
 			entity.cooldown = attack.cooldown;
 			
@@ -13,34 +13,45 @@ var attacks = {
 			var y1 = entity.y - attack.height/2;
 			var y2 = entity.y + attack.height/2;
 			
-			if(attack.fof=='area'){
+			// Compute 'field of fire' border coordinates, according to setting
+			if(attack.fof == 'area'){				// Attack in both directions
 				var x1 = entity.x - attack.width/2;
 				var x2 = entity.x + attack.width/2;
-			}else{
+			}else{									// Attack in forward direction
 				var x1 = entity.x;
 				var x2 = entity.x + attack.width; //// +/- should depend on direction
 			}
 				
-			var nents = entities.length;        // Get number of entities
-			for(var eid=0; eid<nents; eid++){ 	// Loop over all entities
-				var ent = entities[eid];		// Retrieve entity
-				if(ent.x>x1 && ent.x<x2 && ent.y>y1 && ent.y<y2 && ent!==entity){ 	// If entity is in target area
-				////// Selected area and damage position should be corrected with target entity width and height
-					var damage;
-					switch(attack.falloff){
-						// Calculate attack damage for linear falloff
-						case 'linear':
-							damage = attack.basedamage * (1-(ent.x-entity.x)/attack.width);
-							break;
-						// Calculate attack damage for gaussian falloff
-						case 'gauss':
-							var x = (ent.x-entity.x)/attack.width;
-							damage = attack.basedammage * (Math.exp(-4.605*x*x));
-						// Calculate attack damage for flat falloff
-						default:
-							damage = attack.basedamage;
+			var nents = entities.length;        	// Get number of entities
+			for(var eid = 0; eid < nents; eid++){ 	// Loop over all entities
+				var target = entities[eid];			// Retrieve entity
+				
+				if(target !== entity){				// Don't attack yourself!
+					
+					// Check if any collision point is within field of fire
+					var inrange = false;
+					for(var i = 0; i < target.colpts.length; i++){
+						var cx = target.colpts[i][0] + target.x;
+						var cy = target.colpts[i][1] + target.y;
+						inrange = inrange || (cx > x1 && cx < x2 && cy > y1 && cy < y2);
 					}
-					entities[eid].hp -= damage; ///// effects, potions, armor and such are not considered yet
+					
+					if(inrange){ 					// If entity is in target area
+						var damage;
+						switch(attack.falloff){
+							case 'linear':			// Calculate attack damage for linear falloff
+								var x = (target.x - entity.x) / attack.width;
+								damage = attack.basedamage * (1 - Math.abs(x));
+								break;
+							case 'gauss':			// Calculate attack damage for gaussian falloff
+								var x = (target.x - entity.x) / attack.width;
+								damage = attack.basedamage * (Math.exp(-4.605*x*x));
+								break;
+							default:				// Calculate attack damage for flat falloff
+								damage = attack.basedamage;
+						}
+						entities[eid].hp -= damage; ///// effects, potions, armor and such are not considered yet
+					}
 				}
 			}
 		}
