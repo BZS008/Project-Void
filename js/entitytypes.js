@@ -28,15 +28,16 @@ entitytypes.enemy1 = function(x,y,id){
 	this.yview = 0;
 	
 	this.hp = 30;
+	this.fullhp = 30;
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	
 	// List of all dango's - choose a random one
-	var dangos = [[images.dango_blue_walkleft,images.dango_blue_walkright],[images.dango_yellow_walkleft,images.dango_yellow_walkright],[images.dango_red_walkleft,images.dango_red_walkright],[images.dango_orange_walkleft,images.dango_orange_walkright],[images.dango_lilac_walkleft,images.dango_lilac_walkright],[images.dango_green_walkleft,images.dango_green_walkright]];
+	var dangos = [[images.dango_blue_walkleft,images.dango_blue_walkright,images.dango_blue_dieleft,images.dango_blue_dieright],[images.dango_yellow_walkleft,images.dango_yellow_walkright],[images.dango_red_walkleft,images.dango_red_walkright],[images.dango_orange_walkleft,images.dango_orange_walkright],[images.dango_lilac_walkleft,images.dango_lilac_walkright],[images.dango_green_walkleft,images.dango_green_walkright]];
 	var dangoindex = Math.floor(Math.random()*6);
 	
 	this.spriteoptions = {
 		images:dangos[dangoindex],
-		speed:[40,40],
+		speed:[5,5,5,5],
 		stdSpriteIndex:0
 	};
 
@@ -79,14 +80,34 @@ entitytypes.enemy1 = function(x,y,id){
 	this.onground = false;
 
 	// Draw Entity
-	this.draw = function(){
-		if(this.vx > 0){
-			this.sprite.changeAnim(1);
-		}else{
-			this.sprite.changeAnim(0);
+	this.draw = function(i){
+		if(this.hp > 0){
+			// Show walking animation
+			if(this.vx > 0){
+				this.sprite.changeAnim(1);
+			}else{
+				this.sprite.changeAnim(0);
+			}
+			this.sprite.update();
+			this.sprite.render(this.xview,this.yview);
+		} else {
+			// Show dying animation
+			if(this.vx > 0){
+				this.sprite.changeAnim(3);
+			}else{
+				this.sprite.changeAnim(2);
+			}
+			this.sprite.update();
+			this.sprite.render(this.xview,this.yview);
+			
+			// Check if dying animation is over
+			var frameNumber = this.sprite.images[this.sprite.index].frameNumber;
+			var totalframes = this.sprite.images[this.sprite.index].frames;
+			if(frameNumber == totalframes-1){
+				entities.splice(i,1);		// Remove entity if dying animation finishes
+				console.log('A dango dieded')
+			}
 		}
-		this.sprite.update();
-		this.sprite.render(this.xview,this.yview);
 	};
 
 	// such movement, many physics

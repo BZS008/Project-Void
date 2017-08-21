@@ -55,14 +55,8 @@
 		var nents = entities.length;
 		for(var i=nents-1;i>-1;i--){
 			entities[i].do_ai();
-			
-			//// If hp goes to zero, entity disappears
-			if(entities[i].hp<=0){
-				entities.splice(i,1);
-			} ///// dying should be done someplace else, + we need dying animation
-			
 			entities[i].movement();
-			entities[i].draw();
+			entities[i].draw(i);
 			
 			///// Gamelog /////
 			gamelog.textmark(i,entities[i].xview,entities[i].yview);
@@ -71,16 +65,9 @@
 			//// Show histogram of entity x coordinates
 			gamelog.hist[0]={
 				oblist: entities,
-				prop: 'x',
-				min: 0,
-				max: level.width
-			};
-			
-			gamelog.hist[1]={
-				oblist: entities,
-				prop: 'y',
-				min: 0,
-				max: level.height
+				prop: 'hp',
+				min: -2,
+				max: 32
 			};
 		}
 		
@@ -118,7 +105,7 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length<5){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
+		if(entities.length<=21){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
 	}
 	
 	// Define Simulation Loop
@@ -151,4 +138,3 @@
 </body>
 
 </html>
-

@@ -3,14 +3,14 @@
 "use strict";
 
 attacks.LinArDam = {
-	fof: 'forward',
-	width: 200,
+	fof: 'area',
+	width: 300,
 	height: 60,
 	falloff: 'gauss',
-	basedamage: 80,
+	basedamage: 50,
 	type: 'direct',
 	effects: ['fire'],
-	cooldown: 45
+	cooldown: 10
 };
 
 //// Possible feature: custom attack properties per entity, making modifiers like potions easier...
