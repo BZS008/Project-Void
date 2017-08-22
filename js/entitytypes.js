@@ -103,7 +103,7 @@ entitytypes.enemy1 = function(x,y,id){
 			this.sprite.render(this.xview,this.yview);
 			
 			// Check if dying animation is over
-			var frameNumber = this.sprite.images[this.sprite.index].frameNumber;
+			var frameNumber = this.sprite.frameNumber;
 			var totalframes = this.sprite.images[this.sprite.index].frames;
 			if(frameNumber == totalframes-1){
 				entities.splice(i,1);		// Remove entity if dying animation finishes

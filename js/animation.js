@@ -41,8 +41,8 @@ function animation( obj, option ) {
   obj.sprite = {};
   obj.sprite.images = option.images;
   obj.sprite.index = option.stdSpriteIndex;
-  obj.sprite.images[obj.sprite.index].frameNumber = 0;  // counter frame nr during animation
-  obj.sprite.images[obj.sprite.index].counter = 0;      // counts game ticks per anim frame
+  obj.sprite.frameNumber = 0;       // counter frame nr during animation
+  obj.sprite.counter = 0;           // counts game ticks per anim frame
   // setting up variables:
   for ( i=0; i<obj.sprite.images.length; i++ ){
 	  obj.sprite.images[i].tickPerFrame = option.speed[i] || 0;
@@ -54,8 +54,7 @@ function animation( obj, option ) {
     
     ctx.drawImage(
       obj.sprite.images[obj.sprite.index],
-      obj.sprite.images[obj.sprite.index].frameNumber*
-        obj.sprite.images[obj.sprite.index].spritewidth,
+      obj.sprite.frameNumber * obj.sprite.images[obj.sprite.index].spritewidth,
       0,
       obj.sprite.images[obj.sprite.index].spritewidth,
       obj.sprite.images[obj.sprite.index].height,
@@ -67,32 +66,26 @@ function animation( obj, option ) {
   
   // method that advances the animation one game tick:
   obj.sprite.update = function (){
-    obj.sprite.images[obj.sprite.index].counter++; // increment game tick counter
+    obj.sprite.counter++;           // increment game tick counter
 
     // if current frame has been on long enough:
-    if (obj.sprite.images[obj.sprite.index].counter >
-      obj.sprite.images[obj.sprite.index].tickPerFrame){  
-      obj.sprite.images[obj.sprite.index].counter = 0;  // reset game tick counter
+    if (obj.sprite.counter > obj.sprite.images[obj.sprite.index].tickPerFrame) {
+      obj.sprite.counter = 0;       // reset game tick counter
       // if animation has not ended:
-      if (obj.sprite.images[obj.sprite.index].frameNumber <
-        obj.sprite.images[obj.sprite.index].frames - 1){
-        obj.sprite.images[obj.sprite.index].frameNumber++;    // go to next frame
-      }
-      else {                      // if the animation has ended
-        obj.sprite.images[obj.sprite.index].frameNumber = 0;  // start from the first frame
+      if (obj.sprite.frameNumber < obj.sprite.images[obj.sprite.index].frames - 1) {
+        obj.sprite.frameNumber++;   // go to next frame
+      } else {                      // if the animation has ended
+        obj.sprite.frameNumber = 0; // start from the first frame
       }
     }
   };
   
   obj.sprite.changeAnim = function ( spriteIndex ){
-    if ( spriteIndex < obj.sprite.images.length &&
-		spriteIndex!=obj.sprite.index )
-    {
+    if ( spriteIndex < obj.sprite.images.length && spriteIndex != obj.sprite.index ) {
       obj.sprite.index = spriteIndex;
-      obj.sprite.images[spriteIndex].frameNumber = 0;  // counter frame nr during animation
-      obj.sprite.images[spriteIndex].counter = 0;      // counts game ticks per anim frame
-    }
-    else if ( spriteIndex >= obj.sprite.images.length ){
+      obj.sprite.frameNumber = 0;   // counter frame nr during animation
+      obj.sprite.counter = 0;       // counts game ticks per anim frame
+    } else if ( spriteIndex >= obj.sprite.images.length ){
       console.log('Input "spriteIndex" exceeds obj.images.length-1.')
       return 1;
     }
@@ -100,22 +93,3 @@ function animation( obj, option ) {
   
   return obj;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
