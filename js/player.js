@@ -12,7 +12,9 @@ var player = {
 	xview	: 0,
 	yview	: 0,
 	runthresh: 0.01,			// Threshold for showing running animation
-	color: 'yellow',
+	color	: 'yellow',
+	width 	: width,
+	height 	: height,
 	
 	// State Variables
 	onground	: false,

@@ -5,21 +5,31 @@
 var attacks = {
 	// Function that executes attack for given entity
 	act:function(entity,attackname){
+		
 		if(entity.cooldown == 0){					// Wait for attack cooldown timer
+			
 			var attack = this[attackname];
 			entity.cooldown = attack.cooldown;
 			
+			if(attack.upontouch){					// If toucharea==true then
+				var width 	= entity.width;			//   width/height will be
+				var height 	= entity.height;		//   determined by entity width/height
+			} else {
+				var width 	= attack.width;
+				var height 	= attack.height;
+			}
+			
 			// Select rectangle in which damage is dealt
-			var y1 = entity.y - attack.height/2;
-			var y2 = entity.y + attack.height/2;
+			var y1 = entity.y - height/2;
+			var y2 = entity.y + height/2;
 			
 			// Compute 'field of fire' border coordinates, according to setting
 			if(attack.fof == 'area'){				// Attack in both directions
-				var x1 = entity.x - attack.width/2;
-				var x2 = entity.x + attack.width/2;
+				var x1 = entity.x - width/2;
+				var x2 = entity.x + width/2;
 			}else{									// Attack in forward direction
-				var x1 = entity.x - attack.width * (entity.direction == -1);
-				var x2 = entity.x + attack.width * (entity.direction == 1);
+				var x1 = entity.x - width * (entity.direction == -1);
+				var x2 = entity.x + width * (entity.direction == 1);
 			}
 				
 			var nents = entities.length;        	// Get number of entities
@@ -43,11 +53,11 @@ var attacks = {
 						var damagefactor;
 						switch(attack.falloff){
 							case 'linear':			// Calculate attack damage for linear falloff
-								var x = Dx / attack.width;
+								var x = Dx / width;
 								damagefactor = 1 - Math.abs(x);
 								break;
 							case 'gauss':			// Calculate attack damage for gaussian falloff
-								var x = Dx / attack.width;
+								var x = Dx / width;
 								damagefactor = Math.exp(-4.605*x*x);
 								break;
 							default:				// Calculate attack damage for flat falloff
@@ -57,8 +67,15 @@ var attacks = {
 						// Apply damage and knockback
 						entities[eid].hp -= damagefactor * attack.basedamage;
 						var knockbackfactor = damagefactor * (1 - attack.knockbackrandom * Math.random());
-						entities[eid].vx += attack.knockbackx * knockbackfactor * Math.sign(Dx);
-						entities[eid].vy += attack.knockbacky * knockbackfactor;
+						
+						// When upontouch == true, knockback velocity is set instead of added
+						if (attack.upontouch) {
+							entities[eid].vx += attack.knockbackx * knockbackfactor * Math.sign(Dx);
+							entities[eid].vy += attack.knockbacky * knockbackfactor;
+						} else {
+							entities[eid].vx = attack.knockbackx * knockbackfactor * Math.sign(Dx);
+							entities[eid].vy = attack.knockbacky * knockbackfactor;
+						}
 						
 						///// effects, potions, armor and such are not considered yet
 					}

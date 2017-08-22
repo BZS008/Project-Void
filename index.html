@@ -17,7 +17,9 @@
 	<script src='js/ai/neutral1.js'></script>
 	
 	<script src='js/attack/attack.js'></script>
-	<script src='js/attack/LinArDam.js'></script>
+	<script src='js/attack/melee1.js'></script>
+	<script src='js/attack/aoe1.js'></script>
+	<script src='js/attack/touch1.js'></script>
 	
 	<script src='js/initializations.js'></script>
 	<script src='js/coords.js'></script>
@@ -105,7 +107,7 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length<=21){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
+		if(entities.length<=50){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
 	}
 	
 	// Define Simulation Loop

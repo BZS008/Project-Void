@@ -26,13 +26,13 @@ function keyinput(){
 	
 	// up arrow
 	if(keydown.up && player.onground){
-		player.vy=-player.jumpspeed;
-		player.onground=false;
+		player.vy =- player.jumpspeed;
+		player.onground = false;
 	}
 	
 	// space (attack)
-	if(keydown.space && player.cooldown==0){
-		attacks.act(player,'LinArDam');
+	if(keydown.space){
+		attacks.act(player,'melee1');
 	}
 	
 	// t (testkey)
