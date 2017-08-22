@@ -5,24 +5,33 @@ var player = {
 	type: 'player',
 	
 	// Initial Spatial Properties
-	x	:355, 		            // x position of player (lvl coords) ...x,y should be retrieved from level
-	y	:120,		            // y position of player (lvl coords)
-	vx	:4,
-	vy	:-4,
-	xview:0,
-	yview:0,
-	
+	x		: 355,	            // x position of player (lvl coords) ...x,y should be retrieved from level
+	y		: 120,	            // y position of player (lvl coords)
+	vx		: 4,
+	vy		: -4,
+	xview	: 0,
+	yview	: 0,
+	runthresh: 0.01,			// Threshold for showing running animation
 	color: 'yellow',
 	
-	// Life/Attack variables
-	hp: 100,
-	cooldown: 0, 				// Timer of cooldown. (When reached zero, player can do another attack)
+	// State Variables
+	onground	: false,
+	direction	: 1,			// Direction player is facing
 	
+	// Movement parameters
+	groundacc	: 2,
+	airacc		: 1.0,			// Acceleration in air in x-direction
+	jumpspeed	: 12,
+	
+	// Life/Attack variables
+	hp			: 100,
+	fullhp		: 100,
+	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	
 	// Physical Properties
-	fall_factor:1.4,
-	air_drag_factor:1.3,		// Air drag x-direction
-	ground_drag_factor:1.6,		//// MIGHT ADD MATERIAL SPECIFIC DRAG
+	fall_factor	: 1.4,
+	air_drag_factor	: 1.3,		// Air drag x-direction
+	ground_drag_factor : 1.6,	//// MIGHT ADD MATERIAL SPECIFIC DRAG
 	
 	// Collision Properties
 	//  Important note: In order for
@@ -44,43 +53,25 @@ var player = {
 	
 	//// x-center of entities should corrospond to x-coordinate, aka without offset
 	
-	// 20% more awesome
-	groundacc:2,
-	airacc:1.0,						// Acceleration in air in x-direction
-	jumpspeed:12,
-	
-	
-	// State Variables
-	onground:false,
-	
 	// Draw Player
 	draw:function(){
-		if (this.onground==false){
-			if (this.vx> 0.01){
-				this.dir = 'right';
+		if (this.onground == false){
+			// Flying through air, facing left/right
+			if(this.direction == 1){
 				this.sprite.changeAnim(4);
-			}
-			if (this.vx<-0.01){
-				this.dir = 'left';
+			} else {
 				this.sprite.changeAnim(5);
-		}}
+			}
+		}
 		else {
-			if (this.vx> 0.01){
-				this.dir = 'right';
-				this.sprite.changeAnim(2);
-			}
-			if (this.vx<-0.01){
-				this.dir = 'left';
-				this.sprite.changeAnim(3);
-			}
-			if (Math.abs(this.vx)<0.01){
-				if (this.dir=='right'){this.sprite.changeAnim(0);}
-				if (this.dir=='left'){this.sprite.changeAnim(1);}
-			}
+			// Determine if walking/standing and left/right animation
+			var iani = 0;
+			if (Math.abs(this.vx) > this.runthresh){iani = 2;}
+			if (this.direction == -1){iani = iani+1}
+			this.sprite.changeAnim(iani);
 		}
-		if(Math.abs(this.vx)>0.5){
-			this.sprite.update();
-		}
+		
+		this.sprite.update();
 		this.sprite.render(this.xview,this.yview);
 	},
 	

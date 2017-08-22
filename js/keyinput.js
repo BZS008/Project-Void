@@ -8,6 +8,8 @@ function keyinput(){
 			player.vx-=player.airacc;
 		}
 		
+		// Set facing direction
+		player.direction = -1;
 	}
 	
 	// right arrow
@@ -18,6 +20,8 @@ function keyinput(){
 			player.vx+=player.airacc;
 		}
 		
+		// Set facing direction
+		player.direction = 1;
 	}
 	
 	// up arrow
@@ -52,4 +56,3 @@ function keyinput(){
 		clearInterval(gameloop);
 	}
 }
-

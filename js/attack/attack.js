@@ -18,8 +18,8 @@ var attacks = {
 				var x1 = entity.x - attack.width/2;
 				var x2 = entity.x + attack.width/2;
 			}else{									// Attack in forward direction
-				var x1 = entity.x;
-				var x2 = entity.x + attack.width; //// +/- should depend on direction
+				var x1 = entity.x - attack.width * (entity.direction == -1);
+				var x2 = entity.x + attack.width * (entity.direction == 1);
 			}
 				
 			var nents = entities.length;        	// Get number of entities

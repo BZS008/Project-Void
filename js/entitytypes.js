@@ -26,10 +26,21 @@ entitytypes.enemy1 = function(x,y,id){
 	this.lastvy = 0;
 	this.xview = 0;
 	this.yview = 0;
+	this.runthresh = 0.01;
 	
-	this.hp = 30;
-	this.fullhp = 30;
+	// State Variables
+	this.onground = false;		// True if entity is touching the ground
+	this.direction = 1;			// Direction entity is facing
+		
+	// Life/Attack variables
+	this.hp = 30;				// Health of entity
+	this.fullhp = 30;			// Maximum health of entity
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
+	
+	// Movement parameters
+	this.groundacc = 1.0 + Math.random()*0.5;
+	this.airacc = 0.5 + Math.random()*0.2;							// Acceleration in air in x-direction
+	this.jumpspeed = 8 + Math.random()*3;
 	
 	// List of all dango's - choose a random one
 	var dangos = [[images.dango_blue_walkleft,images.dango_blue_walkright,images.dango_blue_dieleft,images.dango_blue_dieright],[images.dango_yellow_walkleft,images.dango_yellow_walkright],[images.dango_red_walkleft,images.dango_red_walkright],[images.dango_orange_walkleft,images.dango_orange_walkright],[images.dango_lilac_walkleft,images.dango_lilac_walkright],[images.dango_green_walkleft,images.dango_green_walkright]];
@@ -70,32 +81,23 @@ entitytypes.enemy1 = function(x,y,id){
 	// this.rightpts = [[31,0],[31,30],[31,60]];	// Right points =  for right wall checking
 	// this.toppts = [[0,-1],[30,-1]];				// Top points =  for ceiling checking
 
-	// 20% more awesome
-	this.groundacc = 1.0 + Math.random()*0.5;
-	this.airacc = 0.5 + Math.random()*0.2;							// Acceleration in air in x-direction
-	this.jumpspeed = 8 + Math.random()*3;
-
-
-	// State Variables
-	this.onground = false;
-
 	// Draw Entity
 	this.draw = function(i){
 		if(this.hp > 0){
 			// Show walking animation
-			if(this.vx > 0){
-				this.sprite.changeAnim(1);
+			if(this.direction == -1){
+				this.sprite.changeAnim(1);		// Walk left
 			}else{
-				this.sprite.changeAnim(0);
+				this.sprite.changeAnim(0); 		// Walk right
 			}
 			this.sprite.update();
 			this.sprite.render(this.xview,this.yview);
 		} else {
 			// Show dying animation
-			if(this.vx > 0){
-				this.sprite.changeAnim(3);
+			if(this.direction == -1){
+				this.sprite.changeAnim(3);		// Die left
 			}else{
-				this.sprite.changeAnim(2);
+				this.sprite.changeAnim(2);		// Die right
 			}
 			this.sprite.update();
 			this.sprite.render(this.xview,this.yview);

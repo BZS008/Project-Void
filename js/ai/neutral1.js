@@ -37,6 +37,7 @@ ai.neutral1 = {
 			}else{
 				
 				var dir = Math.sign(delta);
+				entity.direction = dir;
 
 				var touch = (entity.lefttouch) || (entity.righttouch)
 				
@@ -47,8 +48,8 @@ ai.neutral1 = {
 					}else{
 						entity.vx -= entity.groundacc * dir;
 						
-						///// Random jump makes large swarms extra funny
-						if(Math.random()<0.0005 && entity.onground){
+						// The occasional random jump
+						if(Math.random()<0.001 && entity.onground){
 							entity.vy = -entity.jumpspeed;
 							entity.onground = false;
 						}
