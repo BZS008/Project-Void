@@ -37,20 +37,30 @@ var attacks = {
 					}
 					
 					if(inrange){ 					// If entity is in target area
-						var damage;
+						
+						// Calculate damagefactor
+						var Dx = target.x - entity.x;	// x-distance to target
+						var damagefactor;
 						switch(attack.falloff){
 							case 'linear':			// Calculate attack damage for linear falloff
-								var x = (target.x - entity.x) / attack.width;
-								damage = attack.basedamage * (1 - Math.abs(x));
+								var x = Dx / attack.width;
+								damagefactor = 1 - Math.abs(x);
 								break;
 							case 'gauss':			// Calculate attack damage for gaussian falloff
-								var x = (target.x - entity.x) / attack.width;
-								damage = attack.basedamage * (Math.exp(-4.605*x*x));
+								var x = Dx / attack.width;
+								damagefactor = Math.exp(-4.605*x*x);
 								break;
 							default:				// Calculate attack damage for flat falloff
-								damage = attack.basedamage;
+								damagefactor = 1;
 						}
-						entities[eid].hp -= damage; ///// effects, potions, armor and such are not considered yet
+						
+						// Apply damage and knockback
+						entities[eid].hp -= damagefactor * attack.basedamage;
+						var knockbackfactor = damagefactor * (1 - attack.knockbackrandom * Math.random());
+						entities[eid].vx += attack.knockbackx * knockbackfactor * Math.sign(Dx);
+						entities[eid].vy += attack.knockbacky * knockbackfactor;
+						
+						///// effects, potions, armor and such are not considered yet
 					}
 				}
 			}
