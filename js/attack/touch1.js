@@ -12,7 +12,7 @@ attacks.touch1 = {
 	effects: ['fire'],		// Effects (Not Yet Implemented)
 	cooldown: 3,			// Cooldown timer (in frames)
     // When upontouch == true, knockback velocity is set instead of added
-	knockbackx: 20,			// Knockback x-velocity (scales with falloff)
+	knockbackx: 12,			// Knockback x-velocity (scales with falloff)
 	knockbacky: -7,			// Knockback y-velocity (scales with falloff)
 	knockbackrandom: 0.2,	// Randomness knockback fraction, e.g. 0.2 -> between 80% to 100%
 	stun: 15,				// Stun time (in frames)

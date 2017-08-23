@@ -44,4 +44,8 @@ function debug() {
             gamelog.textmark("height: " + level.tileprops[mi][mj].height.toPrecision(3),mx,my+100,true);
         }
     }
+    
+    // Player horizontal speed
+    gamelog.num[2] = player.vx;
+    gamelog.numstr[2] = 'vx: '
 }

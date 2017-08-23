@@ -21,9 +21,10 @@ var player = {
 	direction	: 1,			// Direction player is facing
 	
 	// Movement parameters
-	groundacc	: 2,
-	airacc		: 1.0,			// Acceleration in air in x-direction
+	groundacc	: 0.8,			// Acceleration on ground in x-direction
+	airacc		: 0.4,			// Acceleration in air in x-direction
 	jumpspeed	: 12,
+	vmax 		: 3.3,			// Maximum self propelled speed
 	
 	// Life/Attack variables
 	hp			: 100,
@@ -33,8 +34,8 @@ var player = {
 	
 	// Physical Properties
 	fall_factor	: 1.4,
-	air_drag_factor	: 1.3,		// Air drag x-direction
-	ground_drag_factor : 1.6,	//// MIGHT ADD MATERIAL SPECIFIC DRAG
+	air_drag_factor	: 1.1,		// Air drag x-direction
+	ground_drag_factor : 1.2,	//// MIGHT ADD MATERIAL SPECIFIC DRAG
 	
 	// Collision Properties
 	//  Important note: In order for

@@ -39,9 +39,9 @@ entitytypes.enemy1 = function(x,y,id){
 	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
 	
 	// Movement parameters
-	this.groundacc = 1.0 + Math.random()*0.5;
-	this.airacc = 0.5 + Math.random()*0.2;							// Acceleration in air in x-direction
-	this.jumpspeed = 8 + Math.random()*3;
+	this.groundacc = 0.2 + Math.random()*0.1;
+	this.airacc = 0.1 + Math.random()*0.1;							// Acceleration in air in x-direction
+	this.jumpspeed = 7 + Math.random()*2;
 	
 	// List of all dango's - choose a random one
 	var dangos = [[images.dango_blue_walkleft,images.dango_blue_walkright,images.dango_blue_dieleft,images.dango_blue_dieright],[images.dango_yellow_walkleft,images.dango_yellow_walkright],[images.dango_red_walkleft,images.dango_red_walkright],[images.dango_orange_walkleft,images.dango_orange_walkright],[images.dango_lilac_walkleft,images.dango_lilac_walkright],[images.dango_green_walkleft,images.dango_green_walkright]];
@@ -55,8 +55,8 @@ entitytypes.enemy1 = function(x,y,id){
 
 	// Physical Properties
 	this.fall_factor = 1.4;
-	this.air_drag_factor = 1.3;					// Air drag x-direction
-	this.ground_drag_factor = 1.6;				//// MIGHT ADD MATERIAL SPECIFIC DRAG
+	this.air_drag_factor = 1.05;					// Air drag x-direction
+	this.ground_drag_factor = 1.1;				//// MIGHT ADD MATERIAL SPECIFIC DRAG
 
 	// Collision Properties
 	//  Important note: In order for
