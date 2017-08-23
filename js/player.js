@@ -29,6 +29,7 @@ var player = {
 	hp			: 100,
 	fullhp		: 100,
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
+	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
 	
 	// Physical Properties
 	fall_factor	: 1.4,
@@ -85,6 +86,10 @@ var player = {
 	do_ai:function(){
 		if(this.cooldown>0){
 			this.cooldown--;	// Count down the cooldown timer for attacks
+		}
+		
+		if(this.stun > 0){
+			this.stun--;		// Count down the stun timer
 		}
 	}
 }

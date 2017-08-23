@@ -1,7 +1,7 @@
 // Keyboard input events
 function keyinput(){
 	// left arrow
-	if(keydown.left && !player.lefttouch){
+	if(keydown.left && !player.lefttouch && player.stun == 0){
 		if(player.onground){
 			player.vx-=player.groundacc;
 		}else{
@@ -13,7 +13,7 @@ function keyinput(){
 	}
 	
 	// right arrow
-	if(keydown.right && !player.righttouch){
+	if(keydown.right && !player.righttouch && player.stun == 0){
 		if(player.onground){
 			player.vx+=player.groundacc;
 		}else{
@@ -25,7 +25,7 @@ function keyinput(){
 	}
 	
 	// up arrow
-	if(keydown.up && player.onground){
+	if(keydown.up && player.onground && player.stun == 0){
 		player.vy =- player.jumpspeed;
 		player.onground = false;
 	}

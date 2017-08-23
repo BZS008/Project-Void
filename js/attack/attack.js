@@ -64,18 +64,12 @@ var attacks = {
 								damagefactor = 1;
 						}
 						
-						// Apply damage and knockback
+						// Apply damage, knockback and stun
 						entities[eid].hp -= damagefactor * attack.basedamage;
 						var knockbackfactor = damagefactor * (1 - attack.knockbackrandom * Math.random());
-						
-						// When upontouch == true, knockback velocity is set instead of added
-						if (attack.upontouch) {
-							entities[eid].vx += attack.knockbackx * knockbackfactor * Math.sign(Dx);
-							entities[eid].vy += attack.knockbacky * knockbackfactor;
-						} else {
-							entities[eid].vx = attack.knockbackx * knockbackfactor * Math.sign(Dx);
-							entities[eid].vy = attack.knockbacky * knockbackfactor;
-						}
+						entities[eid].vx = attack.knockbackx * knockbackfactor * Math.sign(Dx);
+						entities[eid].vy = attack.knockbacky * knockbackfactor;
+						entities[eid].stun = attack.stun;
 						
 						///// effects, potions, armor and such are not considered yet
 					}

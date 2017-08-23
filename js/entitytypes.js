@@ -36,6 +36,7 @@ entitytypes.enemy1 = function(x,y,id){
 	this.hp = 30;				// Health of entity
 	this.fullhp = 30;			// Maximum health of entity
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
+	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
 	
 	// Movement parameters
 	this.groundacc = 1.0 + Math.random()*0.5;
@@ -84,14 +85,15 @@ entitytypes.enemy1 = function(x,y,id){
 	// Draw Entity
 	this.draw = function(i){
 		if(this.hp > 0){
-			// Show walking animation
-			if(this.direction == -1){
-				this.sprite.changeAnim(1);		// Walk left
-			}else{
-				this.sprite.changeAnim(0); 		// Walk right
+			if(this.stun == 0){						// Don't walk when stunned
+				// Show walking animation
+				if(this.direction == -1){
+					this.sprite.changeAnim(1);		// Walk left
+				}else{
+					this.sprite.changeAnim(0); 		// Walk right
+				}
+				this.sprite.update();
 			}
-			this.sprite.update();
-			this.sprite.render(this.xview,this.yview);
 		} else {
 			// Show dying animation
 			if(this.direction == -1){
@@ -100,7 +102,6 @@ entitytypes.enemy1 = function(x,y,id){
 				this.sprite.changeAnim(2);		// Die right
 			}
 			this.sprite.update();
-			this.sprite.render(this.xview,this.yview);
 			
 			// Check if dying animation is over
 			var frameNumber = this.sprite.frameNumber;
@@ -109,6 +110,8 @@ entitytypes.enemy1 = function(x,y,id){
 				entities.splice(i,1);		// Remove entity if dying animation finishes
 			}
 		}
+		
+		this.sprite.render(this.xview,this.yview);
 	};
 
 	// such movement, many physics
@@ -120,8 +123,12 @@ entitytypes.enemy1 = function(x,y,id){
 	this.do_ai = function(){
 		ai.act(this);
 		
-		if(this.cooldown>0){
+		if(this.cooldown > 0){
 			this.cooldown--;	// Count down the cooldown timer for attacks
+		}
+		
+		if(this.stun > 0){
+			this.stun--;		// Count down the stun timer
 		}
 	}
 }
