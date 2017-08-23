@@ -7,6 +7,7 @@
 	<script src="js/key_status.js"></script>			<!--keyboard events-->
 	<script src="js/extra_math.js"></script>			<!--Equations-->
 	<script src="js/gamelog.js"></script>
+	
 	<script src='js/basicfunctions.js'></script>
 	<script src='js/liquid.js'></script>
 	<script src='js/animation.js'></script>
@@ -27,6 +28,9 @@
 	<script src='js/keyinput.js'></script>
 	<script src='js/level.js'></script>
 	<script src='js/player.js'></script>
+	
+	<script src="js/debug.js"></script>
+	
 	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 	<title>Project Void</title>
 </head>
@@ -59,49 +63,9 @@
 			entities[i].do_ai();
 			entities[i].movement();
 			entities[i].draw(i);
-			
-			///// Gamelog /////
-			gamelog.textmark(i+', hp:'+Math.round(entities[i].hp),entities[i].xview,entities[i].yview);
-			///////////////////
-			
-			//// Show histogram of entity x coordinates
-			gamelog.hist[0]={
-				oblist: entities,
-				prop: 'hp',
-				min: -2,
-				max: 32
-			};
 		}
 		
-		////// All sorts of gamelog stuff
-		gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
-		gamelog.updateGraph(1,entities.length,'number of entities',0,300);
-		if(liquid.drops.length){
-			gamelog.updateGraph(2,liquid.drops[0].vtvy[0],'vy droplet',-10,10);
-			gamelog.num[3] = liquid.drops[0].vtvy[0];
-		}
-		gamelog.num[1] = player.cooldown;
-		
-		var mx = viewport.mousex;
-		var my = viewport.mousey;
-		var mi = yv2i(my);
-		var mj = xv2j(mx);
-		var tid = level.data[mi][mj];
-		if(tid!==undefined){
-			gamelog.textmark('i:'+mi+', j:'+mj, mx, my+40, true);
-			gamelog.textmark(tid + ': ' + tileset[tid].name, mx, my+60, true);
-			gamelog.textmark(tileset[tid].color, mx, my+80, true);
-			
-			// Show water properties
-			if(tid==4){
-				gamelog.textmark("height: " + level.tileprops[mi][mj].height.toPrecision(3),mx,my+100,true);
-			}
-		}
-		
-		gamelog.num[2] = liquid.drops.length;
-		gamelog.numstr[2] = 'droplets: ';
-		//////
-		
+		debug();
 		gamelog.draw();
 		viewport.frametimer();
 		viewport.followPlayer();
