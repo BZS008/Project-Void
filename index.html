@@ -16,6 +16,7 @@
 	<script src='js/entities/entitytypes.js'></script>
 	<script src='js/entities/dango.js'></script>
 	<script src='js/entities/angrydango.js'></script>
+	<script src='js/entities/batdango.js'></script>
 	
 	<script src='js/ai/ai.js'></script>
 	<script src='js/ai/neutral1.js'></script>
@@ -80,13 +81,11 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length <= 600){
-			// spawn('dango',300,0); 		// Spawn regular dangos
-			// spawn('dango',300,0);
-			// spawn('dango',300,0);
+		if(entities.length <= 30){
+			spawn('dango',300,0); 		// Spawn regular dangos
 			
-			// Spawn angry dango
-			spawn('angrydango', 500 + Math.random()*level.width/5,0);
+			// Spawn bats
+			spawn('batdango', 500 + Math.random()*level.width/5, Math.random()*250);
 		}
 		
 	}
