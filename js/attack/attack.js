@@ -40,21 +40,25 @@ var attacks = {
 					
 					// Check if any collision point is within field of fire
 					var inrange = false;
+					var cxinrange = 0;
+
 					for(var i = 0; i < target.colpts.length; i++){
 						var cx = target.colpts[i][0] + target.x;
 						var cy = target.colpts[i][1] + target.y;
-						inrange = inrange || (cx > x1 && cx < x2 && cy > y1 && cy < y2);
+						var colptinrange = (cx > x1 && cx < x2 && cy > y1 && cy < y2)
+						inrange = inrange || colptinrange;
+						if (colptinrange) {cxinrange = cx;}
 					}
 					
 					if(inrange){ 					// If entity is in target area
 						
 						// Calculate damagefactor
-						var Dx = target.x - entity.x;	// x-distance to target
+						var Dx = cxinrange - entity.x;	// x-distance to target
 						var damagefactor;
 						switch(attack.falloff){
 							case 'linear':			// Calculate attack damage for linear falloff
 								var x = Dx / width;
-								damagefactor = 1 - Math.abs(x);
+								damagefactor = 1 - Math.abs(x)/2;
 								break;
 							case 'gauss':			// Calculate attack damage for gaussian falloff
 								var x = Dx / width;
@@ -69,7 +73,7 @@ var attacks = {
 						var knockbackfactor = damagefactor * (1 - attack.knockbackrandom * Math.random());
 						entities[eid].vx = attack.knockbackx * knockbackfactor * Math.sign(Dx);
 						entities[eid].vy = attack.knockbacky * knockbackfactor;
-						entities[eid].stun = attack.stun;
+						entities[eid].stun = damagefactor * attack.stun;
 						
 						///// effects, potions, armor and such are not considered yet
 					}
@@ -80,4 +84,4 @@ var attacks = {
 };
 
 // Matlab code for this graph:
-// x=-1:0.01:1;ylin=1-abs(x);ycon=ones(1,length(x));ygauss=exp(log(0.01)*x.^2);close all; hold on; plot(x,ylin,'LineWidth',2); plot(x,ycon,'LineWidth',2); plot(x,ygauss,'LineWidth',2); hold off;xlabel('x / half width');ylabel('damage / basedamage');title('Falloff types')
+// x=-1:0.01:1;ylin=1-abs(x)/2;ycon=ones(1,length(x));ygauss=exp(log(0.01)*x.^2);close all; hold on; plot(x,ylin,'LineWidth',2); plot(x,ycon,'LineWidth',2); plot(x,ygauss,'LineWidth',2); hold off;xlabel('x / half width');ylabel('damage / basedamage');title('Falloff types')

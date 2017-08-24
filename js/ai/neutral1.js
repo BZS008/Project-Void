@@ -20,7 +20,7 @@ ai.neutral1 = {
 	//--- Neutral 1 AI - Roam mode function ---//
 	roam:function(entity){
 		
-		if(entity.hp > 0 && entity.stun == 0){		// Don't run during death animation or when stunned
+		if(entity.hp > 0 && entity.stun <= 0){		// Don't run during death animation or when stunned
 			
 			var delta = entity.x - entity.ai.target_x;
 			

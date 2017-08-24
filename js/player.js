@@ -11,7 +11,7 @@ var player = {
 	vy		: -4,
 	xview	: 0,
 	yview	: 0,
-	runthresh: 0.01,			// Threshold for showing running animation
+	runthresh: 1.0,				// Threshold for showing running animation
 	color	: 'yellow',
 	width 	: width,
 	height 	: height,
