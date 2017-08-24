@@ -12,7 +12,9 @@
 	<script src='js/liquid.js'></script>
 	<script src='js/animation.js'></script>
 	<script src='loadImages.js'></script>
-	<script src='js/entitytypes.js'></script>
+
+	<script src='js/entities/entitytypes.js'></script>
+	<script src='js/entities/dango.js'></script>
 	
 	<script src='js/ai/ai.js'></script>
 	<script src='js/ai/neutral1.js'></script>
@@ -71,7 +73,7 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length<=50){var eid=spawn('enemy1',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
+		if(entities.length<=50){var eid=spawn('dango',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
 	}
 	
 	// Define Simulation Loop
