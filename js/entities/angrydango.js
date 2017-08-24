@@ -71,7 +71,7 @@ entitytypes.angrydango = function(x,y,id){
 
 	// Draw Entity
 	this.draw = function(i){
-		if(this.hp >= 0){
+		if(this.hp > 0){
 			if(this.stun <= 0){							// Don't walk when stunned
 				// Show approaching animation
 				if (this.ai.mode == 'approach') {

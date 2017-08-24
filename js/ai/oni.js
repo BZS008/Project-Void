@@ -79,6 +79,8 @@ ai.oni = {
 					}
 				}
 			}
+			
+			attacks.act(entity,'touch1');	// Do damage upon touch
 		}
 	},
 	
@@ -125,6 +127,21 @@ ai.oni = {
 				}
 			} else {
 				entity.ai.mode = 'search';
+			}
+			
+			attacks.act(entity,'touch1');	// Do damage upon touch
+		}
+	},
+	
+	onitouch:function(entity) {
+		var nents = entities.length;
+		for (var i = 0; i < nents; i++) {
+			var targ = entities[i];
+			var touched = targ.x > x1 && targ.x < x2 && targ.y <= y1 && targ.y > y2;
+			if ((targ.type == 'dango' || targ.type == 'player') && touched) {
+				entity.ai.target_ent = targ;
+				entity.ai.mode = 'approach';
+				break;
 			}
 		}
 	}

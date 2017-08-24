@@ -11,7 +11,7 @@ function debug() {
     // Show histogram of entity hp
     gamelog.hist[0]={
         oblist: entities,
-        prop: 'hp',
+        prop: 'vy',
         min: -2,
         max: 32
     };

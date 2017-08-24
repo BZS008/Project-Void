@@ -10,7 +10,7 @@ attacks.touch1 = {
 	basedamage: 5,			// Base damage value (without the falloff)
 	type: 'direct',			// Type (Not Yet Implemented)
 	effects: ['fire'],		// Effects (Not Yet Implemented)
-	cooldown: 3,			// Cooldown timer (in frames)
+	cooldown: 0,			// Cooldown timer (in frames)
     // When upontouch == true, knockback velocity is set instead of added
 	knockbackx: 12,			// Knockback x-velocity (scales with falloff)
 	knockbacky: -7,			// Knockback y-velocity (scales with falloff)
