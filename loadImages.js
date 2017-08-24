@@ -2,6 +2,10 @@
 
 var images = {};    // container for the images
 var sources = {  // sources of the images
+  angrydango_blue_attackleft: 'sprites/angrydango_blue_attackleft_f=1_w=60_h=40.png',
+  angrydango_blue_attackright: 'sprites/angrydango_blue_attackright_f=1_w=60_h=40.png',
+  angrydango_blue_walkleft: 'sprites/angrydango_blue_walkleft_f=4_w=240_h=40.png',
+  angrydango_blue_walkright: 'sprites/angrydango_blue_walkright_f=4_w=240_h=40.png',
   capguybig: 'sprites/capguybig_f=8_w=1472_h=325.png',
   capguy: 'sprites/capguy_f=8_w=435_h=100.png',
   dango_blue_dieleft: 'sprites/dango_blue_dieleft_f=8_w=480_h=40.png',
@@ -30,6 +34,10 @@ var sources = {  // sources of the images
   test1_standing_right: 'sprites/test1_standing_right_f=1_w=47_h=60.png'
 };
 var frames = {  // number of frames per image
+  angrydango_blue_attackleft: 1,
+  angrydango_blue_attackright: 1,
+  angrydango_blue_walkleft: 4,
+  angrydango_blue_walkright: 4,
   capguybig: 8,
   capguy: 8,
   dango_blue_dieleft: 8,
@@ -58,6 +66,10 @@ var frames = {  // number of frames per image
   test1_standing_right: 1
 };
 var width = {  // width of the images
+  angrydango_blue_attackleft: 60,
+  angrydango_blue_attackright: 60,
+  angrydango_blue_walkleft: 240,
+  angrydango_blue_walkright: 240,
   capguybig: 1472,
   capguy: 435,
   dango_blue_dieleft: 480,
@@ -86,6 +98,10 @@ var width = {  // width of the images
   test1_standing_right: 47
 };
 var height = {  // height of the images
+  angrydango_blue_attackleft: 40,
+  angrydango_blue_attackright: 40,
+  angrydango_blue_walkleft: 40,
+  angrydango_blue_walkright: 40,
   capguybig: 325,
   capguy: 100,
   dango_blue_dieleft: 40,

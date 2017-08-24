@@ -3,8 +3,9 @@ function debug() {
     var nents = entities.length;
     
     // Show entity properties above them
-    for(var i=nents-1;i>-1;i--){
-        gamelog.textmark(i+', hp:'+Math.round(entities[i].hp),entities[i].xview,entities[i].yview);
+    for(var i = nents-1; i > 0 ; i--){
+        var ent = entities[i];
+        gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview);
     }
 
     // Show histogram of entity hp
@@ -16,8 +17,8 @@ function debug() {
     };
 
     // Graphs
-    gamelog.updateGraph(0,gamelog.fps,'fps',30,100); ///// Gamelog!
-    gamelog.updateGraph(1,entities.length,'number of entities',0,300);
+    gamelog.updateGraph(0,gamelog.fps,'fps',40,100); ///// Gamelog!
+    gamelog.updateGraph(1,entities.length,'number of entities',0,50);
     if(liquid.drops.length){
         gamelog.updateGraph(2,liquid.drops[0].vtvy[0],'vy droplet',-10,10);
         gamelog.num[3] = liquid.drops[0].vtvy[0];

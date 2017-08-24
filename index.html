@@ -15,9 +15,11 @@
 
 	<script src='js/entities/entitytypes.js'></script>
 	<script src='js/entities/dango.js'></script>
+	<script src='js/entities/angrydango.js'></script>
 	
 	<script src='js/ai/ai.js'></script>
 	<script src='js/ai/neutral1.js'></script>
+	<script src='js/ai/oni.js'></script>
 	
 	<script src='js/attack/attack.js'></script>
 	<script src='js/attack/melee1.js'></script>
@@ -65,6 +67,11 @@
 			entities[i].do_ai();
 			entities[i].movement();
 			entities[i].draw(i);
+			
+			// Kill off fallen entities
+			if (entities[i].y > level.height) {
+				entities[i].hp -= 5;
+			}
 		}
 		
 		debug();
@@ -73,7 +80,15 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length<=50){var eid=spawn('dango',300,0);entities[eid].vx=2*Math.random()-1;entities[eid].vy=2*Math.random()-1;}
+		if(entities.length <= 40){
+			spawn('dango',300,0); 		// Spawn regular dangos
+			spawn('dango',300,0);
+			spawn('dango',300,0);
+			
+			// Spawn angry dango
+			spawn('angrydango', 500 + Math.random()*level.width/5,0);
+		}
+		
 	}
 	
 	// Define Simulation Loop
