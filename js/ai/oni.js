@@ -86,7 +86,7 @@ ai.oni = {
 				}
 			}
 			
-			// attacks.act(entity,'touch1');	// Do damage upon touch
+			attacks.act(entity,'touch1');	// Do damage upon touch
 		}
 	},
 	
@@ -146,7 +146,7 @@ ai.oni = {
 				entity.ai.mode = 'search';
 			}
 			
-			// attacks.act(entity,'touch1');	// Do damage upon touch
+			attacks.act(entity,'touch1');	// Do damage upon touch
 		}
 	}
 }
