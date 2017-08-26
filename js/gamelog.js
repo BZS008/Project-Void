@@ -31,13 +31,21 @@
 // - text
 //    Strings. White text.
 //	  Usage: gamelog.text[#] = string
-// - markers
+// - mark
 //    Integer array of length 2. Use to mark a location in the canvas.
 //	  Usage: gamelog.mark[#] = [x,y]
-// - markercolors
+// - markcolors
 //    Strings. Use to change context fillStyle color of marker.
 //    Undefined and false give red. True gives green. String is used as fillStyle.
 //	  Usage: gamelog.markcolor[#] = undefined|boolean|string
+// - markrect
+//    Array of 4 integers followed by boolean. Use to mark a rectangular in the
+//    canvas. If refresh==true, it will be set to undefined right after use.
+//	  Usage: gamelog.markrect[#] = [x1, x2, y1, y2, refresh]
+// - markrectcolor
+//    Strings or boolean. Use to change context fillStyle color of markrect.
+//    Undefined and false give red. True gives green. String is used as fillStyle.
+//	  Usage: gamelog.markrectcolor[#] = undefined|boolean|string
 // - graph
 //    Number array.
 //    All graphs will be plotted in the graph rectangle.
@@ -89,6 +97,8 @@ function createGameLog(ctx){
 		numstr:[''],
 		mark:[],
 		markcolor:[],
+		markrect:[],
+		markrectcolor:[],
 		graph:[],
 		graphstr:[],
 		hist:[],
@@ -204,7 +214,40 @@ function createGameLog(ctx){
 		// Draw all elements of the gamelog
 		draw:function(){
 			if(this.show){											// Draw gamelog if show==true
-			
+				
+				// Draw rectangular markers
+				for(var i = 0; i < this.markrect.length; i++){	        // Loop over rectangular markers
+					if(this.markrect[i] !== undefined){		        	// If the marker is defined
+						ctx.beginPath();
+						ctx.lineWidth=1.2;
+						
+						// Fetch/compute x1, y1, width and height
+						var x1 = this.markrect[i][0];
+						var y1 = this.markrect[i][2];
+						var w  = this.markrect[i][1] - x1;
+						var h  = this.markrect[i][3] - y1;
+						
+						ctx.rect(x1, y1, w, h);							// Draw rectangle
+						
+						if(typeof(this.markrectcolor[i])==="string"){	// The markrectcolor is a string
+							ctx.strokeStyle = this.markrectcolor[i];	// The markrectcolor is used as strokeStyle
+						}else{
+							if(this.markrectcolor[i]===undefined || this.markrectcolor[i]===false){
+								ctx.strokeStyle='red';
+							}else if(this.markrectcolor[i]===true){		// The markcolor===true
+								ctx.strokeStyle='green';
+							}
+						}
+						
+						ctx.stroke();
+						
+						// Refresh if requested
+						if(this.markrect[i][4]) {
+							this.markrect[i] = undefined;
+						}
+					}
+				}
+				
 				// Draw markers
 				for(var i=0;i<this.mark.length;i++){	        	// Loop over markers
 					if(this.mark[i]!==undefined){		        	// If the marker is defined
