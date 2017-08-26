@@ -32,10 +32,10 @@ function basicmovement(entity){
 	
 	// Correct speed after collision, but only when that direction is still touching
 	if(anycol){
-		if(entity.onground || entity.headbump){
+		if((entity.onground && entity.vy > 0) || (entity.headbump && entity.vy < 0)){
 			entity.vy = 0;
 		}
-		if(entity.lefttouch || entity.righttouch){
+		if((entity.lefttouch && entity.vx < 0) || (entity.righttouch && entity.vx > 0)){
 			entity.vx = 0;
 		}
 	}
@@ -139,7 +139,3 @@ function arrnum2D(ni, nj, num){
 	}
 	return a;
 }
-
-
-
-
