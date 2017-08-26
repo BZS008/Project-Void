@@ -23,13 +23,13 @@ entitytypes.angrydango = function(x,y){
 	this.direction = 1;			// Direction entity is facing
 		
 	// Life/Attack variables
-	this.hp = 40;				// Health of entity
-	this.fullhp = 40;			// Maximum health of entity
+	this.hp = 25;				// Health of entity
+	this.fullhp = 25;			// Maximum health of entity
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
 	
 	// Movement parameters
-	this.groundacc = 0.22 + Math.random()*0.1;
+	this.groundacc = 0.21 + Math.random()*0.1;
 	this.airacc = 0.11 + Math.random()*0.1;							// Acceleration in air in x-direction
 	this.jumpspeed = 8 + Math.random()*2;
 	

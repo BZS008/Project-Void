@@ -8,7 +8,7 @@ var player = {
 	enemies : ['angrydango', 'batdango'],
 	
 	// Initial Spatial Properties
-	x		: 1500,	            // x position of player (lvl coords) ...x,y should be retrieved from level
+	x		: 1250,	            // x position of player (lvl coords) ...x,y should be retrieved from level
 	y		: 120,	            // y position of player (lvl coords)
 	vx		: 4,
 	vy		: -4,
@@ -30,8 +30,8 @@ var player = {
 	vmax 		: 3.3,			// Maximum self propelled speed
 	
 	// Life/Attack variables
-	hp			: 300,
-	fullhp		: 300,
+	hp			: 400,
+	fullhp		: 400,
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
 	
@@ -60,15 +60,6 @@ var player = {
 		
 		this.sprite.update();
 		this.sprite.render(this.xview,this.yview);
-		
-		///// temporary death message
-		if (this.hp <= 0) {
-			ctx.font = '48px Trebuchet MS, sans-serif';
-			ctx.fillStyle = 'black';
-			ctx.textAlign = 'center';
-			ctx.fillText('You dieded!',viewport.width/2,viewport.height/2);
-		}
-		/////
 	},
 	
 	// such movement, many physics

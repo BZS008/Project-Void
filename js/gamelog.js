@@ -125,7 +125,7 @@ function createGameLog(ctx){
 		blink:function(n){this.circ[n]=true},
 		
 		// text
-		text:["hello world!"],
+		text:[],
 		
 		// toggle show
 		toggle:function(){

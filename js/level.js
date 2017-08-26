@@ -74,9 +74,6 @@ var level = {
 		var p1=[entity.x-entity.vx,entity.y-entity.vy];
 		var p2=[entity.x,entity.y];
 		
-		gamelog.num[0]=0;
-		gamelog.numstr[0]='colits: '
-		
 		// converge to collision edge
 		for(var i=0;manhatten(p1,p2)>colprecision && i<10;i++){		// Converge until satisfactory. No more than 10 convergence iterations
 			var p3=midpoint(p1,p2);

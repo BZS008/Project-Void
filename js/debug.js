@@ -3,20 +3,26 @@ function debug() {
     var nents = entities.length;
     
     // Show entity properties above them
+    var angry = 0;
+    var friendly = 0;
     for(var i = nents-1; i > 0 ; i--){
         var ent = entities[i];
         gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview - 20);
         gamelog.mark[i] = [ent.x, ent.y];
         gamelog.markcolor[i] = 'black';
+        
+        // Count dangos
+        if (ent.type == 'angrydango') {angry++;}
+        if (ent.type == 'dango') {friendly++;}
     }
 
     // Show histogram of entity hp
-    gamelog.hist[0]={
-        oblist: entities,
-        prop: 'vy',
-        min: -2,
-        max: 32
-    };
+    // gamelog.hist[0]={
+    //     oblist: entities,
+    //     prop: 'vy',
+    //     min: -2,
+    //     max: 32
+    // };
 
     // Graphs
     gamelog.updateGraph(0,gamelog.fps,'fps',40,100); ///// Gamelog!
@@ -27,15 +33,43 @@ function debug() {
     }
 
     // Player cooldown
-    gamelog.num[1] = player.cooldown;
-    
-    // Player horizontal speed
-    gamelog.num[2] = player.vx;
-    gamelog.numstr[2] = 'vx: '
+    gamelog.num[0] = player.cooldown;
+    gamelog.numstr[0] = 'Cooldown: ';
     
     // Player hp
-    gamelog.num[3] = player.hp;
-    gamelog.numstr[3] = 'hp: '
+    gamelog.num[1] = player.hp;
+    gamelog.numstr[1] = 'hp: '
+    
+    
+    //---- Mini Game: Dango Defender! ----////////
+    // Protect the friendly dango's!
+    
+    //// Friendly Dango's left
+    gamelog.num[2] = friendly;
+    gamelog.numstr[2] = "Friendly Dango's left: ";
+    
+    //// Angry Dango's left
+    gamelog.num[3] = angry;
+    gamelog.numstr[3] = "Angry Dango's left: ";
+    
+    if (player.hp <= 0) {           ///// temporary death message
+        ctx.font = '48px Trebuchet MS, sans-serif';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.fillText('You dieded!',viewport.width/2,viewport.height/2);
+    } else if (angry == 0) {        ///// Winning condition
+        ctx.font = '48px Trebuchet MS, sans-serif';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.fillText("Friendly Dango's rescued!",viewport.width/2,viewport.height/2);
+    }
+    ///// title
+    ctx.font = '40px Trebuchet MS, sans-serif';
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'center';
+    ctx.fillText("Dango Defender!", viewport.width/2, 50);
+    //-----------------------------------///////
+    
 
     // Mouse info
     var mx = viewport.mousex;

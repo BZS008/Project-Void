@@ -7,7 +7,7 @@ attacks.melee1 = {
 	width: 70,				// Width of damage area
 	height: 50,				// Height of damage area
 	falloff: 'linear',		// Damage falloff: (none|linear|gauss)
-	basedamage: 20,			// Base damage value (without the falloff)
+	basedamage: 25,			// Base damage value (without the falloff)
 	type: 'direct',			// Type (Not Yet Implemented)
 	effects: ['fire'],		// Effects (Not Yet Implemented)
 	cooldown: 45,			// Cooldown timer (in frames)

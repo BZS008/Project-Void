@@ -81,13 +81,15 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length <= 25){
+		if(entities.length <= 30){
 			spawn('dango',1000,0); 		// Spawn regular dangos
-			spawn('dango',3500,0); 		// Spawn regular dangos
+			spawn('dango',1100,0); 		// Spawn regular dangos
+			spawn('dango',1300,0); 		// Spawn regular dangos
+			spawn('dango',1400,0); 		// Spawn regular dangos
+			spawn('dango',1500,0); 		// Spawn regular dangos
 			spawn('angrydango',2500,0); // Spawn regular dangos
 			
 			// Spawn bats
-			spawn('batdango', 400 + Math.random()*level.width/4, Math.random()*250);
 			spawn('batdango', 1500 + Math.random()*level.width/4, Math.random()*250);
 		}
 		

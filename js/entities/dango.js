@@ -23,8 +23,8 @@ entitytypes.dango = function(x,y){
 	this.direction = 1;			// Direction entity is facing
 		
 	// Life/Attack variables
-	this.hp = 30;				// Health of entity
-	this.fullhp = 30;			// Maximum health of entity
+	this.hp = 42;				// Health of entity
+	this.fullhp = 42;			// Maximum health of entity
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
 	
@@ -34,8 +34,8 @@ entitytypes.dango = function(x,y){
 	this.jumpspeed = 8 + Math.random()*2;
 	
 	// List of all dango's - choose a random one
-	var dangos = [[images.dango_blue_walkleft,images.dango_blue_walkright,images.dango_blue_dieleft,images.dango_blue_dieright],[images.dango_yellow_walkleft,images.dango_yellow_walkright],[images.dango_red_walkleft,images.dango_red_walkright],[images.dango_orange_walkleft,images.dango_orange_walkright],[images.dango_lilac_walkleft,images.dango_lilac_walkright],[images.dango_green_walkleft,images.dango_green_walkright]];
-	var dangoindex = Math.floor(Math.random()*6);
+	var dangos = [[images.dango_yellow_walkleft,images.dango_yellow_walkright],[images.dango_red_walkleft,images.dango_red_walkright],[images.dango_orange_walkleft,images.dango_orange_walkright],[images.dango_lilac_walkleft,images.dango_lilac_walkright],[images.dango_green_walkleft,images.dango_green_walkright]];
+	var dangoindex = Math.floor(Math.random()*5);
 	
 	this.spriteoptions = {
 		images:dangos[dangoindex],
