@@ -30,8 +30,8 @@ var player = {
 	vmax 		: 3.3,			// Maximum self propelled speed
 	
 	// Life/Attack variables
-	hp			: 2000,
-	fullhp		: 2000,
+	hp			: 300,
+	fullhp		: 300,
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
 	
@@ -60,6 +60,15 @@ var player = {
 		
 		this.sprite.update();
 		this.sprite.render(this.xview,this.yview);
+		
+		///// temporary death message
+		if (this.hp <= 0) {
+			ctx.font = '48px Trebuchet MS, sans-serif';
+			ctx.fillStyle = 'black';
+			ctx.textAlign = 'center';
+			ctx.fillText('You dieded!',viewport.width/2,viewport.height/2);
+		}
+		/////
 	},
 	
 	// such movement, many physics
