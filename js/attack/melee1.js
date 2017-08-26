@@ -4,10 +4,10 @@
 attacks.melee1 = {
 	fof: 'forward',			// Field of Fire: (area|forward)
     upontouch: false,       // Determine damage area by own width/height or separate
-	width: 100,				// Width of damage area
+	width: 70,				// Width of damage area
 	height: 50,				// Height of damage area
 	falloff: 'linear',		// Damage falloff: (none|linear|gauss)
-	basedamage: 30,			// Base damage value (without the falloff)
+	basedamage: 20,			// Base damage value (without the falloff)
 	type: 'direct',			// Type (Not Yet Implemented)
 	effects: ['fire'],		// Effects (Not Yet Implemented)
 	cooldown: 45,			// Cooldown timer (in frames)

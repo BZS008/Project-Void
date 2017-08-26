@@ -5,7 +5,7 @@ function debug() {
     // Show entity properties above them
     for(var i = nents-1; i > 0 ; i--){
         var ent = entities[i];
-        gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview);
+        gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview - 20);
         gamelog.mark[i] = [ent.x, ent.y];
         gamelog.markcolor[i] = 'black';
     }

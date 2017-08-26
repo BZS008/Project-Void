@@ -36,7 +36,7 @@ ai.neutral1 = {
 			// Are we there yet? No!
 			}else{
 				
-				var dir = Math.sign(delta);
+				var dir = -Math.sign(delta);
 				entity.direction = dir;
 
 				var touch = (entity.lefttouch) || (entity.righttouch)
@@ -46,7 +46,7 @@ ai.neutral1 = {
 						entity.vy = -entity.jumpspeed;
 						entity.onground = false;
 					}else{
-						entity.vx -= entity.groundacc * dir;
+						entity.vx += entity.groundacc * dir;
 						
 						// The occasional random jump
 						if(Math.random()<0.001 && entity.onground){
@@ -55,7 +55,7 @@ ai.neutral1 = {
 						}
 					}
 				}else if(!touch){
-					entity.vx -= entity.airacc * dir;
+					entity.vx += entity.airacc * dir;
 				}
 				///////////////////////////////////////////////////////////// documentatie!!!
 			}

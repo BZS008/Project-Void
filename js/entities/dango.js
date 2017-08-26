@@ -59,18 +59,18 @@ entitytypes.dango = function(x,y){
 			if(this.stun <= 0){						// Don't walk when stunned
 				// Show walking animation
 				if(this.direction == -1){
-					this.sprite.changeAnim(1);		// Walk left
+					this.sprite.changeAnim(0); 		// Walk left
 				}else{
-					this.sprite.changeAnim(0); 		// Walk right
+					this.sprite.changeAnim(1);		// Walk right
 				}
 				this.sprite.update();
 			}
 		} else {
 			// Show dying animation
 			if(this.direction == -1){
-				this.sprite.changeAnim(3);		// Die left
+				this.sprite.changeAnim(2);		// Die left
 			}else{
-				this.sprite.changeAnim(2);		// Die right
+				this.sprite.changeAnim(3);		// Die right
 			}
 			this.sprite.update();
 			

@@ -60,33 +60,33 @@ entitytypes.angrydango = function(x,y){
 				if (this.ai.mode == 'approach') {
 					if (this.cooldown > 0) {
 						// Show intense face
-						if(this.direction == 1){
-							this.sprite.changeAnim(6);	// Intense right
+						if(this.direction == -1){
+							this.sprite.changeAnim(6);	// Intense left
 						}else{
-							this.sprite.changeAnim(7); 	// Intense left
+							this.sprite.changeAnim(7); 	// Intense right
 						}
 					} else {
 						// Show walking/searching animation
-						if(this.direction == 1){
-							this.sprite.changeAnim(4);	// Approach right
+						if(this.direction == -1){
+							this.sprite.changeAnim(4);	// Approach left
 						}else{
-							this.sprite.changeAnim(5);	// Approach left
+							this.sprite.changeAnim(5);	// Approach right
 						}
 					}
 				} else {
 					// Show walking/searching animation
-					if(this.direction == 1){
-						this.sprite.changeAnim(0);		// Walk right
+					if(this.direction == -1){
+						this.sprite.changeAnim(0);		// Walk left
 					}else{
-						this.sprite.changeAnim(1);		// Walk left
+						this.sprite.changeAnim(1);		// Walk right
 					}
 				}
 			} else {
 				// Show intense face
 				if(this.direction == -1){
-					this.sprite.changeAnim(7);			// Ouch left
+					this.sprite.changeAnim(6);			// Ouch left
 				}else{
-					this.sprite.changeAnim(6); 			// Ouch right
+					this.sprite.changeAnim(7); 			// Ouch right
 				}
 			}
 			this.sprite.update();

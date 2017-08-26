@@ -14,7 +14,7 @@ ai.oni = {
 			arrive_dist: 		80,
 			arrive_vdist:		40,					// Vertical distance regarding as arrived
 			sight_dist:			250,				// Distance for seeing enemies
-			sight_height:		100,				// Vertical sight distance
+			sight_height:		150,				// Vertical sight distance
 		};
 		
 		return entity;
@@ -40,7 +40,7 @@ ai.oni = {
 			// Are we there yet? No!
 			}else{
 				
-				var dir = Math.sign(delta);
+				var dir = -Math.sign(delta);
 				entity.direction = dir;
 
 				var touch = (entity.lefttouch) || (entity.righttouch)
@@ -50,7 +50,7 @@ ai.oni = {
 						entity.vy = -entity.jumpspeed;
 						entity.onground = false;
 					}else{
-						entity.vx -= entity.groundacc * dir;
+						entity.vx += entity.groundacc * dir;
 						
 						// The occasional random jump
 						if(Math.random()<0.001 && entity.onground){
@@ -59,13 +59,13 @@ ai.oni = {
 						}
 					}
 				}else if(!touch){
-					entity.vx -= entity.airacc * dir;
+					entity.vx += entity.airacc * dir;
 				}
 				
 				// Check for enemies
-				var x1 = entity.x - entity.ai.sight_dist * (entity.direction ==  1);
-				var x2 = entity.x + entity.ai.sight_dist * (entity.direction == -1);
-				var y1 = entity.y + entity.height/2;
+				var x1 = entity.x - entity.ai.sight_dist * (entity.direction == -1);
+				var x2 = entity.x + entity.ai.sight_dist * (entity.direction ==  1);
+				var y1 = entity.y + entity.ai.sight_height/2;
 				var y2 = y1 - entity.ai.sight_height;
 				
 				/////
@@ -77,7 +77,7 @@ ai.oni = {
 				var nents = entities.length;
 				for (var i = 0; i < nents; i++) {
 					var targ = entities[i];
-					var spotted = targ.x > x1 && targ.x < x2 && targ.y <= y1 && targ.y > y2;
+					var spotted = targ.x > x1 && targ.x < x2 && targ.y <= y1 && targ.y > y2 && targ.hp > 0;
 					if ((entity.enemies.indexOf(targ.type) > -1) && spotted) {
 						entity.ai.target_ent = targ;
 						entity.ai.mode = 'approach';
@@ -119,7 +119,7 @@ ai.oni = {
 				// Are we there yet? No!
 				} else {
 					
-					var dir = Math.sign(delta);
+					var dir = -Math.sign(delta);
 					entity.direction = dir;
 
 					var touch = (entity.lefttouch) || (entity.righttouch)
@@ -129,7 +129,7 @@ ai.oni = {
 							entity.vy = -entity.jumpspeed;
 							entity.onground = false;
 						}else{
-							entity.vx -= entity.groundacc * dir;
+							entity.vx += entity.groundacc * dir;
 							
 							// The occasional random jump
 							if(Math.random()<0.001 && entity.onground){
@@ -138,7 +138,7 @@ ai.oni = {
 							}
 						}
 					}else if(!touch){
-						entity.vx -= entity.airacc * dir;
+						entity.vx += entity.airacc * dir;
 					}
 					///////////////////////////////////////////////////////////// documentatie!!!
 				}
