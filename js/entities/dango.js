@@ -1,10 +1,12 @@
 "use strict";
 
 // First simple enemy entity
-entitytypes.dango = function(x,y,id){
+entitytypes.dango = function(x,y){
 	this.type = 'dango';
 	this.ai_init = 'neutral1';
-	this.id = id;
+	
+	this.enemies = [];
+	
 	// Initial Spatial Properties
 	this.x = x;					// x position of entity (lvl coords)
 	this.y = y;					// y position of entity (lvl coords)
@@ -46,33 +48,14 @@ entitytypes.dango = function(x,y,id){
 	this.air_drag_factor = 1.05;					// Air drag x-direction
 	this.ground_drag_factor = 1.1;				//// MIGHT ADD MATERIAL SPECIFIC DRAG
 
-	// Collision Properties
-	//  Important note: In order for
-	//  the collision detection/correction to work
-	//  correctly, the side points (top, bottom,
-	//  left & right) should be next to, but not
-	//  on the collision points. This has to do with
-	//  The way position is corrected after collision.
-	
+	// Dimensions
 	this.width = 60;
 	this.height = 40;
-	this.colpts = [[0,0],[0,40],[60,0],[60,40]];	// Collision points =  will be used for collision detection/correction
-	this.bottompts = [[0,41],[60,41]];			// Bottom points =  for ground checking
-	this.leftpts = [[-1,0],[-1,40]];	// Left points =  for left wall checking
-	this.rightpts = [[61,0],[61,40]];	// Right points =  for right wall checking
-	this.toppts = [[0,-1],[40,-1]];				// Top points =  for ceiling checking
-	
-	// this.width = 30;
-	// this.height = 60;
-	// this.colpts = [[0,0],[0,60],[30,0],[30,60],[0,30],[30,30]];	// Collision points =  will be used for collision detection/correction
-	// this.bottompts = [[0,61],[30,61]];			// Bottom points =  for ground checking
-	// this.leftpts = [[-1,0],[-1,30],[-1,60]];	// Left points =  for left wall checking
-	// this.rightpts = [[31,0],[31,30],[31,60]];	// Right points =  for right wall checking
-	// this.toppts = [[0,-1],[30,-1]];				// Top points =  for ceiling checking
+	addfourcolpts(this);
 
 	// Draw Entity
 	this.draw = function(i){
-		if(this.hp >= 0){
+		if(this.hp > 0){
 			if(this.stun <= 0){						// Don't walk when stunned
 				// Show walking animation
 				if(this.direction == -1){

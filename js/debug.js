@@ -6,6 +6,8 @@ function debug() {
     for(var i = nents-1; i > 0 ; i--){
         var ent = entities[i];
         gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview);
+        gamelog.mark[i] = [ent.x, ent.y];
+        gamelog.markcolor[i] = 'black';
     }
 
     // Show histogram of entity hp
@@ -26,6 +28,14 @@ function debug() {
 
     // Player cooldown
     gamelog.num[1] = player.cooldown;
+    
+    // Player horizontal speed
+    gamelog.num[2] = player.vx;
+    gamelog.numstr[2] = 'vx: '
+    
+    // Player hp
+    gamelog.num[3] = player.hp;
+    gamelog.numstr[3] = 'hp: '
 
     // Mouse info
     var mx = viewport.mousex;
@@ -45,8 +55,4 @@ function debug() {
             gamelog.textmark("height: " + level.tileprops[mi][mj].height.toPrecision(3),mx,my+100,true);
         }
     }
-    
-    // Player horizontal speed
-    gamelog.num[2] = player.vx;
-    gamelog.numstr[2] = 'vx: '
 }

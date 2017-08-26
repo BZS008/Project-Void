@@ -16,6 +16,7 @@ attacks.touch1 = {
 	knockbacky: -7,			// Knockback y-velocity (scales with falloff)
 	knockbackrandom: 0.2,	// Randomness knockback fraction, e.g. 0.2 -> between 80% to 100%
 	stun: 15,				// Stun time (in frames)
+	friendlyfire: false		// Hit everyone/only enemies
 };
 
 //// Possible feature: custom attack properties per entity, making modifiers like potions easier...

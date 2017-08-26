@@ -32,7 +32,7 @@
 	<script src='js/viewport.js'></script>
 	<script src='js/keyinput.js'></script>
 	<script src='js/level.js'></script>
-	<script src='js/player.js'></script>
+	<script src='js//entities/player.js'></script>
 	
 	<script src="js/debug.js"></script>
 	
@@ -81,11 +81,14 @@
 		viewport.followPlayer();
 		
 		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length <= 30){
-			spawn('dango',300,0); 		// Spawn regular dangos
+		if(entities.length <= 25){
+			spawn('dango',1000,0); 		// Spawn regular dangos
+			spawn('dango',3500,0); 		// Spawn regular dangos
+			spawn('angrydango',2500,0); // Spawn regular dangos
 			
 			// Spawn bats
-			spawn('batdango', 500 + Math.random()*level.width/5, Math.random()*250);
+			spawn('batdango', 400 + Math.random()*level.width/4, Math.random()*250);
+			spawn('batdango', 1500 + Math.random()*level.width/4, Math.random()*250);
 		}
 		
 	}
@@ -106,7 +109,7 @@
 
 	// Create Game Log object
 	var gamelog=createGameLog(ctx);
-	//// gamelog.toggle(); // Turn off gamelog
+	// gamelog.toggle(); // Turn off gamelog
 	
 </script>
 

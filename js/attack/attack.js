@@ -29,14 +29,23 @@ var attacks = {
 				var x2 = entity.x + width/2;
 			}else{									// Attack in forward direction
 				var x1 = entity.x - width * (entity.direction == -1);
-				var x2 = entity.x + width * (entity.direction == 1);
+				var x2 = entity.x + width * (entity.direction ==  1);
 			}
+			
+			///// gamelog
+			var id = entities.indexOf(entity) + 250;
+			gamelog.markrect[id] = [x1, x2, y1, y2, 12];
+			gamelog.markrectcolor[id] = 'red';
+			/////
 				
 			var nents = entities.length;        	// Get number of entities
 			for(var eid = 0; eid < nents; eid++){ 	// Loop over all entities
 				var target = entities[eid];			// Retrieve entity
 				
-				if(target !== entity){				// Don't attack yourself!
+				var isenemy = (entity.enemies.indexOf(target.type) > -1);	// Check if target is enemy
+				
+				// Only attack enemies if friendly fire is off, never attack self
+				if(target !== entity && (attack.friendlyfire || isenemy)){
 					
 					// Check if any collision point is within field of fire
 					var inrange = false;
@@ -50,21 +59,21 @@ var attacks = {
 						if (colptinrange) {cxinrange = cx;}
 					}
 					
-					if(inrange){ 					// If entity is in target area
+					if(inrange){ 						// If entity is in target area
 						
 						// Calculate damagefactor
 						var Dx = cxinrange - entity.x;	// x-distance to target
 						var damagefactor;
 						switch(attack.falloff){
-							case 'linear':			// Calculate attack damage for linear falloff
+							case 'linear':				// Calculate attack damage for linear falloff
 								var x = Dx / width;
 								damagefactor = 1 - Math.abs(x)/2;
 								break;
-							case 'gauss':			// Calculate attack damage for gaussian falloff
+							case 'gauss':				// Calculate attack damage for gaussian falloff
 								var x = Dx / width;
 								damagefactor = Math.exp(-4.605*x*x);
 								break;
-							default:				// Calculate attack damage for flat falloff
+							default:					// Calculate attack damage for flat falloff
 								damagefactor = 1;
 						}
 						

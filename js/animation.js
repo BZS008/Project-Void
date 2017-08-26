@@ -58,8 +58,8 @@ function animation( obj, option ) {
       0,
       obj.sprite.images[obj.sprite.index].spritewidth,
       obj.sprite.images[obj.sprite.index].height,
-      x,
-      y,
+      x - obj.sprite.images[obj.sprite.index].spritewidth/2,
+      y - obj.sprite.images[obj.sprite.index].height/2,
       obj.sprite.images[obj.sprite.index].spritewidth,
       obj.sprite.images[obj.sprite.index].height);
   };

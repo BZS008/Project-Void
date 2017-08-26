@@ -11,7 +11,7 @@ ai.oni = {
 			target_y: 			entity.y,
 			target_ent:			undefined,
 			rand_walk_max_dist: 1000,
-			arrive_dist: 		50,
+			arrive_dist: 		80,
 			arrive_vdist:		40,					// Vertical distance regarding as arrived
 			sight_dist:			250,				// Distance for seeing enemies
 			sight_height:		100,				// Vertical sight distance
@@ -63,16 +63,22 @@ ai.oni = {
 				}
 				
 				// Check for enemies
-				var x1 = entity.x - entity.ai.sight_dist * (entity.direction == -1);
-				var x2 = entity.x + entity.ai.sight_dist * (entity.direction ==  1);
-				var y1 = entity.y;
+				var x1 = entity.x - entity.ai.sight_dist * (entity.direction ==  1);
+				var x2 = entity.x + entity.ai.sight_dist * (entity.direction == -1);
+				var y1 = entity.y + entity.height/2;
 				var y2 = y1 - entity.ai.sight_height;
+				
+				/////
+				var id = entities.indexOf(entity);
+				gamelog.markrect[id] = [x1, x2, y1, y2, 1];
+				gamelog.markrectcolor[id] = 'yellow';
+				/////
 				
 				var nents = entities.length;
 				for (var i = 0; i < nents; i++) {
 					var targ = entities[i];
 					var spotted = targ.x > x1 && targ.x < x2 && targ.y <= y1 && targ.y > y2;
-					if ((targ.type == 'dango' || targ.type == 'angrydango') && spotted) {
+					if ((entity.enemies.indexOf(targ.type) > -1) && spotted) {
 						entity.ai.target_ent = targ;
 						entity.ai.mode = 'approach';
 						break;
@@ -80,7 +86,7 @@ ai.oni = {
 				}
 			}
 			
-			attacks.act(entity,'touch1');	// Do damage upon touch
+			// attacks.act(entity,'touch1');	// Do damage upon touch
 		}
 	},
 	
@@ -91,7 +97,18 @@ ai.oni = {
 		if(entity.hp > 0 && entity.stun <= 0){		// Don't run during death animation or when stunned
 			
 			if (entity.ai.target_ent.hp > 0) {	// Check if target is still alive
-			
+				
+				///// gamelog
+				var x1 = entity.x;
+				var x2 = entity.ai.target_ent.x;
+				var y1 = entity.y;
+				var y2 = entity.ai.target_ent.y;
+				
+				var id = entities.indexOf(entity);
+				gamelog.markline[id] = [x1, x2, y1, y2, 1];
+				gamelog.marklinecolor[id] = 'orange';
+				/////
+				
 				var delta = entity.x - entity.ai.target_ent.x;
 				var deltay = entity.y - entity.ai.target_ent.y;
 				
@@ -129,20 +146,7 @@ ai.oni = {
 				entity.ai.mode = 'search';
 			}
 			
-			attacks.act(entity,'touch1');	// Do damage upon touch
-		}
-	},
-	
-	onitouch:function(entity) {
-		var nents = entities.length;
-		for (var i = 0; i < nents; i++) {
-			var targ = entities[i];
-			var touched = targ.x > x1 && targ.x < x2 && targ.y <= y1 && targ.y > y2;
-			if ((targ.type == 'dango' || targ.type == 'player') && touched) {
-				entity.ai.target_ent = targ;
-				entity.ai.mode = 'approach';
-				break;
-			}
+			// attacks.act(entity,'touch1');	// Do damage upon touch
 		}
 	}
 }
