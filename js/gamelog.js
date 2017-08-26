@@ -3,7 +3,7 @@
 //-------------------------//
 //
 // An object to store and show info on canvas realtime.
-// Creator: Dani�l Cox
+// Creator: Daniel Cox
 //-------------------------
 // Input: canvas context
 //
@@ -13,6 +13,7 @@
 // - precision
 //    Integer. Max precision of number to string conversion.
 //
+// Variable representors:
 // - circ (default 4x undefined)
 //    Booleans. Reset after drawing the gamelog.
 //    Red/green/grey. Use blink(n) to quickly set to true.
@@ -31,21 +32,34 @@
 // - text
 //    Strings. White text.
 //	  Usage: gamelog.text[#] = string
+//
+// Markers:
 // - mark
 //    Integer array of length 2. Use to mark a location in the canvas.
+//    In level coordinates!
 //	  Usage: gamelog.mark[#] = [x,y]
 // - markcolors
 //    Strings. Use to change context fillStyle color of marker.
 //    Undefined and false give red. True gives green. String is used as fillStyle.
 //	  Usage: gamelog.markcolor[#] = undefined|boolean|string
 // - markrect
-//    Array of 4 integers followed by boolean. Use to mark a rectangular in the
-//    canvas. If refresh==true, it will be set to undefined right after use.
-//	  Usage: gamelog.markrect[#] = [x1, x2, y1, y2, refresh]
+//    Array of 4 integers followed by an integer. Use to mark a rectangular in
+//    the canvas for duration number of frames. In level coordinates!
+//	  Usage: gamelog.markrect[#] = [x1, x2, y1, y2, duration]
 // - markrectcolor
 //    Strings or boolean. Use to change context fillStyle color of markrect.
 //    Undefined and false give red. True gives green. String is used as fillStyle.
 //	  Usage: gamelog.markrectcolor[#] = undefined|boolean|string
+// - markline
+//    Array of 4 integers followed by an integer. Use to mark a line in
+//    the canvas for duration number of frames. In level coordinates!
+//	  Usage: gamelog.markline[#] = [x1, x2, y1, y2, duration]
+// - marklinecolor
+//    Strings or boolean. Use to change context fillStyle color of markline.
+//    Undefined and false give red. True gives green. String is used as fillStyle.
+//	  Usage: gamelog.marklinecolor[#] = undefined|boolean|string
+//
+// Graphs:
 // - graph
 //    Number array.
 //    All graphs will be plotted in the graph rectangle.
@@ -95,10 +109,14 @@ function createGameLog(ctx){
 		sqr:[undefined,undefined,undefined,undefined],
 		num:[0],
 		numstr:[''],
+		
 		mark:[],
 		markcolor:[],
 		markrect:[],
 		markrectcolor:[],
+		markline:[],
+		marklinecolor:[],
+		
 		graph:[],
 		graphstr:[],
 		hist:[],
@@ -222,10 +240,10 @@ function createGameLog(ctx){
 						ctx.lineWidth=1.2;
 						
 						// Fetch/compute x1, y1, width and height
-						var x1 = this.markrect[i][0];
-						var y1 = this.markrect[i][2];
-						var w  = this.markrect[i][1] - x1;
-						var h  = this.markrect[i][3] - y1;
+						var x1 = xl2xv(this.markrect[i][0]);
+						var y1 = yl2yv(this.markrect[i][2]);
+						var w  = xl2xv(this.markrect[i][1]) - x1;
+						var h  = yl2yv(this.markrect[i][3]) - y1;
 						
 						ctx.rect(x1, y1, w, h);							// Draw rectangle
 						
@@ -241,9 +259,48 @@ function createGameLog(ctx){
 						
 						ctx.stroke();
 						
-						// Refresh if requested
-						if(this.markrect[i][4]) {
+						// Duration timer
+						if(this.markrect[i][4] > 0) {
+							this.markrect[i][4]--;
+						} else {
 							this.markrect[i] = undefined;
+						}
+					}
+				}
+				
+				// Draw line markers
+				for(var i = 0; i < this.markline.length; i++){	        // Loop over rectangular markers
+					if(this.markline[i] !== undefined){		        	// If the marker is defined
+						ctx.beginPath();
+						ctx.lineWidth=1.2;
+						
+						// Fetch/compute x1, x2, y1 and y2
+						var x1 = xl2xv(this.markline[i][0]);
+						var x2 = xl2xv(this.markline[i][1]);
+						var y1 = yl2yv(this.markline[i][2]);
+						var y2 = yl2yv(this.markline[i][3]);
+						
+						// Draw line
+						ctx.moveTo(x1, y1);
+						ctx.lineTo(x2, y2);
+						
+						if(typeof(this.marklinecolor[i])==="string"){	// The marklinecolor is a string
+							ctx.strokeStyle = this.marklinecolor[i];	// The marklinecolor is used as strokeStyle
+						}else{
+							if(this.marklinecolor[i]===undefined || this.marklinecolor[i]===false){
+								ctx.strokeStyle='red';
+							}else if(this.marklinecolor[i]===true){		// The markcolor===true
+								ctx.strokeStyle='green';
+							}
+						}
+						
+						ctx.stroke();
+						
+						// Duration timer
+						if(this.markline[i][4] > 0) {
+							this.markline[i][4]--;
+						} else {
+							this.markline[i] = undefined;
 						}
 					}
 				}
@@ -253,7 +310,9 @@ function createGameLog(ctx){
 					if(this.mark[i]!==undefined){		        	// If the marker is defined
 						ctx.beginPath();
 						ctx.lineWidth=1.6;
-						ctx.arc(this.mark[i][0],this.mark[i][1],5,0,Math.PI*2);	// Draw circle as mark around the coords
+						var x = xl2xv(this.mark[i][0]);
+						var y = yl2yv(this.mark[i][1]);
+						ctx.arc(x, y, 5, 0, Math.PI*2);				// Draw circle as mark around the coords
 						
 						if(typeof(this.markcolor[i])==="string"){	// The markcolor is a string
 							ctx.strokeStyle = this.markcolor[i];	// The markcolor is used as strokeStyle
