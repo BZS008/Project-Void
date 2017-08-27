@@ -26,8 +26,10 @@ Effects applied to the targets, such as fire.
 8. `cooldown: number`
 Amount of ticks for attack to be available again.
 
-9. `knockbackx, knockbacky: number` Knockback x- and y-velocity. Hit entities will fly off with this speed away from the attacker. Scales with falloff.
+9. `doknockback: boolean` Specify if knockback should be applied.
 
-10. `knockbackrandom: number` Randomness knockback fraction. Knockback can be reduced with a fraction up to this value.
+10. `knockbackvx, knockbackvy: number` Knockback x- and y-velocity. Hit entities will fly off with this speed away from the attacker. Scales with falloff.
 
-11. `stun: number` Target stun time in frames. Scales with falloff. Target can't move/attack while stunned.
+11. `knockbackrandom: number` Randomness knockback fraction. Knockback can be reduced with a fraction up to this value.
+
+12. `stun: number` Target stun time in frames. Scales with falloff. Target can't move/attack while stunned.

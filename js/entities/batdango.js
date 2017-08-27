@@ -3,7 +3,7 @@
 // First simple enemy entity
 entitytypes.batdango = function(x,y){
 	this.type = 'batdango';
-	this.ai_init = 'neutral1';
+	this.ai_init = 'bat';
 	
 	this.enemies = ['player', 'dango'];
 	
@@ -23,8 +23,8 @@ entitytypes.batdango = function(x,y){
 	this.direction = 1;			// Direction entity is facing
 		
 	// Life/Attack variables
-	this.hp = 30;				// Health of entity
-	this.fullhp = 30;			// Maximum health of entity
+	this.hp = 7;				// Health of entity
+	this.fullhp = 7;			// Maximum health of entity
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
 	
@@ -40,13 +40,13 @@ entitytypes.batdango = function(x,y){
 	};
 
 	// Physical Properties
-	this.fall_factor = 1.4;
+	this.fall_factor = 0;
 	this.air_drag_factor = 1.05;					// Air drag x-direction
 	this.ground_drag_factor = 1.1;				//// MIGHT ADD MATERIAL SPECIFIC DRAG
 
 	// Dimensions
-	this.width = 60;
-	this.height = 40;
+	this.width = 40;
+	this.height = 20;
 	addfourcolpts(this);
 
 	// Draw Entity
@@ -83,7 +83,6 @@ entitytypes.batdango = function(x,y){
 
 	// such movement, many physics
 	this.movement = function(){
-		this.vy = 0;
 		basicmovement(this);
 	};
 	

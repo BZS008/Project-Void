@@ -79,10 +79,13 @@ var attacks = {
 						
 						// Apply damage, knockback and stun
 						entities[eid].hp -= damagefactor * attack.basedamage;
-						var knockbackfactor = damagefactor * (1 - attack.knockbackrandom * Math.random());
-						entities[eid].vx = attack.knockbackx * knockbackfactor * Math.sign(Dx);
-						entities[eid].vy = attack.knockbacky * knockbackfactor;
 						entities[eid].stun = damagefactor * attack.stun;
+						
+						if (attack.doknockback) {
+							var knockbackfactor = damagefactor * (1 - attack.knockbackrandom * Math.random());
+							entities[eid].vx = attack.knockbackvx * knockbackfactor * Math.sign(Dx);
+							entities[eid].vy = attack.knockbackvy * knockbackfactor;
+						}
 						
 						///// effects, potions, armor and such are not considered yet
 					}

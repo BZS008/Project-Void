@@ -12,8 +12,9 @@ attacks.aoe1 = {
 	effects: ['fire'],		// Effects (Not Yet Implemented)
 	cooldown: 45,			// Cooldown timer (in frames)
     // When upontouch == true, knockback velocity is set instead of added
-	knockbackx: 15,			// Knockback x-velocity (scales with falloff)
-	knockbacky: -7,			// Knockback y-velocity (scales with falloff)
+	doknockback: true,		// Specify if knockback should be used
+	knockbackvx: 15,		// Knockback x-velocity (scales with falloff)
+	knockbackvy: -7,		// Knockback y-velocity (scales with falloff)
 	knockbackrandom: 0.2,	// Randomness knockback fraction, e.g. 0.2 -> between 80% to 100%
 	stun: 20,				// Stun time (in frames)
 	friendlyfire: false		// Hit everyone/only enemies

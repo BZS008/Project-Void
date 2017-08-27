@@ -21,11 +21,13 @@
 	<script src='js/ai/ai.js'></script>
 	<script src='js/ai/neutral1.js'></script>
 	<script src='js/ai/oni.js'></script>
+	<script src='js/ai/bat.js'></script>
 	
 	<script src='js/attack/attack.js'></script>
 	<script src='js/attack/melee1.js'></script>
 	<script src='js/attack/aoe1.js'></script>
 	<script src='js/attack/touch1.js'></script>
+	<script src='js/attack/battouch.js'></script>
 	
 	<script src='js/initializations.js'></script>
 	<script src='js/coords.js'></script>
@@ -85,9 +87,7 @@
 			spawn('dango',1000,0); 		// Spawn regular dangos
 			spawn('dango',1100,0); 		// Spawn regular dangos
 			spawn('dango',1300,0); 		// Spawn regular dangos
-			spawn('dango',1400,0); 		// Spawn regular dangos
-			spawn('dango',1500,0); 		// Spawn regular dangos
-			spawn('angrydango',2500,0); // Spawn regular dangos
+			// spawn('angrydango',2500,0); // Spawn regular dangos
 			
 			// Spawn bats
 			spawn('batdango', 1500 + Math.random()*level.width/4, Math.random()*250);
