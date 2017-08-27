@@ -4,7 +4,7 @@ from re import search as s
 
 spritelist = [] # list with filenames of usable files
 # adding (case-indep) .png and .jpg files to spritelist
-for filename in os.listdir('./sprites'):
+for filename in sorted(os.listdir('./sprites')):
   if filename[-4:].lower() == '.png' or\
     filename[-4:].lower() == '.jpg':
       spritelist.append(filename)

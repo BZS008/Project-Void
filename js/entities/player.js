@@ -30,8 +30,8 @@ var player = {
 	vmax 		: 3.3,			// Maximum self propelled speed
 	
 	// Life/Attack variables
-	hp			: 400,
-	fullhp		: 400,
+	hp			: 0,			//400,
+	fullhp		: 0,			//400,
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
 	
@@ -39,6 +39,10 @@ var player = {
 	fall_factor	: 1.4,
 	air_drag_factor	: 1.1,		// Air drag x-direction
 	ground_drag_factor : 1.2,	//// MIGHT ADD MATERIAL SPECIFIC DRAG
+
+	shawl		: {},
+
+	// this.shawl 	: animation(this.shawl, this.options_player),
 	
 	// Draw Player
 	draw:function(){
@@ -60,6 +64,8 @@ var player = {
 		
 		this.sprite.update();
 		this.sprite.render(this.xview,this.yview);
+		this.shawl.sprite.update();
+		this.shawl.sprite.render(this.xview,this.yview);
 	},
 	
 	// such movement, many physics
@@ -82,16 +88,34 @@ var player = {
 //-------------------------------------------------------
 
 var spd = 7;
-var options = {images:[
-		images.test1_standing_right,
-		images.test1_standing_left,
-		images.test1_running_right,
-		images.test1_running_left,
-		images.test1_jumping_right,
-		images.test1_jumping_left
-	], speed: [spd,spd,spd,spd,spd], stdSpriteIndex:0
+var options_player = {images:[
+		images.player_standing_right,
+		images.player_standing_left,
+		images.player_running_right,
+		images.player_running_left,
+		images.player_jumping_right,
+		images.player_jumping_left,
+		// images.test1_standing_right,
+		// images.test1_standing_left,
+		// images.test1_running_right,
+		// images.test1_running_left,
+		// images.test1_jumping_right,
+		// images.test1_jumping_left
+	], speed: [5*spd,5*spd,1,1,spd,spd], stdSpriteIndex:0
+};
+
+spd = 7;
+var options_shawl = {images:[
+		images.shawl_down_left,
+		images.shawl_up_left,
+		images.shawl_straight_left,
+		images.shawl_down_right,
+		images.shawl_up_right,
+		images.shawl_straight_right,
+	], speed: [spd,spd,spd,spd,spd,spd], stdSpriteIndex:0
 };
 
 addfourcolpts(player);
-player = animation(player,options);
+player = animation(player, options_player);
+player.shawl = animation(player.shawl, options_shawl);
 var entities = [player];

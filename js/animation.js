@@ -2,11 +2,11 @@
 //
 // This script defines function 'animation( obj, option )', which takes an object
 // 'obj' and equipes it with two methods for animating:
-// 1) obj.image.render( x,y ) draws the current frame on positition (x,y).
-// 2) obj.image.update() advances the animation one game tick.
+// 1) obj.sprite.render( x,y ) draws the current frame on positition (x,y).
+// 2) obj.sprite.update() advances the animation one game tick.
 // Function 'animation' takes options in the form of the object 'option', which
 // should contain the following key-value pairs:
-// - option.image, which should contain a list of image objects.
+// - option.images, which should contain a list of image objects.
 // - option.speed, which should contain a list of integers, signifying the nr of
 // 	game ticks between each frame for every sprite resp.
 // - option.stdSpriteIndex, which should contain an integer, signifying
