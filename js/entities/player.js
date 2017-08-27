@@ -30,8 +30,8 @@ var player = {
 	vmax 		: 3.3,			// Maximum self propelled speed
 	
 	// Life/Attack variables
-	hp			: 0,			//400,
-	fullhp		: 0,			//400,
+	hp			: 600,			//400,
+	fullhp		: 600,			//400,
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
 	
