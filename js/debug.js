@@ -8,11 +8,9 @@ function debug() {
     for(var i = nents-1; i > 0 ; i--){
         var ent = entities[i];
         gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview - 20);
-        gamelog.mark[i] = [ent.x, ent.y];
-        gamelog.markcolor[i] = 'black';
         
         // Count dangos
-        if (ent.type == 'angrydango') {angry++;}
+        if (ent.type == 'angrydango' || ent.type == 'batdango') {angry++;}
         if (ent.type == 'dango') {friendly++;}
     }
 
@@ -50,7 +48,7 @@ function debug() {
     
     //// Angry Dango's left
     gamelog.num[3] = angry;
-    gamelog.numstr[3] = "Angry Dango's left: ";
+    gamelog.numstr[3] = "Enemies left: ";
     
     if (player.hp <= 0) {           ///// temporary death message
         ctx.font = '48px Trebuchet MS, sans-serif';
