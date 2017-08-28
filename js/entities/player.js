@@ -37,7 +37,8 @@ var player = {
 	
 	// Physical Properties
 	fall_factor	: 1.4,
-	air_drag_factor	: 1.1,		// Air drag x-direction
+	airdragx	: 1.1,			// Air drag factor x-direction
+	airdragy	: 1,			// Air drag factor y-direction
 	ground_drag_factor : 1.2,	//// MIGHT ADD MATERIAL SPECIFIC DRAG
 
 	shawl		: {},

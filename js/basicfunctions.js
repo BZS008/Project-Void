@@ -44,8 +44,9 @@ function basicmovement(entity){
 		entity.vx/=entity.ground_drag_factor;
 	}else{
 		// in mid air, obey gravity!
-		entity.vx/=entity.air_drag_factor;
-		entity.vy+=fall_acc*entity.fall_factor;
+		entity.vx /= entity.airdragx;
+		entity.vy += fall_acc * entity.fall_factor;
+		entity.vy /= entity.airdragy;
 	}
 	
 	entity.xview = xl2xv(entity.x);

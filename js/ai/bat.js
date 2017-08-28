@@ -24,9 +24,12 @@ ai.bat = {
 			slowdown_v:			1.0,				// Max speed when slowing down
 			
 			// Attacking
-			attack_width:		120,				// Width of space to fly in as attack
-			attack_height:		50,					// Height of space to fly in as attack
+			attack_width:		150,				// Width of space to fly in as attack
+			attack_height:		60,					// Height of space to fly in as attack
 			attack_arrive_dist:	20,					// Hori/vert distance for arriving at attack point
+			// Bats target points around the top of the target in a space of
+			// 1/3 attack_height below the top and 2/3 attack_height above
+			
 		};
 		
 		return entity;
@@ -116,13 +119,15 @@ ai.bat = {
 				/////
 				
 				var delta = entity.x - entity.ai.target_ent.x;
-				var deltay = entity.y - entity.ai.target_ent.y - entity.height;
+				var deltay = entity.y - entity.ai.target_ent.y - entity.ai.target_ent.height/2;
 				
 				// You have arived at your destination
 				if(Math.abs(delta) < entity.ai.arrive_dist && Math.abs(deltay) < entity.ai.arrive_vdist){
 					entity.ai.mode = 'attack';		// Go and attack target
-					entity.ai.target_x = entity.ai.target_ent.x - entity.height;
-					entity.ai.target_y = entity.ai.target_ent.y - entity.height;
+					var tx  = entity.ai.target_ent.x;
+					var ty  = entity.ai.target_ent.y - entity.ai.target_ent.height / 2 - entity.ai.attack_height / 6;
+					entity.ai.target_x = tx;
+					entity.ai.target_y = ty;
 				
 				// Are we there yet? No!
 				} else {
@@ -130,7 +135,7 @@ ai.bat = {
 					var dir = -Math.sign(delta);
 					entity.direction = dir;
 
-					var touch = entity.lefttouch || entity.righttouch || entity.onground;
+					var touch = entity.lefttouch || entity.righttouch;
 					
 					if(!touch){				// Check for collisions
 						entity.vx += entity.airacc * dir;
@@ -166,8 +171,10 @@ ai.bat = {
 			if (entity.ai.target_ent.hp > 0) {			// Check if target is still alive
 				
 				// Calculate distance to target
-				var tdx = entity.x - entity.ai.target_ent.x;
-				var tdy = entity.y - entity.ai.target_ent.y - entity.ai.target_ent.height/2;
+				var tx  = entity.ai.target_ent.x;
+				var ty  = entity.ai.target_ent.y - entity.ai.target_ent.height / 2 - entity.ai.attack_height / 6;
+				var tdx = entity.x - tx;
+				var tdy = entity.y - ty;
 				
 				if (entity.ai.arrive_dist > Math.abs(tdx) && entity.ai.arrive_vdist > Math.abs(tdy)) {
 					attacks.act(entity, 'battouch');		// Do damage upon touch
@@ -177,8 +184,8 @@ ai.bat = {
 					
 					if(Math.abs(dx) < entity.ai.attack_arrive_dist && Math.abs(dy) < entity.ai.attack_arrive_dist){
 						// Arrived at target attack point, set new
-						entity.ai.target_x = entity.ai.target_ent.x + entity.ai.attack_width  * (Math.random() - 0.5);
-						entity.ai.target_y = entity.ai.target_ent.y - entity.ai.target_ent.height / 2 + entity.ai.attack_height * (Math.random() - 0.5);
+						entity.ai.target_x = tx + entity.ai.attack_width  * (Math.random() - 0.5);
+						entity.ai.target_y = ty + entity.ai.attack_height * (Math.random() - 0.5);
 					} else {
 						
 						// Fly towards attack point
@@ -194,6 +201,29 @@ ai.bat = {
 							entity. vy -= entity.airacc;
 						}
 					}
+					
+					
+					///// gamelog
+					var x1 = entity.x;
+					var x2 = entity.ai.target_x;
+					var y1 = entity.y;
+					var y2 = entity.ai.target_y;
+					
+					var id = entities.indexOf(entity);
+					gamelog.markline[id] = [x1, x2, y1, y2, 1];
+					gamelog.marklinecolor[id] = 'orange';
+					
+					var x3 = tx - entity.ai.attack_width / 2;
+					var x4 = tx + entity.ai.attack_width / 2;
+					var y3 = ty - entity.ai.attack_height / 2;
+					var y4 = ty + entity.ai.attack_height / 2;
+					
+					gamelog.markrect[id] = [x3, x4, y3, y4, 1];
+					gamelog.markrectcolor[id] = 'purple';
+					/////
+					
+					
+				
 				} else {
 					entity.ai.mode = 'approach';
 				}
@@ -201,27 +231,6 @@ ai.bat = {
 				// Targets is dead, search for new target
 				entity.ai.mode = 'search';
 			}
-			
-			
-			
-			///// gamelog
-			var x1 = entity.x;
-			var x2 = entity.ai.target_x;
-			var y1 = entity.y;
-			var y2 = entity.ai.target_y - entity.height;
-			
-			var id = entities.indexOf(entity);
-			gamelog.markline[id] = [x1, x2, y1, y2, 1];
-			gamelog.marklinecolor[id] = 'orange';
-			
-			var x3 = entity.ai.target_ent.x - entity.ai.attack_width / 2;
-			var x4 = entity.ai.target_ent.x + entity.ai.attack_width / 2;
-			var y3 = entity.ai.target_ent.y - entity.ai.attack_height / 2 - entity.ai.target_ent.height / 2;
-			var y4 = entity.ai.target_ent.y + entity.ai.attack_height / 2 - entity.ai.target_ent.height / 2;
-			
-			gamelog.markrect[id] = [x3, x4, y3, y4, 1];
-			gamelog.markrectcolor[id] = 'purple';
-			/////
 		}
 	}
 }

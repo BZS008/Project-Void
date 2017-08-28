@@ -41,7 +41,8 @@ entitytypes.batdango = function(x,y){
 
 	// Physical Properties
 	this.fall_factor = 0;
-	this.air_drag_factor = 1.05;					// Air drag x-direction
+	this.airdragx = 1.04;						// Air drag factor x-direction
+	this.airdragy = 1.04;						// Air drag factor y-direction
 	this.ground_drag_factor = 1.1;				//// MIGHT ADD MATERIAL SPECIFIC DRAG
 
 	// Dimensions
