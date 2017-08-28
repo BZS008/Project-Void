@@ -20,7 +20,7 @@ ai.bat = {
 			
 			// Approaching
 			dive_dist:			350,				// Distance to start diving
-			slowdown_h:			150,				// Height above target from which to start slowing down
+			slowdown_h:			100,				// Height above target from which to start slowing down
 			slowdown_v:			1.0,				// Max speed when slowing down
 			
 			// Attacking
@@ -69,6 +69,14 @@ ai.bat = {
 					}
 				}else if(!touch){
 					entity.vx += entity.airacc * dir;
+					
+					// Check for ground below an in front
+					var xfront = entity.width * 1.5 * dir;
+					var colcheckpts = [[0, entity.height * 1.5], [xfront, 0], [xfront, entity.height]];
+					
+					if (arrayOR(level.colcheck(entity, colcheckpts))) {
+						entity.vy -= entity.airacc;
+					}
 				}
 				
 				// Check for enemies
@@ -135,23 +143,36 @@ ai.bat = {
 					var dir = -Math.sign(delta);
 					entity.direction = dir;
 
-					var touch = entity.lefttouch || entity.righttouch;
+					var touch = entity.lefttouch || entity.righttouch || entity.onground;
 					
 					if(!touch){				// Check for collisions
+						
+						// Fly towards target (x)
 						entity.vx += entity.airacc * dir;
 						
-						// If closing in on target: dive
-						if (deltay < entity.ai.dive_dist) {
+						// Check for ground below an in front
+						var xfront = entity.width * 1.5 * dir;
+						var colcheckpts = [[0, entity.height * 1.5], [xfront, 0], [xfront, entity.height]];
+						
+						if (arrayOR(level.colcheck(entity, colcheckpts))) {
+							entity.vy -= entity.airacc;
 							
-							// var vertflyfac = deltay / entity.ai.slowdown_height;
+						// Not near ground, keep moving to target
+						} else {
 							
-							// Accelerate if high above target or if speed is slow
-							if (Math.abs(deltay) > entity.ai.slowdown_h || entity.vy < entity.ai.slowdown_v) {
-								// vertflyfac = Math.sign(vertflyfac);
-								entity.vy -= entity.airacc * Math.sign(deltay);
+							// If closing in on target: dive
+							if (deltay < entity.ai.dive_dist) {
+								
+								// var vertflyfac = deltay / entity.ai.slowdown_height;
+								
+								// Accelerate if high above target or if speed is slow
+								if (Math.abs(deltay) > entity.ai.slowdown_h || entity.vy < entity.ai.slowdown_v) {
+									// vertflyfac = Math.sign(vertflyfac);
+									entity.vy -= entity.airacc * Math.sign(deltay);
+								}
+								
+								// entity.vy -= entity.airacc * vertflyfac;
 							}
-							
-							// entity.vy -= entity.airacc * vertflyfac;
 						}
 					} else {
 						entity. vy -= entity.airacc;
@@ -179,11 +200,13 @@ ai.bat = {
 				if (entity.ai.arrive_dist > Math.abs(tdx) && entity.ai.arrive_vdist > Math.abs(tdy)) {
 					attacks.act(entity, 'battouch');		// Do damage upon touch
 					
+					// Calculate distance to target attack point
 					var dx = entity.x - entity.ai.target_x;
 					var dy = entity.y - entity.ai.target_y;
+					var invalidpt = level.colcheck(entity, [[-dx,-dy]])[0];
 					
-					if(Math.abs(dx) < entity.ai.attack_arrive_dist && Math.abs(dy) < entity.ai.attack_arrive_dist){
-						// Arrived at target attack point, set new
+					if((Math.abs(dx) < entity.ai.attack_arrive_dist && Math.abs(dy) < entity.ai.attack_arrive_dist) || invalidpt){
+						// Arrived at target attack point OR invalid point: set new
 						entity.ai.target_x = tx + entity.ai.attack_width  * (Math.random() - 0.5);
 						entity.ai.target_y = ty + entity.ai.attack_height * (Math.random() - 0.5);
 					} else {
