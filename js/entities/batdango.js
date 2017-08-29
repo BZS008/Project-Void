@@ -31,7 +31,7 @@ entitytypes.batdango = function(x,y){
 	// Movement parameters
 	this.groundacc = 0.2 + Math.random()*0.1;
 	this.airacc = 0.25 + Math.random()*0.1;							// Acceleration in air in x-direction
-	this.jumpspeed = 8 + Math.random()*2;
+	this.jumpspeed = 0;
 	
 	this.spriteoptions = {
 		images			: [images.batdango_flyleft,images.batdango_flyright],

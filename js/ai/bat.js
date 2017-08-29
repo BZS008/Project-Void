@@ -36,7 +36,7 @@ ai.bat = {
 	},
 
 
-	//--- Bat AI - Search mode function ---//
+	//--- Bat AI - 'Search for target' mode function ---//
 	search:function(entity){
 		
 		if(entity.hp > 0 && entity.stun <= 0){		// Don't run during death animation or when stunned
@@ -57,23 +57,29 @@ ai.bat = {
 				
 				var dir = -Math.sign(delta);
 				entity.direction = dir;
-
-				var touch = (entity.lefttouch) || (entity.righttouch)
 				
-				if(entity.onground){
-					if(touch){
-						entity.vy = -entity.jumpspeed;
-						entity.onground = false;
-					}else{
-						entity.vx += entity.groundacc * dir;
+				// Check for collisions
+				var touch = entity.lefttouch || entity.righttouch || entity.onground;
+				
+				// Collision!
+				if (touch){
+					entity.vy -= entity.airacc;			// In case of collision: fly up
+					
+					if (entity.lefttouch) {
+						entity.vx += entity.airacc;		// Fly away from left wall
+					} else if (entity.righttouch) {
+						entity.vx -= entity.airacc;		// Fly away from right wall
 					}
-				}else if(!touch){
+					
+				// No collision, keep moving to search target
+				} else {
 					entity.vx += entity.airacc * dir;
 					
 					// Check for ground below an in front
-					var xfront = entity.width * 1.5 * dir;
-					var colcheckpts = [[0, entity.height * 1.5], [xfront, 0], [xfront, entity.height]];
+					var xfront = entity.width * 2.5 * dir;
+					var colcheckpts = [[0, entity.height * 2], [xfront, 0], [xfront, entity.height]];
 					
+					// If ground or wall is detected: fly up
 					if (arrayOR(level.colcheck(entity, colcheckpts))) {
 						entity.vy -= entity.airacc;
 					}
@@ -108,7 +114,7 @@ ai.bat = {
 	},
 	
 	
-	//--- Bat AI - Roam mode function ---//
+	//--- Bat AI - 'Approach target' mode function ---//
 	approach:function(entity){
 		
 		if(entity.hp > 0 && entity.stun <= 0){		// Don't run during death animation or when stunned
@@ -143,49 +149,54 @@ ai.bat = {
 					var dir = -Math.sign(delta);
 					entity.direction = dir;
 
+					// Check for collisions
 					var touch = entity.lefttouch || entity.righttouch || entity.onground;
 					
-					if(!touch){				// Check for collisions
+					// Collision!
+					if (touch){
+						entity.vy -= entity.airacc;			// In case of collision: fly up
 						
+						if (entity.lefttouch) {
+							entity.vx += entity.airacc;		// Fly away from left wall
+						} else if (entity.righttouch) {
+							entity.vx -= entity.airacc;		// Fly away from right wall
+						}
+						
+					// No collision, keep moving to target entity!
+					} else {
 						// Fly towards target (x)
 						entity.vx += entity.airacc * dir;
 						
-						// Check for ground below an in front
+						// Check for ground below and in front
 						var xfront = entity.width * 1.5 * dir;
 						var colcheckpts = [[0, entity.height * 1.5], [xfront, 0], [xfront, entity.height]];
 						
+						// Ground or wall detected, fly up
 						if (arrayOR(level.colcheck(entity, colcheckpts))) {
 							entity.vy -= entity.airacc;
 							
-						// Not near ground, keep moving to target
+						// Not near ground or wall, no need to fly up
 						} else {
-							
 							// If closing in on target: dive
 							if (deltay < entity.ai.dive_dist) {
 								
-								// var vertflyfac = deltay / entity.ai.slowdown_height;
-								
-								// Accelerate if high above target or if speed is slow
+								// Accelerate vertically if high above target or if speed is slow
 								if (Math.abs(deltay) > entity.ai.slowdown_h || entity.vy < entity.ai.slowdown_v) {
-									// vertflyfac = Math.sign(vertflyfac);
 									entity.vy -= entity.airacc * Math.sign(deltay);
 								}
-								
-								// entity.vy -= entity.airacc * vertflyfac;
 							}
 						}
-					} else {
-						entity. vy -= entity.airacc;
 					}
-					///////////////////////////////////////////////////////////// documentatie!!!
 				}
 			} else {
+				// Target lost, search mode activated
 				entity.ai.mode = 'search';
 			}
 		}
 	},
 	
 	
+	//--- Bat AI - 'Attack target' mode function ---//
 	attack:function(entity){
 		
 		if(entity.hp > 0 && entity.stun <= 0){			// Don't run during death animation or when stunned
@@ -197,31 +208,36 @@ ai.bat = {
 				var tdx = entity.x - tx;
 				var tdy = entity.y - ty;
 				
+				// If target is close enough, commence attack
 				if (entity.ai.arrive_dist > Math.abs(tdx) && entity.ai.arrive_vdist > Math.abs(tdy)) {
 					attacks.act(entity, 'battouch');		// Do damage upon touch
 					
 					// Calculate distance to target attack point
 					var dx = entity.x - entity.ai.target_x;
 					var dy = entity.y - entity.ai.target_y;
-					var invalidpt = level.colcheck(entity, [[-dx,-dy]])[0];
+					var invalidpt = level.colcheck(entity, [[-dx,-dy]])[0]; 	// Check if point is in ground tile
 					
+					// Arrived at target attack point OR invalid point: set new
 					if((Math.abs(dx) < entity.ai.attack_arrive_dist && Math.abs(dy) < entity.ai.attack_arrive_dist) || invalidpt){
-						// Arrived at target attack point OR invalid point: set new
 						entity.ai.target_x = tx + entity.ai.attack_width  * (Math.random() - 0.5);
 						entity.ai.target_y = ty + entity.ai.attack_height * (Math.random() - 0.5);
+					
+					// Not arrived at attack point yet, fly towards attack point
 					} else {
-						
-						// Fly towards attack point
+						// Face direction of attack point
 						var dir = -Math.sign(dx);
 						entity.direction = dir;				// Set facing direction of entity
-
+						
+						// Check for collisions
 						var touch = entity.lefttouch || entity.righttouch || entity.onground;
 						
-						if(!touch){				// Check for collisions
+						if (touch){
+							entity.vy -= entity.airacc;			// In case of collision: fly up
+							
+						// No collision, keep moving to attack target
+						} else {
 							entity.vx += entity.airacc * dir;
 							entity.vy -= entity.airacc * Math.sign(dy);
-						} else {
-							entity. vy -= entity.airacc;
 						}
 					}
 					
@@ -246,12 +262,13 @@ ai.bat = {
 					/////
 					
 					
-				
+					
 				} else {
+					// Target is too far away, re-approach target
 					entity.ai.mode = 'approach';
 				}
 			} else {
-				// Targets is dead, search for new target
+				// Target is dead, search for new target
 				entity.ai.mode = 'search';
 			}
 		}
