@@ -17,7 +17,15 @@ var viewport = {
 	
 	clear:function(){
 		// clear canvas
-		ctx.clearRect(0,0,this.width,this.height);
+		// ctx.clearRect(0,0,this.width,this.height);
+		
+		// Create gradient background
+		var grd = ctx.createLinearGradient(0, 0, 0, this.height);
+		grd.addColorStop(0, "rgb(20,10,60)");
+		grd.addColorStop(1, "rgb(200,15,20)");
+
+		ctx.fillStyle = grd;
+		ctx.fillRect(0, 0, this.width, this.height);
 	},
 	
 	followPlayer:function(){					// Move viewport towards player
