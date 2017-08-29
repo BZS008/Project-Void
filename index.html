@@ -17,11 +17,13 @@
 	<script src='js/entities/dango.js'></script>
 	<script src='js/entities/angrydango.js'></script>
 	<script src='js/entities/batdango.js'></script>
+	<script src='js/entities/jubokko.js'></script>
 	
 	<script src='js/ai/ai.js'></script>
 	<script src='js/ai/neutral1.js'></script>
 	<script src='js/ai/oni.js'></script>
 	<script src='js/ai/bat.js'></script>
+	<script src='js/ai/tree.js'></script>
 	
 	<script src='js/attack/attack.js'></script>
 	<script src='js/attack/melee1.js'></script>
@@ -87,10 +89,12 @@
 			spawn('dango',1000,0); 		// Spawn regular dangos
 			spawn('dango',1100,0); 		// Spawn regular dangos
 			spawn('dango',1300,0); 		// Spawn regular dangos
-			// spawn('angrydango',2500,0); // Spawn regular dangos
+			// spawn('angrydango',2500,0); // Spawn angry dangos
 			
 			// Spawn bats
 			spawn('batdango', 1500 + Math.random()*level.width/4, 50+Math.random()*250);
+			spawn('jubokko', Math.random()*level.width, 0);
+			spawn('jubokko', Math.random()*level.width, 0);
 		}
 		
 	}
@@ -111,7 +115,7 @@
 
 	// Create Game Log object
 	var gamelog=createGameLog(ctx);
-	// gamelog.toggle(); // Turn off gamelog
+	gamelog.toggle(); // Turn off gamelog
 	
 </script>
 
