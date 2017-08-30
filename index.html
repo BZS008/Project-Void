@@ -87,20 +87,6 @@
 		gamelog.draw();
 		viewport.frametimer();
 		viewport.followPlayer();
-		
-		///// Moet nog netter!!!! ehrmageehrd!!
-		if(entities.length <= 30){
-			spawn('dango',1000,0); 		// Spawn regular dangos
-			spawn('dango',1100,0); 		// Spawn regular dangos
-			spawn('dango',1300,0); 		// Spawn regular dangos
-			// spawn('angrydango',2500,0); // Spawn angry dangos
-			
-			// Spawn bats
-			// spawn('batdango', 1500 + Math.random()*level.width/4, 50+Math.random()*250);
-			spawn('nodeppodango', 1500 + Math.random()*level.width/4, 50+Math.random()*250);
-			spawn('jubokko', Math.random()*level.width, 0);
-		}
-		
 	}
 	
 	// Define Simulation Loop
@@ -132,7 +118,8 @@
 
 <!-- MOET NOG DYNAMISCH WORDEN GELADEN! -->
 <script src='js/tiles/simpletiles.js'></script>
-<script src='js/lvl/randlvltest.js'></script>
+<!-- <script src='js/lvl/randlvltest.js'></script> -->
+<script src='js/lvl/lvl.js'></script>
 
 <span id=extraspace></span>
 
