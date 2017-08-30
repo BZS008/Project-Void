@@ -77,6 +77,34 @@ function num2scistr(x,signif,sci) {
 }
 
 
+// Compute the sum of a number array
+function sum(a){
+	var na = a.length;
+	var total = 0;
+	for(var i=0; i<na; i++){
+		total += a[i];
+	}
+	return total;
+}
+
+// Compute the mean value of a number array
+function mean(a){
+	return sum(a)/a.length;
+}
+
+// Compute the standard deviation of a number array
+function std(a){
+	var na = a.length;
+	var avg = mean(a);
+	var vartotal = 0;
+	for(var i=0; i<na; i++){
+		var diff = a[i] - avg;
+		vartotal += diff*diff;
+	}
+	return Math.sqrt(vartotal/na);
+}
+
+
 // Bool operations
 
 function arrayOR(a){
@@ -92,3 +120,27 @@ function arrayOR(a){
 }
 
 
+//------------ 2D Array functions ------------//
+// Create 2D empty object array of size ni x nj
+function arrob2D(ni, nj){
+	var a = [];
+	for(var i=0;i<ni;i++){
+		a[i] = [];
+		for(var j=0;j<nj;j++){
+			a[i][j] = {};
+		}
+	}
+	return a;
+}
+
+// Create 2D number array of size ni x nj
+function arrnum2D(ni, nj, num){
+	var a = [];
+	for(var i=0;i<ni;i++){
+		a[i] = [];
+		for(var j=0;j<nj;j++){
+			a[i][j] = num;
+		}
+	}
+	return a;
+}
