@@ -8,6 +8,7 @@ function spawn(type,x,y){
 	entity = ai[entity.ai_init].init(entity);		// Add AI to entity
 	entity = animation(entity, entity.spriteoptions);
 	entities.push(entity);							// Add new entity to list
+	return entity;
 }
 
 function addfourcolpts(entity) {

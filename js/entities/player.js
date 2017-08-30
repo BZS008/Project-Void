@@ -5,7 +5,7 @@ var height = 60;  // height of the bounding box
 var player = {
 	type: 'player',
 	
-	enemies : ['angrydango', 'batdango'],
+	enemies : ['angrydango', 'batdango','nodeppodango'],
 	
 	// Initial Spatial Properties
 	x		: 1250,	            // x position of player (lvl coords) ...x,y should be retrieved from level
@@ -30,8 +30,8 @@ var player = {
 	vmax 		: 3.3,			// Maximum self propelled speed
 	
 	// Life/Attack variables
-	hp			: 600,			//400,
-	fullhp		: 600,			//400,
+	hp			: 1500,			//400,
+	fullhp		: 1500,			//400,
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
 	

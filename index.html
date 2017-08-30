@@ -17,6 +17,7 @@
 	<script src='js/entities/dango.js'></script>
 	<script src='js/entities/angrydango.js'></script>
 	<script src='js/entities/batdango.js'></script>
+	<script src='js/entities/nodeppodango.js'></script>
 	<script src='js/entities/jubokko.js'></script>
 	
 	<script src='js/ai/ai.js'></script>
@@ -24,6 +25,7 @@
 	<script src='js/ai/oni.js'></script>
 	<script src='js/ai/bat.js'></script>
 	<script src='js/ai/tree.js'></script>
+	<script src='js/ai/nodeppo.js'></script>
 	
 	<script src='js/attack/attack.js'></script>
 	<script src='js/attack/melee1.js'></script>
@@ -92,8 +94,8 @@
 			// spawn('angrydango',2500,0); // Spawn angry dangos
 			
 			// Spawn bats
-			spawn('batdango', 1500 + Math.random()*level.width/4, 50+Math.random()*250);
-			spawn('jubokko', Math.random()*level.width, 0);
+			// spawn('batdango', 1500 + Math.random()*level.width/4, 50+Math.random()*250);
+			spawn('nodeppodango', 1500 + Math.random()*level.width/4, 50+Math.random()*250);
 			spawn('jubokko', Math.random()*level.width, 0);
 		}
 		

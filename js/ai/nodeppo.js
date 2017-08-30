@@ -1,11 +1,11 @@
 "use strict";
 
-ai.bat = {
+ai.nodeppo = {
 
 	//--- Bat AI - initialization function ---//
 	init:function(entity){
 		entity.ai = {
-			module:				'bat',
+			module:				'nodeppo',
 			mode:				'search',
 			target_x: 			entity.x,
 			target_y: 			entity.y,
@@ -24,7 +24,7 @@ ai.bat = {
 			slowdown_v:			1.0,				// Max speed when slowing down
 			
 			// Attacking
-			attack_width:		200,				// Width of space to fly in as attack
+			attack_width:		150,				// Width of space to fly in as attack
 			attack_height:		60,					// Height of space to fly in as attack
 			attack_arrive_dist:	20,					// Hori/vert distance for arriving at attack point
 			// Bats target points around the top of the target in a space of
@@ -145,6 +145,15 @@ ai.bat = {
 				
 				// Are we there yet? No!
 				} else {
+					if (entity.cooldown <= 0) {
+						var bat = spawn('batdango', entity.x, entity.y);
+						bat.vx = 30 * entity.direction;
+						bat.direction = entity.direction;
+						entity.cooldown = 8;
+					} else {
+						entity.cooldoen--;
+					}
+						
 					
 					var dir = -Math.sign(delta);
 					entity.direction = dir;
@@ -164,12 +173,13 @@ ai.bat = {
 						
 					// No collision, keep moving to target entity!
 					} else {
+						
 						// Fly towards target (x)
 						entity.vx += entity.airacc * dir;
 						
 						// Check for ground below and in front
-						var xfront = entity.width * 1.5 * dir;
-						var colcheckpts = [[0, entity.height * 1.5], [xfront, 0], [xfront, entity.height]];
+						var xfront = entity.width * 1.0 * dir;
+						var colcheckpts = [[0, entity.height * 1.0], [xfront, 0], [xfront, entity.height]];
 						
 						// Ground or wall detected, fly up
 						if (arrayOR(level.colcheck(entity, colcheckpts))) {
