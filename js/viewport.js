@@ -14,6 +14,7 @@ var viewport = {
 	
 	mousex:0,									// will be used to store cursor viewport coords
 	mousey:0,
+	mousedown: false,							// True if mouse is down (regulated by index.html)
 	
 	clear:function(){
 		// clear canvas

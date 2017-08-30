@@ -10,7 +10,7 @@ function debug() {
         gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview - 20);
         
         // Count dangos
-        if (ent.type == 'angrydango' || ent.type == 'batdango') {angry++;}
+        if (ent.type == 'angrydango' || ent.type == 'batdango' || ent.type == 'nodeppodango') {angry++;}
         if (ent.type == 'dango') {friendly++;}
     }
 
@@ -37,54 +37,5 @@ function debug() {
     // Player hp
     gamelog.num[1] = player.hp;
     gamelog.numstr[1] = 'hp: '
-    
-    
-    //---- Mini Game: Dango Defender! ----////////
-    // Protect the friendly dango's!
-    
-    //// Friendly Dango's left
-    gamelog.num[2] = friendly;
-    gamelog.numstr[2] = "Friendly Dango's left: ";
-    
-    //// Angry Dango's left
-    gamelog.num[3] = angry;
-    gamelog.numstr[3] = "Enemies left: ";
-    
-    if (player.hp <= 0) {           ///// temporary death message
-        ctx.font = '48px Trebuchet MS, sans-serif';
-        ctx.fillStyle = 'black';
-        ctx.textAlign = 'center';
-        ctx.fillText('You dieded!',viewport.width/2,viewport.height/2);
-    } else if (angry == 0) {        ///// Winning condition
-        ctx.font = '48px Trebuchet MS, sans-serif';
-        ctx.fillStyle = 'black';
-        ctx.textAlign = 'center';
-        ctx.fillText("Friendly Dango's rescued!",viewport.width/2,viewport.height/2);
-    }
-    ///// title
-    ctx.font = '40px Trebuchet MS, sans-serif';
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'center';
-    ctx.fillText("Dango Defender!", viewport.width/2, 50);
-    //-----------------------------------///////
-    
-
-    // Mouse info
-    var mx = viewport.mousex;
-    var my = viewport.mousey;
-
-    var mi = yv2i(my);
-    var mj = xv2j(mx);
-    var tid = level.data[mi][mj];
-
-    if(tid!==undefined){
-        gamelog.textmark('i:'+mi+', j:'+mj, mx, my+40, true);               // tile indices
-        gamelog.textmark(tid + ': ' + tileset[tid].name, mx, my+60, true);  // tiletype
-        gamelog.textmark(tileset[tid].color, mx, my+80, true);              // tile color
-        
-        // Show water properties
-        if(tid==4){
-            gamelog.textmark("height: " + level.tileprops[mi][mj].height.toPrecision(3),mx,my+100,true);
-        }
-    }
+    gamelog.circ[0] = viewport.mousedown;       // Show if mouse is down
 }
