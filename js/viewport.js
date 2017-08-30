@@ -21,8 +21,8 @@ var viewport = {
 		
 		// Create gradient background
 		var grd = ctx.createLinearGradient(0, 0, 0, this.height);
-		grd.addColorStop(0, "rgb(20,10,60)");
-		grd.addColorStop(1, "rgb(200,15,20)");
+		grd.addColorStop(0, "rgb(30,15,70)");
+		grd.addColorStop(1, "rgb(220,25,25)");
 
 		ctx.fillStyle = grd;
 		ctx.fillRect(0, 0, this.width, this.height);
