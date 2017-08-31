@@ -80,15 +80,19 @@ function animation( obj, option ) {
     }
   };
   
-  obj.sprite.changeAnim = function ( spriteIndex ){
+  // method that changes the sprite that is animated by render()
+  obj.sprite.changeAnim = function ( spriteIndex, verbose ){
+    if (verbose) {console.log(spriteIndex, obj.sprite.index)}
+    // first, check if spriteIndex is a legit index
     if ( spriteIndex < obj.sprite.images.length && spriteIndex != obj.sprite.index ) {
       obj.sprite.index = spriteIndex;
       obj.sprite.frameNumber = 0;   // counter frame nr during animation
       obj.sprite.counter = 0;       // counts game ticks per anim frame
-    } else if ( spriteIndex >= obj.sprite.images.length ){
+    } else if ( spriteIndex >= obj.sprite.images.length ){ // if not, return error
       console.log('Input "spriteIndex" exceeds obj.images.length-1.')
       return 1;
     }
+    if (verbose) {console.log(spriteIndex, obj.sprite.index)}
   };
   
   return obj;

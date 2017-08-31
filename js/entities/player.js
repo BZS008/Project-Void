@@ -15,6 +15,7 @@ var player = {
 	xview	: 0,
 	yview	: 0,
 	runthresh: 1.0,				// Threshold for showing running animation
+	shawlthresh: .1,			// Threshold for adjusting shawl animation
 	color	: 'yellow',
 	width 	: width,
 	height 	: height,
@@ -41,32 +42,72 @@ var player = {
 	airdragy	: 1,			// Air drag factor y-direction
 	ground_drag_factor : 1.2,	//// MIGHT ADD MATERIAL SPECIFIC DRAG
 
-	shawl		: {},
+	shawl		: { offset : [0,0] },
 
 	// this.shawl 	: animation(this.shawl, this.options_player),
 	
 	// Draw Player
 	draw:function(){
-		if (this.onground == false){
-			// Flying through air, facing left/right
-			if(this.direction == 1){
-				this.sprite.changeAnim(4);
-			} else {
-				this.sprite.changeAnim(5);
+		// Debug
+		// this.onground = false;
+		if(this.direction == 1){ 							// facing right
+			if (this.onground == false){					// in air
+				if (this.vy < 0){							// going up
+					this.sprite.changeAnim( 4 );
+					this.shawl.sprite.changeAnim( 0 );
+					this.shawl.offset = [-17,-1];
+				}
+				else{										// going down
+					this.sprite.changeAnim( 4 );
+					this.shawl.sprite.changeAnim( 1 );
+					this.shawl.offset = [-16,-24];
+				}
+			}
+			else{											// on ground
+				if (Math.abs(this.vx) > this.runthresh){	// running
+					this.sprite.changeAnim( 2 );
+					this.shawl.sprite.changeAnim( 2 );
+					this.shawl.offset = [-10,-6];
+				}
+				else{										// standing
+					this.sprite.changeAnim( 0 );
+					this.shawl.sprite.changeAnim( 2 );
+					this.shawl.offset = [-22,-12];
+				}
 			}
 		}
-		else {
-			// Determine if walking/standing and left/right animation
-			var iani = 0;
-			if (Math.abs(this.vx) > this.runthresh){iani = 2;}
-			if (this.direction == -1){iani = iani+1}
-			this.sprite.changeAnim(iani);
+		else{ // facing left
+			if (this.onground == false){					// in air
+				if (this.vy < 0){			// going up
+					this.sprite.changeAnim( 5 );
+					this.shawl.sprite.changeAnim( 3 );
+					this.shawl.offset = [20,-1];
+				}
+				else{										// going down
+					this.sprite.changeAnim( 5 );
+					this.shawl.sprite.changeAnim( 4 );
+					this.shawl.offset = [20,-24];
+				}
+			}
+			else{											// on ground
+				if (Math.abs(this.vx) > this.runthresh){	// running
+					this.sprite.changeAnim( 3 );
+					this.shawl.sprite.changeAnim( 5 );
+					this.shawl.offset = [10,-6];
+				}
+				else{										// standing
+					this.sprite.changeAnim( 1 );
+					this.shawl.sprite.changeAnim( 2 );
+					this.shawl.offset = [-22,-12];
+				}
+			}
 		}
 		
 		this.sprite.update();
 		this.sprite.render(this.xview,this.yview);
 		this.shawl.sprite.update();
-		this.shawl.sprite.render(this.xview,this.yview);
+		this.shawl.sprite.render(this.xview+this.shawl.offset[0],
+			this.yview+this.shawl.offset[1]);
 	},
 	
 	// such movement, many physics
@@ -113,7 +154,7 @@ var options_shawl = {images:[
 		images.shawl_down_right,
 		images.shawl_up_right,
 		images.shawl_straight_right,
-	], speed: [spd,spd,spd,spd,spd,spd], stdSpriteIndex:0
+	], speed: [spd,spd,spd,spd,spd,spd], stdSpriteIndex:2
 };
 
 addfourcolpts(player);

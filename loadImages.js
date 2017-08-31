@@ -44,20 +44,12 @@ var sources = {  // sources of the images
   player_standing_right: 'sprites/player_standing_right_f=2_w=64_h=60.png',
   shawl_down_left: 'sprites/shawl_down_left_f=6_w=240_h=40.png',
   shawl_down_right: 'sprites/shawl_down_right_f=6_w=240_h=40.png',
-  shawl_straight_left: 'sprites/shawl_straight_left_f=6_w=192_h=16.png',
-  shawl_straight_right: 'sprites/shawl_straight_right_f=6_w=192_h=16.png',
+  shawl_straight_left: 'sprites/shawl_straight_left_f=6_w=216_h=16.png',
+  shawl_straight_right: 'sprites/shawl_straight_right_f=6_w=216_h=16.png',
   shawl_up_left: 'sprites/shawl_up_left_f=6_w=240_h=40.png',
   shawl_up_right: 'sprites/shawl_up_right_f=6_w=240_h=40.png',
   stickman: 'sprites/stickman_f=4_w=120_h=60.png',
   stolen: 'sprites/stolen_f=6_w=248_h=60.png',
-  test1_fireball_left: 'sprites/test1_fireball_left_f=4_w=164_h=30.png',
-  test1_fireball_right: 'sprites/test1_fireball_right_f=4_w=164_h=30.png',
-  test1_jumping_left: 'sprites/test1_jumping_left_f=1_w=47_h=60.png',
-  test1_jumping_right: 'sprites/test1_jumping_right_f=1_w=47_h=60.png',
-  test1_running_left: 'sprites/test1_running_left_f=4_w=188_h=60.png',
-  test1_running_right: 'sprites/test1_running_right_f=4_w=188_h=60.png',
-  test1_standing_left: 'sprites/test1_standing_left_f=1_w=47_h=60.png',
-  test1_standing_right: 'sprites/test1_standing_right_f=1_w=47_h=60.png',
   tree_standing: 'sprites/tree_standing_f=1_w=120_h=120.png'
 };
 var frames = {  // number of frames per image
@@ -109,14 +101,6 @@ var frames = {  // number of frames per image
   shawl_up_right: 6,
   stickman: 4,
   stolen: 6,
-  test1_fireball_left: 4,
-  test1_fireball_right: 4,
-  test1_jumping_left: 1,
-  test1_jumping_right: 1,
-  test1_running_left: 4,
-  test1_running_right: 4,
-  test1_standing_left: 1,
-  test1_standing_right: 1,
   tree_standing: 1
 };
 var width = {  // width of the images
@@ -162,20 +146,12 @@ var width = {  // width of the images
   player_standing_right: 64,
   shawl_down_left: 240,
   shawl_down_right: 240,
-  shawl_straight_left: 192,
-  shawl_straight_right: 192,
+  shawl_straight_left: 216,
+  shawl_straight_right: 216,
   shawl_up_left: 240,
   shawl_up_right: 240,
   stickman: 120,
   stolen: 248,
-  test1_fireball_left: 164,
-  test1_fireball_right: 164,
-  test1_jumping_left: 47,
-  test1_jumping_right: 47,
-  test1_running_left: 188,
-  test1_running_right: 188,
-  test1_standing_left: 47,
-  test1_standing_right: 47,
   tree_standing: 120
 };
 var height = {  // height of the images
@@ -227,14 +203,6 @@ var height = {  // height of the images
   shawl_up_right: 40,
   stickman: 60,
   stolen: 60,
-  test1_fireball_left: 30,
-  test1_fireball_right: 30,
-  test1_jumping_left: 60,
-  test1_jumping_right: 60,
-  test1_running_left: 60,
-  test1_running_right: 60,
-  test1_standing_left: 60,
-  test1_standing_right: 60,
   tree_standing: 120,
 };
 
