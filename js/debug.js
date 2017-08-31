@@ -37,5 +37,4 @@ function debug() {
     // Player hp
     gamelog.num[1] = player.hp;
     gamelog.numstr[1] = 'hp: '
-    gamelog.circ[0] = viewport.mousedown;       // Show if mouse is down
 }

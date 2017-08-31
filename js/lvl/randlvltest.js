@@ -1,8 +1,8 @@
 // Level Name
 level.name="Random Level Test";
 
-level.tilewidth=60;
-level.tileheight=60;
+level.tilewidth=70;
+level.tileheight=70;
 
 var nxtiles = 180;
 var nytiles = 13;
@@ -71,3 +71,6 @@ for(var i=0;i<nytiles;i++){
 		}
 	}
 }
+
+
+levelspawns = [];
