@@ -31,6 +31,25 @@ function midpoint(p1,p2){
 	return [(p1[0]+p2[0])/2,(p1[1]+p2[1])/2]
 }
 
+function polyarea(x, y){
+	// Calculate unsigned area of non-selfintersecting closed polygon
+	// (Using the sum of the cross products of the vertices)
+	// x: x-coordinates of vertices
+	// y: y-coordinates of vertices
+	// x and y must be arrays of the same length containing only numbers
+	
+	var area2 = 0; 					// twice signed area
+	var N = x.length;
+	
+	for (var i = 0; i < N; i++) {	// Loop over vertices
+		var j = (i+1) % N; 			// Next vertex index (closed polygon)
+		area2 += x[i] * y[j];		// Cross product (part 1)
+		area2 -= y[i] * x[j];		// Cross product (part 2)
+	}
+	
+	return Math.abs(0.5 * area2)
+}
+
 
 // Round Operations
 
