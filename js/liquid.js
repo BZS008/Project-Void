@@ -4,14 +4,14 @@ var liquid = {
 	drops:[],									// Array for holding droplets
 	
 	// Function for adding droplets
-	addDroplet:function(vtx,vty,vtvx,vtvy,vol,type){
+	addDroplet:function(vtx,vty,vtvx,vtvy,area0,type){
 		
 		liquid.drops.push({
 			vtx:vtx,							// x coord vertices
 			vty:vty,							// y coord vertices
 			vtvx:vtvx,							// x velocity vertices
 			vtvy:vtvy,							// y velocity vertices
-			vol:vol,							// Volume of droplet
+			area0:area0,						// Area (2D Volume) of droplet
 			type:type							// Type of liquid
 		});
 	},
@@ -61,6 +61,9 @@ var liquid = {
 		for(var i=0; i<nd; i++){						// Loop over droplets
 			var d = liquid.drops[i];
 			
+			// Compute Droplet Area (2D volume)
+			var area = polyarea(d.vtx, d.vty);
+			
 			var nvt = d.vtx.length;						// Number of vertices
 			for(var vt=0; vt<nvt; vt++){				// Loop over droplet vertices
 				
@@ -68,23 +71,56 @@ var liquid = {
 				d.vtx[vt] += d.vtvx[vt];
 				d.vty[vt] += d.vtvy[vt];
 				
-				// Forces
+				//--- Forces ---//
+				var a = [0, 0];
+				
+				// Vertex difference vectors
+				var nextvt = (vt+1) % nvt;				// Next vertex
+				var prevvt = (vt-1+nvt) % nvt;			// Previous vertex
+				var Dx1 = d.vtx[nextvt] - d.vtx[vt];	// Delta x 1
+				var Dy1 = d.vty[nextvt] - d.vty[vt];	// Delta y 1
+				var Dx2 = d.vtx[prevvt] - d.vtx[vt];	// Delta x 2
+				var Dy2 = d.vty[prevvt] - d.vty[vt];	// Delta y 2
+				
+				var D1 = [Dx1, Dy1];
+				var D2 = [Dx2, Dy2];
+				var D  = add(D1, D2);
+
 				// Gravity
 				// d.vtvy[vt] += fall_acc;
 				
-				// Surface Tension
-				var nextvt = (vt+1)%nvt;				// Next vertex
-				var Dx = d.vtx[vt] - d.vtx[nextvt];		// Delta x
-				var Dy = d.vty[vt] - d.vty[nextvt];		// Delta y
-				// var Dr = Math.sqrt(Dx*Dx + Dy*Dy);	// Distance squared - don't need this if rest length is zero
+				// Surface Tension and Internal Pressure
+				var km = 0.002;							// Spring Constant over Mass ///// Get using liquid type!
+				var pc = 0.4;							// Pressure Constant
+				var area0 = d.area0;					// Equilibrium Area (2D volume)
+				var Darea = (area0 - area)/area0;
 				
-				var km = 0.001;							// Spring Constant over Mass ///// Get using liquid type!
+				// Out pointing vector
+				vout = rot90(subtract(unit(D2), unit(D1)));
+				
+				// Pressure
+				a = add(a, scale(pc*Darea, vout));
+				
+				// Surface Tension
+				a = add(a, scale(km, D));
+				
+				////
+				// Draw Surface Tension and Pressure force vectors
+				gamelog.vector.push([[d.vtx[vt], d.vty[vt]], D1, '#ff0', 200*km]);
+				gamelog.vector.push([[d.vtx[vt], d.vty[vt]], D2, '#f80', 200*km]);
+				gamelog.vector.push([[d.vtx[vt], d.vty[vt]], vout, '#0a0', 200*pc*Darea]);
+				////
+				
+				// Damping
+				var damp = 0.05;
+				var ax = a[0];
+				var ay = a[1];
+				ax += -damp * d.vtvx[vt]
+				ay += -damp * d.vtvy[vt]
 				
 				// Integrate Acceleration
-				d.vtvx[vt]     -= km*Dx;
-				d.vtvx[nextvt] += km*Dx;
-				d.vtvy[vt]     -= km*Dy;
-				d.vtvy[nextvt] += km*Dy;
+				d.vtvx[vt] += ax;
+				d.vtvy[vt] += ay;
 			}
 		}
 		

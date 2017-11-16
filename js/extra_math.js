@@ -18,17 +18,112 @@ function distance(p,q){
 
 function pytha(p){
 	// pythagoras
-	return Math.sqrt(p[0]*p[0]+p[1]*p[1])
+	return Math.sqrt(p[0]*p[0] + p[1]*p[1]);
 }
 
-function manhatten(p1,p2){
+function manhatten(p1, p2){
 	// calculate manhatten distance between two 2D vectors
-	return Math.abs(p1[0]-p2[0])+Math.abs(p1[1]-p2[1])
+	return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
 }
 
 function midpoint(p1,p2){
 	// calculate midpoint vector of two 2D vectors
-	return [(p1[0]+p2[0])/2,(p1[1]+p2[1])/2]
+	return [(p1[0] + p2[0])/2, (p1[1] + p2[1])/2];
+}
+
+function rot90(p) {
+	// Rotate a vector +90 degrees
+	return [-p[1], p[0]];
+}
+
+function unit(p) {
+	// Compute unit vector from vector
+	// Returns [0, 0] if vector magnitude is 0
+	var magnitude = pytha(p);
+	if (magnitude == 0) {
+		return [0, 0];
+	} else {
+		return [p[0]/magnitude, p[1]/magnitude];
+	}
+}
+
+function add() {
+	// Add any number of 2D vectors
+	var narg = arguments.length;
+	var v = [0,0];
+	
+	for (var i = 0; i < narg; i++) {	// Sum arguments elementwise
+		v[0] += arguments[i][0];
+		v[1] += arguments[i][1];
+	}
+	return v;
+}
+
+function subtract() {
+	// Subtract any number of 2D vectors from the first argument
+	var narg = arguments.length;
+	
+	if (narg === 0) {						// Argument list empty
+		return 0;
+	} else {
+		var v = arguments[0].slice(0);
+		
+		for (var i = 1; i < narg; i++) {	// Subtract arguments elementwise
+			v[0] -= arguments[i][0];
+			v[1] -= arguments[i][1];
+		}
+		return v;
+	}
+}
+
+function scale(s, p) {
+	// Multiply a 2D vector with a scalar
+	return [s*p[0], s*p[1]];
+}
+
+function innerprod() {
+	// Inner product of any number of 2D vectors
+	var narg = arguments.length;
+	var v = [1,1];
+	
+	for (var i = 0; i < narg; i++) {	// Multiply arguments elementwise
+		v[0] *= arguments[i][0];
+		v[1] *= arguments[i][1];
+	}
+	return v;
+}
+
+function lincom() {
+	// Linear combination of any number of scalars and 2D vectors
+	// Usage: vector = lincom( scalar1, [x1,y1], scalar2, [x2,y2], ...)
+	//   where vector == [scalar1*x1 + scalar2*x2 ..., scalar1*y1 + scalar2*y2 ...]
+	var narg = arguments.length;
+	if (narg % 2){return NaN;}
+	var v = [0,0];
+	
+	for (var i = 0; i < narg; i+=2) {	// Add scaled vectors elementwise
+		v[0] += arguments[i] * arguments[i+1][0];
+		v[1] += arguments[i] * arguments[i+1][1];
+	}
+	return v;
+}
+
+function addlincom() {
+	// Add Linear combination of any number of scalars and 2D vectors to first argument
+	// Warning! This updates the referenced first array!
+	// Usage: addlincom( [x0,y0], scalar1, [x1,y1], ...)
+	//   where [x0,y0] becomes [x0 + scalar1*x1 ..., y0 + scalar1*y1 ...]
+	// This is equal to lincom(1, [x0,y0], scalar1, [x1,y1], ...) except that
+	// it modifies [x0, y0] instead of returning a value
+	var narg = arguments.length;
+	if (!(narg % 2)){return;}
+	var v = arguments[0];
+	
+	for (var i = 1; i < narg; i+=2) {	// Add scaled vectors elementwise
+		v[0] += arguments[i] * arguments[i+1][0];
+		v[1] += arguments[i] * arguments[i+1][1];
+	}
+	return;
 }
 
 function polyarea(x, y){

@@ -26,8 +26,12 @@ function debug() {
     gamelog.updateGraph(0,gamelog.fps,'fps',40,100); ///// Gamelog!
     gamelog.updateGraph(1,entities.length,'number of entities',0,50);
     if(liquid.drops.length){
-        gamelog.updateGraph(2,liquid.drops[0].vtvy[0],'vy droplet',-10,10);
-        gamelog.num[3] = liquid.drops[0].vtvy[0];
+        var d = liquid.drops[liquid.drops.length-1];
+        gamelog.num[3] = d.vtvy[0];
+        var area = polyarea(d.vtx, d.vty);
+        gamelog.num[4] = area;
+        gamelog.numstr[4] = 'drop area: '
+        gamelog.updateGraph(2,area,'droplet area',0,30000);
     }
 
     // Player cooldown
@@ -38,3 +42,9 @@ function debug() {
     gamelog.num[1] = player.hp;
     gamelog.numstr[1] = 'hp: '
 }
+
+
+///
+/// Remember if t key was down
+var tkeydown = false;
+///

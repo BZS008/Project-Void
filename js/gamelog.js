@@ -38,7 +38,7 @@
 //    Integer array of length 2. Use to mark a location in the canvas.
 //    In level coordinates!
 //	  Usage: gamelog.mark[#] = [x,y]
-// - markcolors
+// - markcolor
 //    Strings. Use to change context fillStyle color of marker.
 //    Undefined and false give red. True gives green. String is used as fillStyle.
 //	  Usage: gamelog.markcolor[#] = undefined|boolean|string
@@ -56,8 +56,13 @@
 //	  Usage: gamelog.markline[#] = [x1, x2, y1, y2, duration]
 // - marklinecolor
 //    Strings or boolean. Use to change context fillStyle color of markline.
-//    Undefined and false give red. True gives green. String is used as fillStyle.
+//    Undefined and false give red. True gives green. String is used as strokeStyle.
 //	  Usage: gamelog.marklinecolor[#] = undefined|boolean|string
+// - vector
+//    Multi array of 2x 2 numbers, a strokeStyle and a number. Use to draw a vector as an arrow.
+//    Usage: gamelog.vector.push( [[xorigin, yorigin], [xvector, yvector], strokeStyle, vscale] )
+//    For the color: undefined and false give red. True gives green. String is used as strokeStyle.
+//    If vscale is undefined the vector won't be scaled (and so its length will be in pixels).
 //
 // Graphs:
 // - graph
@@ -116,6 +121,8 @@ function createGameLog(ctx){
 		markrectcolor:[],
 		markline:[],
 		marklinecolor:[],
+		vector:[],
+		vectorcolor:[],
 		
 		graph:[],
 		graphstr:[],
@@ -232,6 +239,67 @@ function createGameLog(ctx){
 		// Draw all elements of the gamelog
 		draw:function(){
 			if(this.show){											// Draw gamelog if show==true
+				
+				// Draw vector arrows
+				for (var i = 0; i < this.vector.length; i++) {
+					if(this.vector[i] !== undefined){		        	// If the vector is defined
+						ctx.beginPath();
+						ctx.lineWidth = 1.2;
+						ctx.lineJoin = 'miter';
+						
+						if (typeof(this.vector[i][3]) === undefined) {
+							var vscale = 1;
+						} else {
+							var vscale = this.vector[i][3];
+						}
+						
+						// Fetch/compute origin/vector x/y
+						var origin = l2v(this.vector[i][0]);
+						var vector = scale(vscale, this.vector[i][1]);
+						
+						// var xo = xl2xv(this.vector[i][0]);
+						// var yo = yl2yv(this.vector[i][1]);
+						// var xv = this.vector[i][2] * vscale;
+						// var yv = this.vector[i][3] * vscale;
+						
+						// Create orthonormal basis aligned with vector
+						var u1 = unit(vector);
+						var u2 = rot90(u1);
+						
+						// Define arrow size
+						var w = 4;
+						var h = 6;
+						
+						// Compute path points
+						var p0 = origin;
+						var p1 = add(origin, vector);
+						var p2 = lincom(1,p1, -h,u1, w/2,u2);
+						var p3 = lincom(1,p2, -w,u2);
+						
+						// Draw arrow line and head
+						ctx.moveTo(p0[0], p0[1]);
+						ctx.lineTo(p1[0], p1[1]);
+						ctx.lineTo(p2[0], p2[1]);
+						ctx.lineTo(p3[0], p3[1]);
+						ctx.lineTo(p1[0], p1[1]);
+						
+						// Determine strokeStyle
+						if(typeof(this.vector[i][2])==="string"){	// The strokeStyle is a string
+							ctx.strokeStyle = this.vector[i][2];	// The last arg is used as strokeStyle
+						}else{
+							if(this.vector[i][2]===undefined || this.vector[i][2]===false){
+								ctx.strokeStyle='red';
+							}else if(this.vector[i][2]===true){		// The strokeStyle===true
+								ctx.strokeStyle='green';
+							}
+						}
+						
+						ctx.stroke();
+					}
+				}
+				
+				this.vector = [];
+				
 				
 				// Draw rectangular markers
 				for(var i = 0; i < this.markrect.length; i++){	        // Loop over rectangular markers

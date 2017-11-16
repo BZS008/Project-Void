@@ -52,3 +52,11 @@ function yv2yl(yv){
 }
 
 
+//--- Vector versions of viewport/level functions ---//
+function l2v(l) {
+	return [xl2xv(l[0]), yl2yv(l[1])];
+}
+
+function v2l(v) {
+	return [xv2xl(v[0]), yv2yl(v[1])];
+}
