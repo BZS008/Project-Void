@@ -257,11 +257,6 @@ function createGameLog(ctx){
 						var origin = l2v(this.vector[i][0]);
 						var vector = scale(vscale, this.vector[i][1]);
 						
-						// var xo = xl2xv(this.vector[i][0]);
-						// var yo = yl2yv(this.vector[i][1]);
-						// var xv = this.vector[i][2] * vscale;
-						// var yv = this.vector[i][3] * vscale;
-						
 						// Create orthonormal basis aligned with vector
 						var u1 = unit(vector);
 						var u2 = rot90(u1);

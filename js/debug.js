@@ -27,10 +27,10 @@ function debug() {
     gamelog.updateGraph(1,entities.length,'number of entities',0,50);
     if(liquid.drops.length){
         var d = liquid.drops[liquid.drops.length-1];
-        gamelog.num[3] = d.vtvy[0];
-        var area = polyarea(d.vtx, d.vty);
+        gamelog.num[3] = d.vtv[0][0];
+        var area = polyarea(d.vt);
         gamelog.num[4] = area;
-        gamelog.numstr[4] = 'drop area: '
+        gamelog.numstr[4] = 'drop area: ';
         gamelog.updateGraph(2,area,'droplet area',0,30000);
     }
 

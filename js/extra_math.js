@@ -50,7 +50,7 @@ function unit(p) {
 function add() {
 	// Add any number of 2D vectors
 	var narg = arguments.length;
-	var v = [0,0];
+	var v = [0, 0];
 	
 	for (var i = 0; i < narg; i++) {	// Sum arguments elementwise
 		v[0] += arguments[i][0];
@@ -59,12 +59,30 @@ function add() {
 	return v;
 }
 
+function addto() {
+	// Add any number of 2D vectors to the first argument
+	// N.B. This modifies the first reference array!
+	var narg = arguments.length;
+	
+	if (narg === 0) {						// Argument list empty
+		return;
+	} else {
+		var v = arguments[0];
+		
+		for (var i = 1; i < narg; i++) {	// Add arguments elementwise
+			v[0] += arguments[i][0];
+			v[1] += arguments[i][1];
+		}
+		return;
+	}
+}
+
 function subtract() {
 	// Subtract any number of 2D vectors from the first argument
 	var narg = arguments.length;
 	
 	if (narg === 0) {						// Argument list empty
-		return 0;
+		return [0, 0];
 	} else {
 		var v = arguments[0].slice(0);
 		
@@ -93,6 +111,11 @@ function innerprod() {
 	return v;
 }
 
+function crossprod(v, w) {
+	// 2D cross product of two 2D vectors (returns a scalar)
+	return v[0]*w[1] - v[1]*w[0];
+}
+
 function lincom() {
 	// Linear combination of any number of scalars and 2D vectors
 	// Usage: vector = lincom( scalar1, [x1,y1], scalar2, [x2,y2], ...)
@@ -108,9 +131,9 @@ function lincom() {
 	return v;
 }
 
-function addlincom() {
+function lincomto() {
 	// Add Linear combination of any number of scalars and 2D vectors to first argument
-	// Warning! This updates the referenced first array!
+	// N.B. This updates the referenced first array!
 	// Usage: addlincom( [x0,y0], scalar1, [x1,y1], ...)
 	//   where [x0,y0] becomes [x0 + scalar1*x1 ..., y0 + scalar1*y1 ...]
 	// This is equal to lincom(1, [x0,y0], scalar1, [x1,y1], ...) except that
@@ -126,20 +149,19 @@ function addlincom() {
 	return;
 }
 
-function polyarea(x, y){
+function polyarea(vt){
 	// Calculate unsigned area of non-selfintersecting closed polygon
 	// (Using the sum of the cross products of the vertices)
 	// x: x-coordinates of vertices
 	// y: y-coordinates of vertices
 	// x and y must be arrays of the same length containing only numbers
 	
-	var area2 = 0; 					// twice signed area
-	var N = x.length;
+	var area2 = 0; 						// twice signed area
+	var N = vt.length;
 	
-	for (var i = 0; i < N; i++) {	// Loop over vertices
-		var j = (i+1) % N; 			// Next vertex index (closed polygon)
-		area2 += x[i] * y[j];		// Cross product (part 1)
-		area2 -= y[i] * x[j];		// Cross product (part 2)
+	for (var i = 0; i < N; i++) {		// Loop over vertices
+		var j = (i+1) % N; 				// Next vertex index (closed polygon)
+		area2 += crossprod(vt[i], vt[j]);
 	}
 	
 	return Math.abs(0.5 * area2)

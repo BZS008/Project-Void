@@ -4,13 +4,11 @@ var liquid = {
 	drops:[],									// Array for holding droplets
 	
 	// Function for adding droplets
-	addDroplet:function(vtx,vty,vtvx,vtvy,area0,type){
+	addDroplet:function(vt,vtv,area0,type){
 		
 		liquid.drops.push({
-			vtx:vtx,							// x coord vertices
-			vty:vty,							// y coord vertices
-			vtvx:vtvx,							// x velocity vertices
-			vtvy:vtvy,							// y velocity vertices
+			vt:vt, 								// vertices coordinates
+			vtv:vtv,							// vertices velocities
 			area0:area0,						// Area (2D Volume) of droplet
 			type:type							// Type of liquid
 		});
@@ -19,12 +17,13 @@ var liquid = {
 	// Function for drawing droplets
 	drawDroplet:function(i){
 		var d = liquid.drops[i];
-		var nvt = d.vtx.length;
+		var nvt = d.vt.length;
 		ctx.beginPath();						// Start drawing droplet
-		ctx.moveTo(xl2xv(d.vtx[0]), yl2yv(d.vty[0]));
+		ctx.moveTo(xl2xv(d.vt[0][0]), yl2yv(d.vt[0][1]));
 		
 		for(var vt=1; vt<nvt; vt++){			// Loop over droplet vertices
-			ctx.lineTo(xl2xv(d.vtx[vt]), yl2yv(d.vty[vt]));
+			var p = l2v(d.vt[vt]);
+			ctx.lineTo(p[0], p[1]);
 		}
 		ctx.closePath();
 		ctx.fillStyle = 'blue';					///// Get correct color using type!
@@ -62,28 +61,22 @@ var liquid = {
 			var d = liquid.drops[i];
 			
 			// Compute Droplet Area (2D volume)
-			var area = polyarea(d.vtx, d.vty);
+			var area = polyarea(d.vt);
 			
-			var nvt = d.vtx.length;						// Number of vertices
-			for(var vt=0; vt<nvt; vt++){				// Loop over droplet vertices
+			var nvt = d.vt.length;						// Number of vertices
+			for(var ivt=0; ivt<nvt; ivt++){				// Loop over droplet vertices
 				
 				// Integrate vertex velocity
-				d.vtx[vt] += d.vtvx[vt];
-				d.vty[vt] += d.vtvy[vt];
+				addto(d.vt[ivt], d.vtv[ivt])
 				
 				//--- Forces ---//
 				var a = [0, 0];
 				
 				// Vertex difference vectors
-				var nextvt = (vt+1) % nvt;				// Next vertex
-				var prevvt = (vt-1+nvt) % nvt;			// Previous vertex
-				var Dx1 = d.vtx[nextvt] - d.vtx[vt];	// Delta x 1
-				var Dy1 = d.vty[nextvt] - d.vty[vt];	// Delta y 1
-				var Dx2 = d.vtx[prevvt] - d.vtx[vt];	// Delta x 2
-				var Dy2 = d.vty[prevvt] - d.vty[vt];	// Delta y 2
-				
-				var D1 = [Dx1, Dy1];
-				var D2 = [Dx2, Dy2];
+				var nextivt = (ivt+1) % nvt;			// Next vertex
+				var previvt = (ivt-1+nvt) % nvt;		// Previous vertex
+				var D1 = subtract(d.vt[nextivt], d.vt[ivt]);
+				var D2 = subtract(d.vt[previvt], d.vt[ivt]);
 				var D  = add(D1, D2);
 
 				// Gravity
@@ -106,21 +99,18 @@ var liquid = {
 				
 				////
 				// Draw Surface Tension and Pressure force vectors
-				gamelog.vector.push([[d.vtx[vt], d.vty[vt]], D1, '#ff0', 200*km]);
-				gamelog.vector.push([[d.vtx[vt], d.vty[vt]], D2, '#f80', 200*km]);
-				gamelog.vector.push([[d.vtx[vt], d.vty[vt]], vout, '#0a0', 200*pc*Darea]);
+				gamelog.vector.push([d.vt[ivt], D1, '#ff0', 200*km]);
+				gamelog.vector.push([d.vt[ivt], D2, '#f80', 200*km]);
+				gamelog.vector.push([d.vt[ivt], vout, '#0a0', 200*pc*Darea]);
 				////
 				
 				// Damping
 				var damp = 0.05;
-				var ax = a[0];
-				var ay = a[1];
-				ax += -damp * d.vtvx[vt]
-				ay += -damp * d.vtvy[vt]
+				lincomto(a, -damp, d.vtv[ivt]);
 				
 				// Integrate Acceleration
-				d.vtvx[vt] += ax;
-				d.vtvy[vt] += ay;
+				///// Integration should be all vertices at once, not one at a time!
+				addto(d.vtv[ivt], a);
 			}
 		}
 		
