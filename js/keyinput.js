@@ -44,7 +44,7 @@ function keyinput(){
 		var vy 		= player.vy;
 		var vt = [[x,y], [x+50,y], [x+100,y+10], [x+150,y], [x+200,y+70], [x+200,y+70], [x+150,y+80], [x+100,y+80], [x+50,y+80]]
 		var vtv = [[vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy]]
-		var area0 	= 25000;
+		var area0 	= 25000 * (0.5 + 0.5 * Math.random());
 		var type 	= 0;
 		liquid.addDroplet(vt, vtv, area0, type);
 		

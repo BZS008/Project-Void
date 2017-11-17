@@ -64,19 +64,20 @@ var liquid = {
 			var area = polyarea(d.vt);
 			
 			var nvt = d.vt.length;						// Number of vertices
-			for(var ivt=0; ivt<nvt; ivt++){				// Loop over droplet vertices
+			var vta = arrnum2D(nvt, 2, 0); 				// Initialize zero array
+			
+			//--- Compute Accelerations ---//
+			for(var ivt=0; ivt<nvt; ivt++){				// Compute Acceleration per vertex
 				
-				// Integrate vertex velocity
-				addto(d.vt[ivt], d.vtv[ivt])
-				
-				//--- Forces ---//
+				var vt = d.vt;
+				var vtv = d.vtv;
 				var a = [0, 0];
 				
 				// Vertex difference vectors
 				var nextivt = (ivt+1) % nvt;			// Next vertex
 				var previvt = (ivt-1+nvt) % nvt;		// Previous vertex
-				var D1 = subtract(d.vt[nextivt], d.vt[ivt]);
-				var D2 = subtract(d.vt[previvt], d.vt[ivt]);
+				var D1 = subtract(vt[nextivt], vt[ivt]);
+				var D2 = subtract(vt[previvt], vt[ivt]);
 				var D  = add(D1, D2);
 
 				// Gravity
@@ -84,9 +85,9 @@ var liquid = {
 				
 				// Surface Tension and Internal Pressure
 				var km = 0.002;							// Spring Constant over Mass ///// Get using liquid type!
-				var pc = 0.4;							// Pressure Constant
+				var pc = 1e-5;							// Pressure Constant
 				var area0 = d.area0;					// Equilibrium Area (2D volume)
-				var Darea = (area0 - area)/area0;
+				var Darea = (area0 - area);
 				
 				// Out pointing vector
 				vout = rot90(subtract(unit(D2), unit(D1)));
@@ -99,18 +100,26 @@ var liquid = {
 				
 				////
 				// Draw Surface Tension and Pressure force vectors
-				gamelog.vector.push([d.vt[ivt], D1, '#ff0', 200*km]);
-				gamelog.vector.push([d.vt[ivt], D2, '#f80', 200*km]);
-				gamelog.vector.push([d.vt[ivt], vout, '#0a0', 200*pc*Darea]);
+				gamelog.vector.push([vt[ivt], D1, '#ff0', 200*km]);
+				gamelog.vector.push([vt[ivt], D2, '#f80', 200*km]);
+				gamelog.vector.push([vt[ivt], vout, '#0a0', 200*pc*Darea]);
 				////
 				
 				// Damping
+				///// Damping should be subtracted from surface tension and pressure forces,
+				///// in order to decouple droplet air friction
 				var damp = 0.05;
-				lincomto(a, -damp, d.vtv[ivt]);
+				lincomto(a, -damp, vtv[ivt]);
 				
 				// Integrate Acceleration
-				///// Integration should be all vertices at once, not one at a time!
-				addto(d.vtv[ivt], a);
+				vta[ivt] = a;
+			}
+			
+			//--- Integration ---//
+			for(var ivt=0; ivt<nvt; ivt++){
+				//// Leapfrog pls?
+				addto(d.vt[ivt], d.vtv[ivt])
+				addto(vtv[ivt], vta[ivt]);
 			}
 		}
 		
