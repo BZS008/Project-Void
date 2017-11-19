@@ -42,11 +42,13 @@ function keyinput(){
 		var y 		= player.y-20;
 		var vx 		= player.vx;
 		var vy 		= player.vy;
-		var vt = [[x,y], [x+50,y], [x+100,y+10], [x+150,y], [x+200,y+70], [x+200,y+70], [x+150,y+80], [x+100,y+80], [x+50,y+80]]
-		var vtv = [[vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy], [vx,vy]]
+		var vt 		= [[x,y], [x+50,y], [x+100,y+10], [x+150,y], [x+200,y+70], [x+200,y+70], [x+150,y+80], [x+100,y+80], [x+50,y+80]]
+		var vtv 	= [[vx+1,vy], [vx+1,vy], [vx+1,vy], [vx+1,vy], [vx-1,vy], [vx-1,vy], [vx-1,vy], [vx-1,vy], [vx-1,vy]]
 		var area0 	= 25000 * (0.5 + 0.5 * Math.random());
+		var area    = polyarea(vt);
+		var dist      = [0,0,0,0,0,0,0,0,0];
 		var type 	= 0;
-		liquid.addDroplet(vt, vtv, area0, type);
+		liquid.addDroplet(vt, vtv, area0, area, dist, type);
 		
 		tkeydown = true;
 	}

@@ -4,13 +4,22 @@
 // Creator: Daniël Cox //
 //---------------------//
 
-tau=Math.PI*2
+var tau = Math.PI*2;
 
 function distance(p,q){
 	// calculate 2D distance between two objects
 	// objects should have x and y properties
-	Dx=p.x-q.x; Dy=p.y-q.y
-	return Math.sqrt(Dx*Dx+Dy*Dy)
+	Dx=p.x-q.x; Dy=p.y-q.y;
+	return Math.sqrt(Dx*Dx+Dy*Dy);
+}
+
+function saturate(a, k) {
+	// Return value saturated at +k/-k
+	if (Math.abs(a) < k) {
+		return a;
+	} else {
+		return k*Math.sign(a);
+	}
 }
 
 

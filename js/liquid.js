@@ -4,13 +4,15 @@ var liquid = {
 	drops:[],									// Array for holding droplets
 	
 	// Function for adding droplets
-	addDroplet:function(vt,vtv,area0,type){
+	addDroplet:function(vt, vtv, area0, area, dist, type){
 		
 		liquid.drops.push({
-			vt:vt, 								// vertices coordinates
-			vtv:vtv,							// vertices velocities
-			area0:area0,						// Area (2D Volume) of droplet
-			type:type							// Type of liquid
+			vt: vt, 							// vertices coordinates
+			vtv: vtv,							// vertices velocities
+			area0: area0,						// Target Area (2D Volume) of droplet (without surface tension)
+			area: area,							// Latest calculated area
+			dist: dist,							// Latest calculated vertex distance (in + direction)
+			type: type							// Type of liquid
 		});
 	},
 	
@@ -61,10 +63,12 @@ var liquid = {
 			var d = liquid.drops[i];
 			
 			// Compute Droplet Area (2D volume)
-			var area = polyarea(d.vt);
+			var area = polyarea(d.vt);					// Current droplet area
+			var darea = area - d.area;					// Area difference with prev iteration
 			
 			var nvt = d.vt.length;						// Number of vertices
 			var vta = arrnum2D(nvt, 2, 0); 				// Initialize zero array
+			var dist = d.dist;							// Initialize as previous distance
 			
 			//--- Compute Accelerations ---//
 			for(var ivt=0; ivt<nvt; ivt++){				// Compute Acceleration per vertex
@@ -85,15 +89,15 @@ var liquid = {
 				
 				// Surface Tension and Internal Pressure
 				var km = 0.002;							// Spring Constant over Mass ///// Get using liquid type!
-				var pc = 1e-5;							// Pressure Constant
+				var pc = 1e-5;							// Pressure Constant		 ///// Get using liquid type!
 				var area0 = d.area0;					// Equilibrium Area (2D volume)
-				var Darea = (area0 - area);
+				var Fexpand = pc*(area0 - area); 		// Expansion force
 				
 				// Out pointing vector
 				vout = rot90(subtract(unit(D2), unit(D1)));
 				
 				// Pressure
-				a = add(a, scale(pc*Darea, vout));
+				a = add(a, scale(Fexpand, vout));
 				
 				// Surface Tension
 				a = add(a, scale(km, D));
@@ -102,16 +106,25 @@ var liquid = {
 				// Draw Surface Tension and Pressure force vectors
 				gamelog.vector.push([vt[ivt], D1, '#ff0', 200*km]);
 				gamelog.vector.push([vt[ivt], D2, '#f80', 200*km]);
-				gamelog.vector.push([vt[ivt], vout, '#0a0', 200*pc*Darea]);
+				gamelog.vector.push([vt[ivt], vout, '#0a0', 200*Fexpand]);
 				////
 				
 				// Damping
-				///// Damping should be subtracted from surface tension and pressure forces,
-				///// in order to decouple droplet air friction
-				var damp = 0.05;
-				lincomto(a, -damp, vtv[ivt]);
+				var areadamp = 0.001;
+				var surfdamp = 0.01;
+				var damp = 0.002;
+				// dist[ivt] = pytha(D1); 					// Store new distance
+				var Ddist1 = pytha(D1) - pytha(lincom(1,D1, 1,vtv[ivt], -1,vtv[nextivt]));
+				var Ddist2 = pytha(D2) - pytha(lincom(1,D2, 1,vtv[ivt], -1,vtv[previvt]))
 				
-				// Integrate Acceleration
+				////
+				gamelog.vector.push([vt[ivt], unit(D1), '#fff', 200*surfdamp*Ddist1])
+				gamelog.vector.push([vt[ivt], unit(D2), '#999', 200*surfdamp*Ddist2])
+				////
+				
+				lincomto(a,  -areadamp*darea, vout,  surfdamp*Ddist1, unit(D1),  surfdamp*Ddist2, unit(D2),  -damp, vtv[ivt]);
+				
+				// Set computed accelration
 				vta[ivt] = a;
 			}
 			
@@ -121,6 +134,10 @@ var liquid = {
 				addto(d.vt[ivt], d.vtv[ivt])
 				addto(vtv[ivt], vta[ivt]);
 			}
+			
+			// Set latest calculated area for next iteration
+			d.area = area;
+			d.dist = dist;
 		}
 		
 		// Liquid Tile Physics
