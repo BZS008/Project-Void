@@ -122,7 +122,6 @@ function createGameLog(ctx){
 		markline:[],
 		marklinecolor:[],
 		vector:[],
-		vectorcolor:[],
 		
 		graph:[],
 		graphstr:[],
@@ -244,13 +243,28 @@ function createGameLog(ctx){
 				for (var i = 0; i < this.vector.length; i++) {
 					if(this.vector[i] !== undefined){		        	// If the vector is defined
 						ctx.beginPath();
-						ctx.lineWidth = 1.2;
+						ctx.lineWidth = 1.5;
 						ctx.lineJoin = 'miter';
 						
+						// Apply vector scale
 						if (typeof(this.vector[i][3]) === undefined) {
 							var vscale = 1;
 						} else {
 							var vscale = this.vector[i][3];
+						}
+						
+						// Determine strokeStyle
+						if(typeof(this.vector[i][2])==="string"){	// The strokeStyle is a string
+							ctx.strokeStyle = this.vector[i][2];	// The last arg is used as strokeStyle
+							ctx.fillStyle = this.vector[i][2];		// and for fillStyle
+						}else{
+							if(this.vector[i][2]===undefined || this.vector[i][2]===false){
+								ctx.strokeStyle='red';
+								ctx.fillStyle='red';
+							}else if(this.vector[i][2]===true){		// The strokeStyle===true
+								ctx.strokeStyle='green';
+								ctx.fillStyle='green';
+							}
 						}
 						
 						// Fetch/compute origin/vector x/y
@@ -262,8 +276,8 @@ function createGameLog(ctx){
 						var u2 = rot90(u1);
 						
 						// Define arrow size
-						var w = 4;
-						var h = 6;
+						var w = 6;
+						var h = 10;
 						
 						// Compute path points
 						var p0 = origin;
@@ -274,22 +288,12 @@ function createGameLog(ctx){
 						// Draw arrow line and head
 						ctx.moveTo(p0[0], p0[1]);
 						ctx.lineTo(p1[0], p1[1]);
+						ctx.stroke();
+						
 						ctx.lineTo(p2[0], p2[1]);
 						ctx.lineTo(p3[0], p3[1]);
 						ctx.lineTo(p1[0], p1[1]);
-						
-						// Determine strokeStyle
-						if(typeof(this.vector[i][2])==="string"){	// The strokeStyle is a string
-							ctx.strokeStyle = this.vector[i][2];	// The last arg is used as strokeStyle
-						}else{
-							if(this.vector[i][2]===undefined || this.vector[i][2]===false){
-								ctx.strokeStyle='red';
-							}else if(this.vector[i][2]===true){		// The strokeStyle===true
-								ctx.strokeStyle='green';
-							}
-						}
-						
-						ctx.stroke();
+						ctx.fill();
 					}
 				}
 				
