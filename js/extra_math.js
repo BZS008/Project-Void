@@ -45,6 +45,11 @@ function rot90(p) {
 	return [-p[1], p[0]];
 }
 
+function rot270(p) {
+	// Rotate a vector +90 degrees
+	return [p[1], -p[0]];
+}
+
 function angle(v, w) {
 	// Compute the unsigned angle between two vectors (between 0 and 2 pi)
 	return (Math.atan2(w[1], w[0]) - Math.atan2(v[1], v[0]) + tau) % tau;

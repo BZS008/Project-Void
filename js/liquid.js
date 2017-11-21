@@ -1,3 +1,5 @@
+"use strict";
+
 // Liquid object
 // contains general variables and functions for liquid physics
 var liquid = {
@@ -83,6 +85,8 @@ var liquid = {
 				var D1 = subtract(vt[nextivt], vt[ivt]);
 				var D2 = subtract(vt[previvt], vt[ivt]);
 				var D  = add(D1, D2);
+				var uD1 = unit(D1);
+				var uD2 = unit(D2);
 
 				// Gravity
 				// d.vtvy[vt] += fall_acc;
@@ -94,7 +98,7 @@ var liquid = {
 				var Fexpand = pc*(area0 - area); 		// Expansion force
 				
 				// Out pointing vector
-				vout = rot90(subtract(unit(D2), unit(D1)));
+				var vout = rot90(subtract(uD2, uD1));
 				
 				// Pressure
 				a = add(a, scale(Fexpand, vout));
@@ -109,28 +113,42 @@ var liquid = {
 				gamelog.vector.push([vt[ivt], vout, '#0a0', 200*Fexpand]);
 				////
 				
-				// Damping
+				// Damping factors
 				var areadamp = 0.001;
 				var surfdamp = 0.01;
+				var angdamp  = 0.005;
 				var damp = 0.002;
 				// dist[ivt] = pytha(D1); 					// Store new distance
+				
+				// Vertex Distance and Angle calculation
+				
+				var dist1  = pytha(D1);
+				var dist2  = pytha(D2);
 				var D1last = lincom(1,D1, 1,vtv[ivt], -1,vtv[nextivt]);
 				var D2last = lincom(1,D2, 1,vtv[ivt], -1,vtv[previvt]);
-				var Ddist1 = pytha(D1) - pytha(D1last);
-				var Ddist2 = pytha(D2) - pytha(D2last);
+				var Ddist1 = dist1 - pytha(D1last);
+				var Ddist2 = dist2 - pytha(D2last);
 				var Dangle = angle(D1, D2) - angle(D1last, D2last);
-				gamelog.updateGraph(3+ivt, Dangle, ivt+': \u2202\u03B8/\u2202t', -tau/12, tau/25)
-				gamelog.updateGraph(3+ivt+nvt, angle(D1, D2), ivt+': \u03B8', 0, 2*tau)
 				
-				////
-				gamelog.vector.push([vt[ivt], unit(D1), '#fff', 200*surfdamp*Ddist1])
-				gamelog.vector.push([vt[ivt], unit(D2), '#999', 200*surfdamp*Ddist2])
-				////
+				// Angle damping
+				lincomto(vta[nextivt], angdamp*dist1*Dangle, rot90(uD1));
+				lincomto(vta[previvt], angdamp*dist2*Dangle, rot270(uD2));
 				
-				lincomto(a,  -areadamp*darea, vout,  surfdamp*Ddist1, unit(D1),  surfdamp*Ddist2, unit(D2),  -damp, vtv[ivt]);
+				// Angle damping, Surface damping and Air friction
+				lincomto(a,  -areadamp*darea, vout,  surfdamp*Ddist1, uD1,  surfdamp*Ddist2, uD2,  -damp, vtv[ivt]);
 				
 				// Set computed accelration
-				vta[ivt] = a;
+				addto(vta[ivt], a);
+				
+				////
+				var vector_scale = 1000;
+				gamelog.updateGraph(3+ivt, Dangle, ivt+': \u2202\u03B8/\u2202t', -tau/12, tau/25)
+				gamelog.updateGraph(3+ivt+nvt, angle(D1, D2), ivt+': \u03B8', 0, 2*tau)
+				gamelog.vector.push([vt[ivt], uD1, '#fff', vector_scale*surfdamp*Ddist1])
+				gamelog.vector.push([vt[ivt], uD2, '#999', vector_scale*surfdamp*Ddist2])
+				gamelog.vector.push([vt[nextivt], rot90(uD1), '#0ff', vector_scale*angdamp*dist1*Dangle])
+				gamelog.vector.push([vt[previvt], rot270(uD2), '#0ff', vector_scale*angdamp*dist2*Dangle])
+				////
 			}
 			
 			//--- Integration ---//
