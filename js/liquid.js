@@ -6,14 +6,13 @@ var liquid = {
 	drops:[],									// Array for holding droplets
 	
 	// Function for adding droplets
-	addDroplet:function(vt, vtv, area0, area, dist, type){
+	addDroplet:function(vt, vtv, area0, area, type){
 		
 		liquid.drops.push({
 			vt: vt, 							// vertices coordinates
 			vtv: vtv,							// vertices velocities
 			area0: area0,						// Target Area (2D Volume) of droplet (without surface tension)
 			area: area,							// Latest calculated area
-			dist: dist,							// Latest calculated vertex distance (in + direction)
 			type: type							// Type of liquid
 		});
 	},
@@ -92,7 +91,7 @@ var liquid = {
 				// d.vtvy[vt] += fall_acc;
 				
 				// Surface Tension and Internal Pressure
-				var km = 0.002;							// Spring Constant over Mass ///// Get using liquid type!
+				var km = 0.001;							// Spring Constant over Mass ///// Get using liquid type!
 				var pc = 1e-5;							// Pressure Constant		 ///// Get using liquid type!
 				var area0 = d.area0;					// Equilibrium Area (2D volume)
 				var Fexpand = pc*(area0 - area); 		// Expansion force
@@ -106,15 +105,9 @@ var liquid = {
 				// Surface Tension
 				a = add(a, scale(km, D));
 				
-				////
-				// Draw Surface Tension and Pressure force vectors
-				gamelog.vector.push([vt[ivt], D1, '#ff0', 200*km]);
-				gamelog.vector.push([vt[ivt], D2, '#f80', 200*km]);
-				gamelog.vector.push([vt[ivt], vout, '#0a0', 200*Fexpand]);
-				////
 				
 				// Damping factors
-				var areadamp = 0.001;
+				var areadamp = 0.0005;
 				var surfdamp = 0.01;
 				var angdamp  = 0.1;
 				var damp = 0.001;
@@ -137,11 +130,17 @@ var liquid = {
 				addto(vta[ivt], a);
 				
 				////
-				var vector_scale = 1500;
-				gamelog.vector.push([vt[ivt], uD1, '#fff', vector_scale*surfdamp*Ddist1])
-				gamelog.vector.push([vt[ivt], uD2, '#999', vector_scale*surfdamp*Ddist2])
-				gamelog.vector.push([vt[ivt], vout, '#0ff', vector_scale*angdamp*Dangle])
-				gamelog.vector.push([vt[ivt], vtv[ivt], '#faa', -vector_scale*damp])
+				var vector_scale = 200;
+				var vector_scale_damp = 2000;
+				// Draw Surface Tension and Pressure force vectors
+				gamelog.vector.push([vt[ivt], D1, '#ff0', vector_scale*km]);
+				gamelog.vector.push([vt[ivt], D2, '#f80', vector_scale*km]);
+				gamelog.vector.push([vt[ivt], vout, '#090', vector_scale*Fexpand]);
+				gamelog.vector.push([vt[ivt], vout, '#0f0', vector_scale_damp*-areadamp*darea])
+				gamelog.vector.push([vt[ivt], uD1, '#fff', vector_scale_damp*surfdamp*Ddist1])
+				gamelog.vector.push([vt[ivt], uD2, '#999', vector_scale_damp*surfdamp*Ddist2])
+				gamelog.vector.push([vt[ivt], vout, '#0ff', vector_scale_damp*angdamp*Dangle])
+				gamelog.vector.push([vt[ivt], vtv[ivt], '#faa', -vector_scale_damp*damp])
 				////
 			}
 			
@@ -154,7 +153,6 @@ var liquid = {
 			
 			// Set latest calculated area for next iteration
 			d.area = area;
-			d.dist = dist;
 		}
 		
 		// Liquid Tile Physics
