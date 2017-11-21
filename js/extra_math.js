@@ -45,14 +45,19 @@ function rot90(p) {
 	return [-p[1], p[0]];
 }
 
-function unit(p) {
+function angle(v, w) {
+	// Compute the unsigned angle between two vectors (between 0 and 2 pi)
+	return (Math.atan2(w[1], w[0]) - Math.atan2(v[1], v[0]) + tau) % tau;
+}
+
+function unit(v) {
 	// Compute unit vector from vector
 	// Returns [0, 0] if vector magnitude is 0
-	var magnitude = pytha(p);
+	var magnitude = pytha(v);
 	if (magnitude == 0) {
 		return [0, 0];
 	} else {
-		return [p[0]/magnitude, p[1]/magnitude];
+		return [v[0]/magnitude, v[1]/magnitude];
 	}
 }
 

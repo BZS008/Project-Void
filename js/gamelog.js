@@ -81,7 +81,7 @@
 //    Toggles gamelog visibility on/off.
 // - draw()
 //    Draws the gamelog for you
-// - updateGraph(graphnumber, value [, min, max ])
+// - updateGraph(graphnumber, value, 'name', [, min, max ])
 //    Add new value to graph.
 // - textmark(s,x,y,shadow)
 //    Draws text at specified location. s is object with .toString() method.
@@ -105,7 +105,7 @@ function createGameLog(ctx){
 		graphsamples:120,
 		graphcolors:['#f11','#0ff','#0f0','#ff0','#f0f','#f80','#fff','#888','#00f'],
 		graphwidth:280,	            // Width of graph/histogram
-		graphheight:120,	        // Height of graph/histogram
+		graphheight:200,	        // Height of graph/histogram
 		
 		nhistbins:25,				// Number of histogram bins
 		

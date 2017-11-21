@@ -114,8 +114,13 @@ var liquid = {
 				var surfdamp = 0.01;
 				var damp = 0.002;
 				// dist[ivt] = pytha(D1); 					// Store new distance
-				var Ddist1 = pytha(D1) - pytha(lincom(1,D1, 1,vtv[ivt], -1,vtv[nextivt]));
-				var Ddist2 = pytha(D2) - pytha(lincom(1,D2, 1,vtv[ivt], -1,vtv[previvt]))
+				var D1last = lincom(1,D1, 1,vtv[ivt], -1,vtv[nextivt]);
+				var D2last = lincom(1,D2, 1,vtv[ivt], -1,vtv[previvt]);
+				var Ddist1 = pytha(D1) - pytha(D1last);
+				var Ddist2 = pytha(D2) - pytha(D2last);
+				var Dangle = angle(D1, D2) - angle(D1last, D2last);
+				gamelog.updateGraph(3+ivt, Dangle, ivt+': \u2202\u03B8/\u2202t', -tau/12, tau/25)
+				gamelog.updateGraph(3+ivt+nvt, angle(D1, D2), ivt+': \u03B8', 0, 2*tau)
 				
 				////
 				gamelog.vector.push([vt[ivt], unit(D1), '#fff', 200*surfdamp*Ddist1])
