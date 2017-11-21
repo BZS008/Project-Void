@@ -116,23 +116,19 @@ var liquid = {
 				// Damping factors
 				var areadamp = 0.001;
 				var surfdamp = 0.01;
-				var angdamp  = 0.005;
-				var damp = 0.002;
+				var angdamp  = 0.1;
+				var damp = 0.001;
 				// dist[ivt] = pytha(D1); 					// Store new distance
 				
 				// Vertex Distance and Angle calculation
-				
-				var dist1  = pytha(D1);
-				var dist2  = pytha(D2);
 				var D1last = lincom(1,D1, 1,vtv[ivt], -1,vtv[nextivt]);
 				var D2last = lincom(1,D2, 1,vtv[ivt], -1,vtv[previvt]);
-				var Ddist1 = dist1 - pytha(D1last);
-				var Ddist2 = dist2 - pytha(D2last);
+				var Ddist1 = pytha(D1) - pytha(D1last);
+				var Ddist2 = pytha(D2) - pytha(D2last);
 				var Dangle = angle(D1, D2) - angle(D1last, D2last);
 				
 				// Angle damping
-				lincomto(vta[nextivt], angdamp*dist1*Dangle, rot90(uD1));
-				lincomto(vta[previvt], angdamp*dist2*Dangle, rot270(uD2));
+				lincomto(vta[ivt], angdamp*Dangle, vout);
 				
 				// Angle damping, Surface damping and Air friction
 				lincomto(a,  -areadamp*darea, vout,  surfdamp*Ddist1, uD1,  surfdamp*Ddist2, uD2,  -damp, vtv[ivt]);
@@ -141,13 +137,11 @@ var liquid = {
 				addto(vta[ivt], a);
 				
 				////
-				var vector_scale = 1000;
-				gamelog.updateGraph(3+ivt, Dangle, ivt+': \u2202\u03B8/\u2202t', -tau/12, tau/25)
-				gamelog.updateGraph(3+ivt+nvt, angle(D1, D2), ivt+': \u03B8', 0, 2*tau)
+				var vector_scale = 1500;
 				gamelog.vector.push([vt[ivt], uD1, '#fff', vector_scale*surfdamp*Ddist1])
 				gamelog.vector.push([vt[ivt], uD2, '#999', vector_scale*surfdamp*Ddist2])
-				gamelog.vector.push([vt[nextivt], rot90(uD1), '#0ff', vector_scale*angdamp*dist1*Dangle])
-				gamelog.vector.push([vt[previvt], rot270(uD2), '#0ff', vector_scale*angdamp*dist2*Dangle])
+				gamelog.vector.push([vt[ivt], vout, '#0ff', vector_scale*angdamp*Dangle])
+				gamelog.vector.push([vt[ivt], vtv[ivt], '#faa', -vector_scale*damp])
 				////
 			}
 			
