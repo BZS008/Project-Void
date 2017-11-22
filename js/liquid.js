@@ -21,15 +21,27 @@ var liquid = {
 	drawDroplet:function(i){
 		var d = liquid.drops[i];
 		var nvt = d.vt.length;
-		ctx.beginPath();						// Start drawing droplet
-		ctx.moveTo(xl2xv(d.vt[0][0]), yl2yv(d.vt[0][1]));
+		var midpoints = arrnum2D(nvt, 2, 0);			// Initialize midpoint array
 		
-		for(var vt=1; vt<nvt; vt++){			// Loop over droplet vertices
-			var p = l2v(d.vt[vt]);
-			ctx.lineTo(p[0], p[1]);
+		// Build midpoint array
+		for (var ivt = 0; ivt < nvt; ivt++) {
+			var nextivt = (ivt+1) % nvt;				// Next vertex
+			midpoints[ivt] = midpoint(d.vt[ivt], d.vt[nextivt]);
+		}
+		
+		// Initialize path
+		ctx.beginPath();								// Start drawing droplet
+		ctx.moveTo(xl2xv(midpoints[0][0]), yl2yv(midpoints[0][1]));
+		
+		// Draw path
+		for(var ivt=0; ivt<nvt; ivt++){					// Loop over droplet vertices
+			var nextivt = (ivt+1) % nvt;				// Next vertex
+			var p2 = l2v(d.vt[nextivt]);
+			var p3 = l2v(midpoints[nextivt]);
+			ctx.quadraticCurveTo(p2[0], p2[1], p3[0], p3[1]);
 		}
 		ctx.closePath();
-		ctx.fillStyle = 'blue';					///// Get correct color using type!
+		ctx.fillStyle = 'blue';							///// Get correct color using type!
 		ctx.fill();
 	},
 	

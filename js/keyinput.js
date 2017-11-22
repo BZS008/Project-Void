@@ -47,7 +47,7 @@ function keyinput(){
 		var area0 	= 35000 * (0.5 + 0.5 * Math.random());
 		var area    = polyarea(vt);
 		var type 	= 0;
-		var nvts 	= Math.ceil(Math.random()*5+5);
+		var nvts 	= Math.ceil(Math.random()*6+4);
 				
 		liquid.addDroplet(vt.slice(0,nvts), vtv.slice(0,nvts), nvts*area0/9, area, type);
 		
