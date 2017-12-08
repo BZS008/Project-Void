@@ -25,6 +25,11 @@ function saturate(a, k) {
 
 // 2D Vector Operations
 
+function equals(v, w) {
+	// Equals operator for 2D vectors
+	return (v[0]===w[0] && v[1]===w[1]);
+}
+
 function pytha(p){
 	// pythagoras
 	return Math.sqrt(p[0]*p[0] + p[1]*p[1]);
@@ -153,7 +158,7 @@ function lincom() {
 function lincomto() {
 	// Add Linear combination of any number of scalars and 2D vectors to first argument
 	// N.B. This updates the referenced first array!
-	// Usage: addlincom( [x0,y0], scalar1, [x1,y1], ...)
+	// Usage: lincomto( [x0,y0], scalar1, [x1,y1], ...)
 	//   where [x0,y0] becomes [x0 + scalar1*x1 ..., y0 + scalar1*y1 ...]
 	// This is equal to lincom(1, [x0,y0], scalar1, [x1,y1], ...) except that
 	// it modifies [x0, y0] instead of returning a value
@@ -171,9 +176,7 @@ function lincomto() {
 function polyarea(vt){
 	// Calculate unsigned area of non-selfintersecting closed polygon
 	// (Using the sum of the cross products of the vertices)
-	// x: x-coordinates of vertices
-	// y: y-coordinates of vertices
-	// x and y must be arrays of the same length containing only numbers
+	// vt: coordinates of vertices as (array of 2D vectors)
 	
 	var area2 = 0; 						// twice signed area
 	var N = vt.length;
@@ -184,6 +187,40 @@ function polyarea(vt){
 	}
 	
 	return Math.abs(0.5 * area2)
+}
+
+function linesegments_intersect(v1, v2, w1, w2) {
+	// Calculate intersection of two line segments
+	// v1:	line segment v start
+	// v2:	line segment v end
+	// w1:	line segment w start
+	// w2:	line segment w end
+	// Returns false if intersection is outside either line section
+	
+	// Check if line segments have length > 0
+	if (equals(v1, v2) || (equals(w1, w2))) {
+		return false;
+	}
+	
+	// Calculate intersection variables:  intersection P = W1 + t*(W2-W1)
+	//     (capitals are vectors)         intersection P = V1 + s*(V2-V1)
+	var Dv = subtract(v2, v1);
+	var Dw = subtract(w2, w1);
+	var s = ( Dw[0]*(v1[1]-w1[1]) - Dw[1]*(v1[0]-w1[0]) ) / ( Dw[1]*Dv[0] - Dw[0]*Dv[1] );
+	var t = ( Dv[0]*(w1[1]-v1[1]) - Dv[1]*(w1[0]-v1[0]) ) / ( Dv[1]*Dw[0] - Dv[0]*Dw[1] );
+	
+    // Checks and intersection calculation
+	if ( isNaN(s) || isNaN(t) || !isFinite(s) || !isFinite(t) ) { // Check s and t for NaN and Inf
+		return false;
+	} else {
+		if (s>1 || s<0 || t>1 || t<0) {		// Check whether intersection is outside line segments
+			return false;
+		} else {
+			// Compute and return intersection point
+			var P = lincom(1, v1, s, Dv);
+			return P;
+		}
+	}
 }
 
 
