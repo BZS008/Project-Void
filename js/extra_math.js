@@ -30,13 +30,18 @@ function equals(v, w) {
 	return (v[0]===w[0] && v[1]===w[1]);
 }
 
-function pytha(p){
-	// pythagoras
+function mag(p){
+	// Magnitude of vector
 	return Math.sqrt(p[0]*p[0] + p[1]*p[1]);
 }
 
+function distance2Dvec(p1, p2) {
+	// Calculate Euclidean distance between two 2D vectors
+	return mag(subtract(p1, p2));
+}
+
 function manhatten(p1, p2){
-	// calculate manhatten distance between two 2D vectors
+	// Calculate manhatten distance between two 2D vectors
 	return Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
 }
 
@@ -63,7 +68,7 @@ function angle(v, w) {
 function unit(v) {
 	// Compute unit vector from vector
 	// Returns [0, 0] if vector magnitude is 0
-	var magnitude = pytha(v);
+	var magnitude = mag(v);
 	if (magnitude == 0) {
 		return [0, 0];
 	} else {
@@ -173,7 +178,7 @@ function lincomto() {
 	return;
 }
 
-function polyarea(vt){
+function polyarea(vt) {
 	// Calculate unsigned area of non-selfintersecting closed polygon
 	// (Using the sum of the cross products of the vertices)
 	// vt: coordinates of vertices as (array of 2D vectors)
@@ -187,6 +192,21 @@ function polyarea(vt){
 	}
 	
 	return Math.abs(0.5 * area2)
+}
+
+function polycircmf(vt) {
+	// Calculate the circumference of a closed polygon
+	
+	var circmf = 0;
+	var N = vt.length;
+	
+	// Sum all line segments of polygon
+	for (var i = 0; i < N; i++) {		// Loop over vertices
+		var j = (i+1) % N; 				// Next vertex index (closed polygon)
+		circmf += distance2Dvec(vt[j], vt[i]);
+	}
+	
+	return circmf;
 }
 
 function linesegments_intersect(v1, v2, w1, w2) {

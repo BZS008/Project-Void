@@ -6,7 +6,7 @@ var liquid = {
 	drops:[],									// Array for holding droplets
 	
 	// Function for adding droplets
-	addDroplet:function(vt, vtv, area0, area, type){
+	addDroplet:function(vt, vtv, area0, area, circmf, type){
 		
 		liquid.drops.push({
 			vt: vt, 							// vertices coordinates
@@ -123,13 +123,13 @@ var liquid = {
 				var surfdamp = 0.01;
 				var angdamp  = 0.1;
 				var damp = 0.001;
-				// dist[ivt] = pytha(D1); 					// Store new distance
+				// dist[ivt] = mag(D1); 					// Store new distance
 				
 				// Vertex Distance and Angle calculation
 				var D1last = lincom(1,D1, 1,vtv[ivt], -1,vtv[nextivt]);
 				var D2last = lincom(1,D2, 1,vtv[ivt], -1,vtv[previvt]);
-				var Ddist1 = pytha(D1) - pytha(D1last);
-				var Ddist2 = pytha(D2) - pytha(D2last);
+				var Ddist1 = mag(D1) - mag(D1last);
+				var Ddist2 = mag(D2) - mag(D2last);
 				var Dangle = angle(D1, D2) - angle(D1last, D2last);
 				
 				// Angle damping
@@ -142,8 +142,8 @@ var liquid = {
 				addto(vta[ivt], a);
 				
 				////
-				var vector_scale = 200;
-				var vector_scale_damp = 2000;
+				var vector_scale = 450;
+				var vector_scale_damp = 450;
 				// Draw Surface Tension and Pressure force vectors
 				gamelog.vector.push([vt[ivt], D1, '#ff0', vector_scale*km]);
 				gamelog.vector.push([vt[ivt], D2, '#f80', vector_scale*km]);
@@ -157,10 +157,41 @@ var liquid = {
 			}
 			
 			//--- Integration ---//
-			for(var ivt=0; ivt<nvt; ivt++){
+			for (var ivt=0; ivt<nvt; ivt++) {
 				//// Leapfrog pls?
-				addto(d.vt[ivt], d.vtv[ivt])
+				addto(d.vt[ivt], d.vtv[ivt]);
 				addto(vtv[ivt], vta[ivt]);
+			}
+			
+			
+			// Update circumference of droplet
+			d.circmf = polycircmf(d.vt);
+			gamelog.num[5] = d.circmf;
+			gamelog.numstr[5] = 'circmf: ';
+			
+			
+			//--- Droplet-Droplet Collision ---//
+			// Note: In order to avoid constant looping over all droplet vertices,
+			// it is first checked if the droplets are within each others proximity.
+			// If any pair of the droplets vertices are farther away than
+			// the average of the droplets circumferences, the droplets can't
+			// ever collide, for any shape.
+			
+			for (var j=i; j<nd; j++) {						// Loop from current to last droplet
+				var d2 = liquid.drops[j];
+				var avgcircmf = (d.circmf + d2.circmf)/2;	// Average circumference
+				
+				if (avgcircmf > distance2Dvec(d.vt[0], d2.vt[0])) {
+					// Droplets could collide
+					if (i!==j) {gamelog.blink(i);} ///// Show if droplets are close together
+					
+					for (var ivt=0; ivt<d2.nvt; ivt++) {
+						var nextivt = (ivt+1) % d2.nvt;			// Next vertex
+						var v1 = d.vt[ivt];
+						var v2 = d.vt[nextivt];
+						////// check for line segment intersection
+					}
+				}
 			}
 			
 			// Set latest calculated area for next iteration

@@ -106,7 +106,7 @@ var leveleditor = {
                         var p = [];
                         p[0] = entities[i].x - xv2xl(mx);
                         p[1] = entities[i].y - xv2xl(my);
-                        var dist = pytha(p);            // Distance mouse <-> entity
+                        var dist = mag(p);              // Distance mouse <-> entity
                         
                         if (mindist > dist) {           // Found smaller distance
                             mindist = dist;
