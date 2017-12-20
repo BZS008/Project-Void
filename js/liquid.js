@@ -45,6 +45,26 @@ var liquid = {
 		ctx.fill();
 	},
 	
+	// Slices vertex array at given indices and returns largest slice
+	dropslice:function(d, is) {
+		// This function assumes 2 intersections and will ignore any other than is[0] and is[1]
+		var n = d.vt.length;
+		var vt1  = d.vt.slice((is[1]+1)%n,  n).concat(d.vt.slice(0,  is[0]));	// the slice including start/end
+		var vt2  = d.vt.slice((is[0]+1)%n,  is[1]);								// the slice not including start/end
+		var vtv1 = d.vtv.slice((is[1]+1)%n, n).concat(d.vtv.slice(0, is[0]));	// the slice including start/end
+		var vtv2 = d.vtv.slice((is[0]+1)%n, is[1]);								// the slice not including start/end
+		
+		var slice1 = {vt: vt1, vtv: vtv1};
+		var slice2 = {vt: vt2, vtv: vtv2};
+		
+        // Return largest slice
+		if (vt1.length > vt2.length) {
+			return slice1;
+		} else {
+			return slice2;
+		}
+	},
+	
 	// Draws a liquid tile for the input tile indices
 	drawtile:function(i,j){
 		// Gather tile info
@@ -72,6 +92,8 @@ var liquid = {
 	flow:function(){
 		// Liquid Droplet Physics
 		var nd = liquid.drops.length;
+		
+		drop1loop:
 		for(var i=0; i<nd; i++){						// Loop over droplets
 			var d = liquid.drops[i];
 			
@@ -177,19 +199,66 @@ var liquid = {
 			// the average of the droplets circumferences, the droplets can't
 			// ever collide, for any shape.
 			
-			for (var j=i; j<nd; j++) {						// Loop from current to last droplet
+			for (var j=i+1; j<nd; j++) {						// Loop from current to last droplet
 				var d2 = liquid.drops[j];
-				var avgcircmf = (d.circmf + d2.circmf)/2;	// Average circumference
+				var avgcircmf = (d.circmf + d2.circmf)/2;		// Average circumference
 				
 				if (avgcircmf > distance2Dvec(d.vt[0], d2.vt[0])) {
 					// Droplets could collide
 					if (i!==j) {gamelog.blink(i);} ///// Show if droplets are close together
+					var intersections = [];						// Keep track of intersection coordinates
+					var intersectivt1 = [];						// Keep track of intersecting vertex indices
+					var intersectivt2 = [];						// Keep track of intersecting vertex indices
+					var nvt2 = d2.vt.length;					// Number of vertices for droplet 2
 					
-					for (var ivt=0; ivt<d2.nvt; ivt++) {
-						var nextivt = (ivt+1) % d2.nvt;			// Next vertex
-						var v1 = d.vt[ivt];
-						var v2 = d.vt[nextivt];
-						////// check for line segment intersection
+					// Cross test all line segment pairs for intersection
+					for (var ivt1=0; ivt1<nvt; ivt1++) {		// Loop over vertices of droplet 1
+						var nextivt1 = (ivt1+1) % nvt;			// Next vertex
+						var v1 = d.vt[ivt1];					// Droplet 1 vertex 1
+						var v2 = d.vt[nextivt1];				// Droplet 1 vertex 2
+						
+						for (var ivt2=0; ivt2<nvt2; ivt2++) {	// Loop over vertices of droplet 2
+							var nextivt2 = (ivt2+1) % nvt2;		// Next vertex
+							var w1 = d2.vt[ivt2];				// Droplet 2 vertex 1
+							var w2 = d2.vt[nextivt2];			// Droplet 2 vertex 2
+							
+							// Test line segment intersection
+							var intersect = linesegments_intersect(v1, v2, w1, w2);
+
+							if (intersect) {					// If an intersection has been found
+								intersections.push(intersect);	// Add intersection to the list
+								intersectivt1.push(ivt1); 		// Add vertex indices to the 1st list
+								intersectivt2.push(ivt2); 		// Add vertex indices to the 2nd list
+							}
+						}
+					}
+					
+					
+					if (intersections.length > 1) {				// If intersections have been found
+						
+						// Slice droplet polygon at intersection
+						var subdrop1 = this.dropslice(d, intersectivt1);
+						var subdrop2 = this.dropslice(d2, intersectivt2);
+						
+						// Construct new droplet
+						///// I suspect the intersection order is not the same every time
+						///// and is responsible for some of the explosions
+						///// This should be checked
+						var vtnew = [intersections[1]].concat(subdrop1.vt).concat([intersections[0]]).concat(subdrop2.vt);
+						var vtvnew = [[0,0]].concat(subdrop1.vtv).concat([[0,0]]).concat(subdrop2.vtv);
+						
+						// Remove original droplets (break! fix droplet loop iterator!)
+						liquid.drops.splice(j, 1);				// Remove 2nd droplet
+						liquid.drops.splice(i, 1);				// Remove 1st droplet
+						
+						// Add new droplet
+						var area0 	= d.area0 + d2.area0;
+						var area    = polyarea(vtnew);
+						var circmf	= polycircmf(vtnew);
+						var type 	= 0;
+						
+						liquid.addDroplet(vtnew, vtvnew, area0, area, circmf, type);
+						break drop1loop;
 					}
 				}
 			}
