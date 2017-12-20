@@ -43,7 +43,7 @@ function keyinput(){
 		var vx 		= player.vx;
 		var vy 		= player.vy;
 		var vt 		= [[x,y+40], [x+50,y+30], [x+100,y+40], [x+150,y+50], [x+200,y+60], [x+200,y+70], [x+150,y+80], [x+100,y+70], [x+50,y+60]]
-		var vtv 	= [[vx+0.2,vy+0.5], [vx+0.5,vy+0.3], [vx+0.5,vy+0.2], [vx+0.2,vy], [vx-0.2,vy], [vx-0.5,vy], [vx-0.5,vy], [vx-0.2,vy], [vx,vy]]
+		var vtv 	= [[vx+0.2,vy+1.5], [vx+0.5,vy+0.3], [vx+0.5,vy+0.2], [vx+0.2,vy], [vx-0.2,vy], [vx-0.5,vy], [vx-0.5,vy], [vx-0.2,vy], [vx,vy]]
 		var area0 	= 35000 * (0.5 + 0.5 * Math.random());
 		var area    = polyarea(vt);
 		var circmf	= polycircmf(vt);
@@ -56,6 +56,12 @@ function keyinput(){
 	}
 	
 	if(!keydown.t){tkeydown = false;}
+	if(!keydown.g){gkeydown = false;}
+	
+	if(keydown.g && !gkeydown){
+		gamelog.toggle();
+		gkeydown = true;
+	}
 	
 	// s (stop gameloop)
 	if(keydown.s){

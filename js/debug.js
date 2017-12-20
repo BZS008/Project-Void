@@ -45,6 +45,9 @@ function debug() {
 
 
 ///
-/// Remember if t key was down
+/// Remember if keys were down
 var tkeydown = false;
+var gkeydown = false;
+/// Note: at some point, this system should probably be replaced
+/// by a more general and versatile key system.
 ///
