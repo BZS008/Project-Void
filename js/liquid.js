@@ -267,7 +267,18 @@ var liquid = {
 			d.area = area;
 		}
 		
-		// Liquid Tile Physics
+		//--- Droplet Self Interaction ---//
+		
+		///// Note: In order to get more realistic droplet behaviour, it might
+		///// be necessary to add local change-in-area dampening (2D volume).
+		///// Or rather, dampening proportional to a calculated flow speed
+		///// inside smaller droplet compartments. This should add some more
+		///// viscous behaviour in cases where fluid inside the droplet is
+		///// pushed to flowing very fast. Triangulation for this problem might
+		///// be done with a Delaunay Triangulation algorithm.
+		
+		
+		//--- Liquid Tile Physics ---//
 		var nvert = level.data.length;					// Get vertical number of tiles
 		var nhori = level.data[0].length;				// Get horizontal number of tiles
 		
@@ -285,6 +296,8 @@ var liquid = {
 					var hl = tpl.height;
 					
 					// Set height differences
+					////// A velocity (dh/dt) component might add a more inertial kind
+					////// of behaviour.
 					var hflow = 0.02*Math.sign(h - hl) * Math.sqrt(Math.abs(h - hl));
 					tpl.dheight += hflow;
 					tp.dheight -= hflow;
