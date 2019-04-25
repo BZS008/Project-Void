@@ -43,6 +43,12 @@ var liquid = {
 		ctx.closePath();
 		ctx.fillStyle = 'blue';							///// Get correct color using type!
 		ctx.fill();
+
+        //// Draw vertex indices
+		for(var ivt=0; ivt<nvt; ivt++){					// Loop over droplet vertices
+		    var p = l2v(d.vt[ivt]);
+            gamelog.textmark(ivt, p[0], p[1], true);    //// Show vertex indices
+        }
 	},
 	
 	// Slices vertex array at given indices and returns largest slice
@@ -167,14 +173,14 @@ var liquid = {
 				var vector_scale = 450;
 				var vector_scale_damp = 450;
 				// Draw Surface Tension and Pressure force vectors
-				gamelog.vector.push([vt[ivt], D1, '#ff0', vector_scale*km]);
-				gamelog.vector.push([vt[ivt], D2, '#f80', vector_scale*km]);
-				gamelog.vector.push([vt[ivt], vout, '#090', vector_scale*Fexpand]);
-				gamelog.vector.push([vt[ivt], vout, '#0f0', vector_scale_damp*-areadamp*darea])
-				gamelog.vector.push([vt[ivt], uD1, '#fff', vector_scale_damp*surfdamp*Ddist1])
-				gamelog.vector.push([vt[ivt], uD2, '#999', vector_scale_damp*surfdamp*Ddist2])
-				gamelog.vector.push([vt[ivt], vout, '#0ff', vector_scale_damp*angdamp*Dangle])
-				gamelog.vector.push([vt[ivt], vtv[ivt], '#faa', -vector_scale_damp*damp])
+				//// gamelog.vector.push([vt[ivt], D1, '#ff0', vector_scale*km]);
+				//// gamelog.vector.push([vt[ivt], D2, '#f80', vector_scale*km]);
+				//// gamelog.vector.push([vt[ivt], vout, '#090', vector_scale*Fexpand]);
+				//// gamelog.vector.push([vt[ivt], vout, '#0f0', vector_scale_damp*-areadamp*darea])
+				//// gamelog.vector.push([vt[ivt], uD1, '#fff', vector_scale_damp*surfdamp*Ddist1])
+				//// gamelog.vector.push([vt[ivt], uD2, '#999', vector_scale_damp*surfdamp*Ddist2])
+				//// gamelog.vector.push([vt[ivt], vout, '#0ff', vector_scale_damp*angdamp*Dangle])
+				//// gamelog.vector.push([vt[ivt], vtv[ivt], '#faa', -vector_scale_damp*damp])
 				////
 			}
 			
