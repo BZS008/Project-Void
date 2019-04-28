@@ -78,7 +78,9 @@ var attacks = {
 						}
 						
 						// Apply damage, knockback and stun
-						entities[eid].hp -= damagefactor * attack.basedamage;
+                        console.log(entities[eid].typedamagefactor)
+                        var typedamagefactor = entities[eid].typedamagefactor[attack.type];
+						entities[eid].hp -= damagefactor * typedamagefactor * attack.basedamage;
 						entities[eid].stun = damagefactor * attack.stun;
 						
 						if (attack.doknockback) {

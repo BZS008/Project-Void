@@ -35,6 +35,13 @@ var player = {
 	fullhp		: 1500,			//400,
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
+    typedamagefactor: {        // When attack damage is calculated,
+        'melee':1.1,            //   it will be multiplied with the
+        'fire': 1.3,            //   factor corresponding to the
+        'water':0.8,            //   attack type.
+        'earth':1.0,
+        'wind': 1.1,
+    },
 	
 	// Physical Properties
 	fall_factor	: 1.4,

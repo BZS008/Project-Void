@@ -8,7 +8,7 @@ attacks.touch1 = {
 	height: 0,				// Height of damage area
 	falloff: 'none',		// Damage falloff: (none|linear|gauss)
 	basedamage: 3,			// Base damage value (without the falloff)
-	type: 'direct',			// Type (Not Yet Implemented)
+	type: 'melee',			// Type (Not Yet Implemented)
 	effects: ['fire'],		// Effects (Not Yet Implemented)
 	cooldown: 0,			// Cooldown timer (in frames)
     // When upontouch == true, knockback velocity is set instead of added

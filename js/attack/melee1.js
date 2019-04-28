@@ -8,7 +8,7 @@ attacks.melee1 = {
 	height: 50,				// Height of damage area
 	falloff: 'linear',		// Damage falloff: (none|linear|gauss)
 	basedamage: 25,			// Base damage value (without the falloff)
-	type: 'direct',			// Type (Not Yet Implemented)
+	type: 'melee',			// Type (Not Yet Implemented)
 	effects: ['fire'],		// Effects (Not Yet Implemented)
 	cooldown: 45,			// Cooldown timer (in frames)
     // When upontouch == true, knockback velocity is set instead of added

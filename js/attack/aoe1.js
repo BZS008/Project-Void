@@ -8,7 +8,7 @@ attacks.aoe1 = {
 	height: 120,			// Height of damage area
 	falloff: 'gauss',		// Damage falloff: (none|linear|gauss)
 	basedamage: 0.3,		// Base damage value (without the falloff)
-	type: 'direct',			// Type (Not Yet Implemented)
+	type: 'melee',			// Type (Not Yet Implemented)
 	effects: ['fire'],		// Effects (Not Yet Implemented)
 	cooldown: 0,			// Cooldown timer (in frames)
     // When upontouch == true, knockback velocity is set instead of added

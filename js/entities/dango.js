@@ -27,6 +27,13 @@ entitytypes.dango = function(x,y){
 	this.fullhp = 42;			// Maximum health of entity
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
+    this.typedamagefactor = {   // When attack damage is calculated,
+        'melee':1.1,            //   it will be multiplied with the
+        'fire': 1.2,            //   factor corresponding to the
+        'water':0.6,            //   attack type.
+        'earth':1,
+        'wind':0.8,
+    }
 	
 	// Movement parameters
 	this.groundacc = 0.2 + Math.random()*0.1;

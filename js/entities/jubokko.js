@@ -26,6 +26,13 @@ entitytypes.jubokko = function(x,y){
 	this.fullhp = 42;			// Maximum health of entity
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
+    this.typedamagefactor = {   // When attack damage is calculated,
+        'melee':0.5,            //   it will be multiplied with the
+        'fire': 2.0,            //   factor corresponding to the
+        'water':0.5,            //   attack type.
+        'earth':0.5,
+        'wind':0.5,
+    }
 	
 	// Movement parameters
 	this.groundacc = 0.2 + Math.random()*0.1;
