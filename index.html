@@ -79,6 +79,12 @@
 			if (entities[i].y > level.height) {
 				entities[i].hp -= 5;
 			}
+
+            // Fire damage (being on fire)
+            if (entities[i].onfire > 0) {
+                entities[i].hp -= entities[i].onfiredamage;
+                entities[i].onfire--;
+            }
 		}
 		
 		debug();

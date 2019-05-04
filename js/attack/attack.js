@@ -90,6 +90,9 @@ var attacks = {
 						}
 						
 						///// effects, potions, armor and such are not considered yet
+                        
+                        // Set onfire timer on target
+                        entities[eid].onfire = attack.setonfire;
 					}
 				}
 			}

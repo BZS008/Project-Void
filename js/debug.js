@@ -7,7 +7,7 @@ function debug() {
     var friendly = 0;
     for(var i = nents-1; i > 0 ; i--){
         var ent = entities[i];
-        gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode, ent.xview, ent.yview - 20);
+        gamelog.textmark('hp:' + Math.round(ent.hp) + ', ' + ent.ai.mode + ', fire:' + ent.onfire, ent.xview, ent.yview - 20);
         
         // Count dangos
         if (ent.type == 'angrydango' || ent.type == 'batdango' || ent.type == 'nodeppodango') {angry++;}

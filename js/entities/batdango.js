@@ -25,6 +25,8 @@ entitytypes.batdango = function(x,y){
 	// Life/Attack variables
 	this.hp = 7;				// Health of entity
 	this.fullhp = 7;			// Maximum health of entity
+    this.onfire = 0,            // Timer of being on fire. (Take damage each frame if !=0)
+    this.onfiredamage = 1,      // Damage taken per frame due to being on fire
 	this.cooldown = 0;			// Timer of cooldown. (When reached zero, entity can do another attack)
 	this.stun = 0;				// Timer of stun. (When nonzero, entity cannot move)
     this.typedamagefactor = {   // When attack damage is calculated,

@@ -8,8 +8,8 @@ attacks.aoe1 = {
 	height: 120,			// Height of damage area
 	falloff: 'gauss',		// Damage falloff: (none|linear|gauss)
 	basedamage: 0.3,		// Base damage value (without the falloff)
-	type: 'melee',			// Type (Not Yet Implemented)
-	effects: ['fire'],		// Effects (Not Yet Implemented)
+	type: 'melee',			// Type
+    setonfire: 0,           // Sets the target on fire for this many frames
 	cooldown: 0,			// Cooldown timer (in frames)
     // When upontouch == true, knockback velocity is set instead of added
 	doknockback: 0,			// Specify if knockback should be used

@@ -33,9 +33,11 @@ var player = {
 	// Life/Attack variables
 	hp			: 1500,			//400,
 	fullhp		: 1500,			//400,
+    onfire      : 0,            // Timer of being on fire. (Take damage each frame if !=0)
+    onfiredamage: 0.5,          // Damage taken per frame due to being on fire
 	cooldown	: 0,			// Timer of cooldown. (When reached zero, player can do another attack)
 	stun 		: 0,			// Timer of stun. (When nonzero, player cannot move)
-    typedamagefactor: {        // When attack damage is calculated,
+    typedamagefactor: {         // When attack damage is calculated,
         'melee':1.1,            //   it will be multiplied with the
         'fire': 1.3,            //   factor corresponding to the
         'water':0.8,            //   attack type.
