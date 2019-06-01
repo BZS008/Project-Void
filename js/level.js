@@ -101,5 +101,12 @@ var level = {
 		
 		// Create empty 2D array of same dimensions as level.data and add to level
 		this.tileprops = arrob2D(nvert, nhori);
+
+        for(var i=0; i<nvert; i++){
+            for(var j=0; j<nhori; j++){
+                this.tileprops[i][j].height = 1;
+                this.tileprops[i][j].dheight = 0;
+            }
+        }
 	}
 }

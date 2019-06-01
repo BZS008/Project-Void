@@ -79,15 +79,9 @@ var liquid = {
 		var tid = level.data[i][j];			// Get tile id
 		var aircolor = tileset[0].color;
 		var liqcolor = tileset[tid].color;
-		var liqheight = level.tileprops[i][j].height;
+        var liqheight = level.tileprops[i][j].height;
 		
-		// Draw air part
-		ctx.beginPath();
-		ctx.fillStyle = aircolor;
-		ctx.rect(j2xv(j), i2yv(i), width+1, height*(1-liqheight));
-		ctx.fill();
-		
-		// Draw water part
+        // Draw water part
 		ctx.beginPath();
 		ctx.fillStyle = liqcolor;
 		ctx.rect(j2xv(j), i2yv(i+(1-liqheight)), width+1, height*liqheight);
@@ -289,25 +283,57 @@ var liquid = {
 		var nhori = level.data[0].length;				// Get horizontal number of tiles
 		
 		// Determine horizontal flows: loop over tile pairs
-		for(var i=0;i<nvert;i++){						// Loop vertically
+		for(var i=0;i<nvert-1;i++){						// Loop vertically
 			for(var j=1;j<nhori;j++){					// Loop horizontally, skip first
 				var tl = tileset[level.data[i][j-1]];	// Get tile properties of left tile
 				var t = tileset[level.data[i][j]];		// Get tile properties of tile
-				
-				if(t.solid==2 && tl.solid==2){
-					// Get water levels
-					var tp = level.tileprops[i][j];
-					var tpl = level.tileprops[i][j-1];
-					var h = tp.height;
-					var hl = tpl.height;
-					
-					// Set height differences
-					////// A velocity (dh/dt) component might add a more inertial kind
-					////// of behaviour.
-					var hflow = 0.02*Math.sign(h - hl) * Math.sqrt(Math.abs(h - hl));
-					tpl.dheight += hflow;
-					tp.dheight -= hflow;
-				}
+                var tb = tileset[level.data[i+1][j]];   // Get tile properties of tile below
+			    
+                if(t.solid==2){
+				   	var tp = level.tileprops[i][j];
+				   	var h = tp.height;
+
+                    if(tb.solid==2){
+                        // Get water levels
+				    	var tpb = level.tileprops[i+1][j];
+				    	var hb = tpb.height;
+				    	
+                        if(hb <= 1){
+                            if(h>0.04){
+                                var vflow = Math.min(0.04, 1-hb);
+                            }else if(h>0){
+                                var vflow = Math.min(h, 1-hb);
+                            }else{
+                                var vflow = 0;
+                            }
+                        }else{
+                            var vflow = 1-hb;
+                        }
+				    	tpb.height += vflow;
+				    	tp.height -= vflow;
+
+                    }
+
+                    if(tl.solid==2 && j>0){
+				    	// Get water levels
+				    	var tpl = level.tileprops[i][j-1];
+				    	var hl = tpl.height;
+				    	
+				    	// Set height differences
+				    	////// A velocity (dh/dt) component might add a more inertial kind
+				    	////// of behaviour.
+                        var dh = 0.10;
+                        var hflowmax = 0.1;
+
+				    	var hflow = dh*(h - hl);    // Exponential regime
+                        if(hflow > hflowmax){
+                            hflow = hflowmax;           // Constant regime
+                        }
+
+				    	tpl.dheight += hflow;
+				    	tp.dheight -= hflow;
+				    }
+                }
 			}
 		}
 		
@@ -323,20 +349,26 @@ var liquid = {
 					var tp = level.tileprops[i][j];
 					tp.height += tp.dheight;
 					tp.dheight = 0;						// Reset height difference
+				    	
+                    if(tp.height <= 0){
+                        level.data[i][j] = 0;
+                        level.tileprops[i][j].height = 1;
+                    }
 				}
 			}
 		}
 		
 		// Convert adjacent air tiles to water
 		// Note: if multiple liquids are to be used, this part should be given a separate section for each liquid
-		for(var i=0;i<nvert;i++){						// Loop vertically
-			for(var j=1;j<nhori-1;j++){					// Loop horizontally
+		for(var i=0;i<nvert-1;i++){						// Loop vertically
+			for(var j=2;j<nhori-1;j++){					// Loop horizontally
 				var t = tileset[level.data[i][j]];		// Get tile properties of tile
 				
 				if(t.solid==2){
 					var tl = tileset[level.data[i][j-1]];	// Get tile properties of left tile
 					var tr = tileset[level.data[i][j+1]];	// Get tile properties of right tile
-					
+					var tb = tileset[level.data[i+1][j]];	// Get tile properties of below tile
+                    
 					if(tl.solid==0){
 						level.data[i][j-1] = 4;				// Convert air tile to water tile
 						level.tileprops[i][j-1].height = 0;
@@ -348,6 +380,14 @@ var liquid = {
 						level.tileprops[i][j+1].height = 0;
 						level.tileprops[i][j+1].dheight = 0;
 					}
+                    
+
+                    ///// Replace this later with conversion to droplet...
+                    if(tb.solid==0){                        // Convert air tile below to water
+                        level.data[i+1][j] = 4;
+                        level.tileprops[i+1][j].height = 0;
+                        level.tileprops[i+1][j].dheight = 0;
+                    }
 				}
 			}
 		}

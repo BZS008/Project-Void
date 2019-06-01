@@ -26,6 +26,7 @@ var leveleditor = {
                     gamelog.textmark('Mode: ' + this.mode, mx, my+40, true);  // Current mode
                     gamelog.textmark('Selected: ' + edtid + ' ' + tileset[edtid].name, mx, my+60, true);  // tiletype
                     gamelog.textmark('Current: ' + tid + ' ' + tileset[tid].name, mx, my+80, true);  // tiletype
+                    gamelog.textmark('Height: ' + level.tileprops[mi][mj].height.toPrecision(3), mx, my+100, true);  // (Water) height
                 }
                 
                 // Tile editor controls
